@@ -328,6 +328,23 @@
 			<layout>default</layout>
 		</repository>
 		<repository>
+			<id>Cogroo Release</id>
+			<url>
+				http://ccsl.ime.usp.br/cogroo/maven/release/
+			</url>
+		</repository>
+
+		<repository>
+			<id>Cogroo Snapshot</id>
+			<url>
+				http://ccsl.ime.usp.br/cogroo/maven/snapshot/
+			</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
 			<id>sourceforge-releases@sonatype</id>
 			<url>https://oss.sonatype.org/content/repositories/sourceforge-releases</url>
 		</repository>
