@@ -1,9 +1,9 @@
-<%@ page contentType="text/html; charset=UTF-8" %>  
-<script type="text/javascript">
-	var path = '${pageContext.servletContext.contextPath}';
-</script>
 
-<script src="<c:url value='/js/analysisdetails.js' />" type="text/javascript" ></script>
-<script src="<c:url value='/js/jquery.NobleCount.min.js' />" type="text/javascript" ></script>
+<h2>Inserir Palavras</h2>
 
-<h2>LÃ©xico<span class="help"><a onclick="onOff('helpRuleList'); return false" href="#"><img src="<c:url value='/images/help.png' />" /></a></span></h2>
+
+<p>Digite aqui a palavra a ser inserida no dicionário</p>
+<form action="<c:url value="/grammar"/>"  method="post" >
+    <textarea rows="1" cols="70" name="text" id="text">${text}</textarea>
+    <input type="submit" value=" OK &raquo; " id="go"/>
+</form>

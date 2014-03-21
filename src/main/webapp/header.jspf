@@ -165,10 +165,10 @@
 			<li><span title="Explore o léxico do CoGrOO. No futuro, será possível editar e criar novas entradas.">Léxico</span>
 				<ul>
 					<li><a title="Faça consultas ao léxico" href="<c:url value="/dictionaryEntrySearch"/>">Consultar palavra</a></li>
-					<c:if test="${loggedUser.logged}">
-						<li><a href="<c:url value="/dictionaryEntry"/>">Inserir Palavra</a></li>
+<%-- 					<c:if test="${loggedUser.logged}"> --%>
+						<li><a href="<c:url value="/newEntry"/>">Inserir Palavra</a></li>
 						<li><a href="<c:url value="/dictionaryEntries"/>">Minhas palavras</a></li>
-					</c:if>
+<%-- 					</c:if> --%>
 				</ul>
 			</li>
 			<!-- <li><a href="#">Sugestões</a></li> -->
