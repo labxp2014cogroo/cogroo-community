@@ -1,6 +1,12 @@
 package br.usp.ime.cogroo.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Scanner;
 
 import org.apache.http.HttpResponse;
@@ -8,6 +14,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,7 +27,7 @@ import br.com.caelum.vraptor.Result;
 public class WordController {
 
 	private final Result result;
-
+	
 	public WordController(Result result) {
 		this.result = result;
 	}
@@ -36,12 +43,23 @@ public class WordController {
 	@Post
 	@Path("/searchEntry")
 	public void searchEntry(String text) {
-
+		try {
+			result.include("mensagem", text).redirectTo(this).trataPalavra(text);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 	
 	@Post
 	@Path("/trataPalavra")
-	public void trataPalavra(String word) {
+	public void trataPalavra(String word) throws ClientProtocolException, IOException, JSONException {
 		String mensagem = "";
 		if (word == null) {
 			mensagem = "ERRO!!!";
@@ -49,16 +67,17 @@ public class WordController {
 		else if (word.length() == 0) {
 			mensagem = "Nenhuma palavra foi digitada!";
 		}
-		else {
-			//Tem que chamar o metodo de busca de palavras no jspell com word
-			mensagem = "Vc digitou: " + word;
+		else { 
+			//JSONObject teste =  buscaPalavra(word);   
+			//mensagem = teste.toString(); 
+			mensagem = "Inserindo a palavra: " + word; 
 		}
 		result.include("mensagem", mensagem).redirectTo(this).newEntry();
 	}
 	
-	private JSONObject nomeDisso(String text) throws ClientProtocolException, IOException {
+	private JSONObject buscaPalavra(String text) throws ClientProtocolException, IOException {
         HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet("http://200.18.49.108:4040/query.json?palavra=" + text);
+        HttpGet request = new HttpGet("logprog.ime.usp.br:4040/query.json?palavra=" + text); 
         HttpResponse response = client.execute(request);
         Scanner scanner = new Scanner(response.getEntity().getContent());
         try {
@@ -69,5 +88,4 @@ public class WordController {
 		}
         return null;
 	}
-
 }
