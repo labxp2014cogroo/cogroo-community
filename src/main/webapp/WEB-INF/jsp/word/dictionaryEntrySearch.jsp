@@ -11,6 +11,14 @@
 		<textarea rows="1" cols="70" name="text" id="text"></textarea>
 		<input type="submit" value=" OK &raquo; " id="go" />
 	</form>
-	<br />${text}
+	<br />${json_result}
 </body>
 </html>
+
+
+<title>Inserir palavras</title>
+	<form action="<c:url value="/trataPalavra"/>" method="post">
+		<input type="text" name="word" id="word"/>		
+		<input type="submit" value=" OK &raquo; " id="go" />
+	</form>
+<br />${mensagem}

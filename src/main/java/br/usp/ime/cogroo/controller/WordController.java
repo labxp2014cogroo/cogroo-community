@@ -15,8 +15,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -75,17 +75,24 @@ public class WordController {
 		result.include("mensagem", mensagem).redirectTo(this).newEntry();
 	}
 	
-	private JSONObject buscaPalavra(String text) throws ClientProtocolException, IOException {
+	public static JSONArray nomeDisso(String text){
         HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet("logprog.ime.usp.br:4040/query.json?palavra=" + text); 
-        HttpResponse response = client.execute(request);
-        Scanner scanner = new Scanner(response.getEntity().getContent());
-        try {
-			JSONObject wordDescriptor = new JSONObject(scanner.nextLine());
-			return wordDescriptor;
+        String url = "http://logprob.ime.usp.br:4040/query.json?palavra=";
+        HttpGet request = new HttpGet(url + text);
+        HttpResponse response;
+        Scanner scanner;
+        JSONArray wordDescriptor = null;
+		try {
+			response = client.execute(request);
+			scanner = new Scanner(response.getEntity().getContent());
+			wordDescriptor = new JSONArray(scanner.nextLine());
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-        return null;
+		return wordDescriptor;
 	}
 }
