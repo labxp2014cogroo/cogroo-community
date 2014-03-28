@@ -37,8 +37,23 @@ public class WordController {
 	@Path("/searchEntry")
 	public void searchEntry(String text) {
 
-		result.include("text", text);
-		result.redirectTo(getClass()).dictionaryEntrySearch();
+	}
+	
+	@Post
+	@Path("/trataPalavra")
+	public void trataPalavra(String word) {
+		String mensagem = "";
+		if (word == null) {
+			mensagem = "ERRO!!!";
+		}
+		else if (word.length() == 0) {
+			mensagem = "Nenhuma palavra foi digitada!";
+		}
+		else {
+			//Tem que chamar o metodo de busca de palavras no jspell com word
+			mensagem = "Vc digitou: " + word;
+		}
+		result.include("mensagem", mensagem).redirectTo(this).newEntry();
 	}
 	
 	private JSONObject nomeDisso(String text) throws ClientProtocolException, IOException {
