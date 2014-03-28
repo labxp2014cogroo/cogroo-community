@@ -11,6 +11,6 @@
 		<textarea rows="1" cols="70" name="text" id="text"></textarea>
 		<input type="submit" value=" OK &raquo; " id="go" />
 	</form>
-	<br />${text}
+	<br />${json_result}
 </body>
 </html>
