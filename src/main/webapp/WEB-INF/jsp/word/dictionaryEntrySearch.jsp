@@ -8,7 +8,7 @@
 </head>
 <body>
 	<form action="<c:url value="/searchEntry"/>" method="post">
-		<textarea rows="1" cols="70" name="text" id="text"></textarea>
+		<input type="text" name="text" id="text"/>
 		<input type="submit" value=" OK &raquo; " id="go" />
 	</form>
 	<br />${json_result}
@@ -18,7 +18,7 @@
 
 <title>Inserir palavras</title>
 	<form action="<c:url value="/trataPalavra"/>" method="post">
-		<input type="text" name="word" id="word"/>		
+		<input type="text" name="word" id="word"/>
 		<input type="submit" value=" OK &raquo; " id="go" />
 	</form>
 <br />${mensagem}

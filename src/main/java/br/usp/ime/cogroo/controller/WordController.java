@@ -43,18 +43,8 @@ public class WordController {
 	@Post
 	@Path("/searchEntry")
 	public void searchEntry(String text) {
-		try {
-			result.include("mensagem", text).redirectTo(this).trataPalavra(text);
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+		result.include("json_result", nomeDisso(text));
+  		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
 	
 	@Post
