@@ -65,7 +65,7 @@ public class WordController {
 		result.include("mensagem", mensagem).redirectTo(this).newEntry();
 	}
 	
-	public static JSONArray nomeDisso(String text){
+	public static JSONArray consultWord(String text){
         HttpClient client = new DefaultHttpClient();
         String url = "http://logprob.ime.usp.br:4040/query.json?palavra=";
         HttpGet request = new HttpGet(url + text);
