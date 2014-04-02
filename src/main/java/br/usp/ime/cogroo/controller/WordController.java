@@ -43,7 +43,7 @@ public class WordController {
 	@Post
 	@Path("/searchEntry")
 	public void searchEntry(String text) {
-		result.include("json_result", nomeDisso(text));
+		result.include("json_result", consultWord(text));
   		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
 	
