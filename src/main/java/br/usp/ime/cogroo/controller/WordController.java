@@ -1,5 +1,8 @@
 package br.usp.ime.cogroo.controller;
 
+import antlr.collections.List;
+import br.usp.ime.cogroo.model.Vocable;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import org.apache.http.HttpResponse;
@@ -17,6 +21,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -66,6 +71,7 @@ public class WordController {
 	}
 	
 	public static JSONArray consultWord(String text){
+		LinkedList<Vocable> vocables = new LinkedList<Vocable>();
         HttpClient client = new DefaultHttpClient();
         String url = "http://logprob.ime.usp.br:4040/query.json?palavra=";
         HttpGet request = new HttpGet(url + text);
@@ -76,6 +82,15 @@ public class WordController {
 			response = client.execute(request);
 			scanner = new Scanner(response.getEntity().getContent());
 			wordDescriptor = new JSONArray(scanner.nextLine());
+			JSONArray analisis = wordDescriptor.getJSONObject(0).getJSONArray("analise");
+			// para cada JSONObject
+			for (int i = 1; i < analisis.length(); i++){
+				JSONObject json = analisis.getJSONObject(i);
+				Vocable v = new Vocable();
+				v.setWord(text);
+				v.setCategory(analisis.getString(0));
+				v.setCategory(analisis.getString(0));
+			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
