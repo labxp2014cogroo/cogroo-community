@@ -56,7 +56,7 @@ public class WordController {
 		}
 		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
-
+	
 	public static JSONArray searchWord(String text) throws IOException {
 		HttpClient client = new DefaultHttpClient();
 		String url = "http://logprob.ime.usp.br:4040/query.json?palavra=";
