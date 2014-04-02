@@ -7,18 +7,19 @@
 <title>Consultar palavras</title>
 </head>
 <body>
+	Qual palavra deseja consultar? <br><br>
 	<form action="<c:url value="/searchEntry"/>" method="post">
 		<input type="text" name="text" id="text"/>
 		<input type="submit" value=" OK &raquo; " id="go" />
 	</form>
-	<br />${json_result}
+	${json_result}
+	<br />
+	<c:if test="${cod_erro == 404}">
+		${mensagem_erro} 
+		<a href="/newEntry?word=${typed_word}"> Deseja incluir palavra?</a>
+	</c:if>
+	<c:if test="${cod_erro == 501}">
+		${mensagem_erro}
+	</c:if>		
 </body>
 </html>
-
-
-<title>Inserir palavras</title>
-	<form action="<c:url value="/trataPalavra"/>" method="post">
-		<input type="text" name="word" id="word"/>
-		<input type="submit" value=" OK &raquo; " id="go" />
-	</form>
-<br />${mensagem}

@@ -4,7 +4,7 @@
 
 <h2>Inserir Palavra</h2>
 
-${mensagem}
+${word}
 <br>
 <br>
 
