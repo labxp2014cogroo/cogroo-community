@@ -1,6 +1,7 @@
 package br.usp.ime.cogroo.controller;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -40,17 +41,17 @@ public class WordController {
 	@Post
 	@Path("/searchEntry")
 	public void searchEntry(String text) throws JSONException {
-		JSONArray json_result;
+		LinkedList<Vocable> json_result;
 		try { 
 			json_result = searchWord(text);
-			String valueJSON = json_result.getJSONObject(0).getString("analise"); 	
-			if (valueJSON.equals("[]")) {
+			//String valueJSON = json_result.getJSONObject(0).getString("analise"); 	
+			//if (valueJSON.equals("[]")) {
 				result.include("mensagem_erro", "Palavra " + text +" não existe");
 				result.include("typed_word", text);
 				result.include("cod_erro", 404);
-			} else {
+			//} else {
 				result.include("json_result", json_result.toString());
-			}
+			//}
 		}
 		catch (IOException e) {
 			result.include("mensagem_erro", "Serviço fora do ar");
@@ -59,7 +60,7 @@ public class WordController {
 		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
 	
-	public static JSONArray searchWord(String text) throws IOException{
+	public static LinkedList<Vocable> searchWord(String text) throws IOException{
 		LinkedList<Vocable> vocables = new LinkedList<Vocable>();
         HttpClient client = new DefaultHttpClient();
         String url = "http://logprob.ime.usp.br:4040/query.json?palavra=";
@@ -75,16 +76,23 @@ public class WordController {
 			// para cada JSONObject
 			for (int i = 1; i < analisis.length(); i++){
 				JSONObject json = analisis.getJSONObject(i);
-				Vocable v = new Vocable();
-				v.setWord(text);
-				v.setCategory(analisis.getString(0));
-				v.setCategory(analisis.getString(0));
+				Vocable v = new Vocable(json.getString("CAT"), text, json.getString("rad"));
+				// TODO: foreach properties in json -->  v.addProperties
+				Iterator<String> jsonIterator = json.keys();
+				int k = 0;
+				while(jsonIterator.hasNext()){
+					String key = jsonIterator.next();
+					if (! (key.equals("CAT") || key.equals("rad"))){
+						v.addPropierty(key, json.getString(key));
+					}
+				}
+				vocables.add(v);
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return wordDescriptor;
+		return vocables;
 	}
 }
