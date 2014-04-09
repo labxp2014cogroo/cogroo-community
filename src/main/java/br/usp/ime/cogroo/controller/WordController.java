@@ -1,5 +1,8 @@
 package br.usp.ime.cogroo.controller;
 
+import static br.usp.ime.cogroo.util.Tagset.comma;
+import static br.usp.ime.cogroo.util.Tagset.getPOS;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -10,6 +13,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.cogroo.text.Token;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,8 +54,10 @@ public class WordController {
 				result.include("typed_word", text);
 				result.include("cod_erro", 404);
 			//} else {
-				result.include("json_result", json_result.toString());
+//				result.include("json_result", json_result.toString());
 			//}
+				result.include("vocables", vocablesAsStrings(json_result));
+			
 		}
 		catch (IOException e) {
 			result.include("mensagem_erro", "Serviço fora do ar");
@@ -95,4 +101,23 @@ public class WordController {
 		}
 		return vocables;
 	}
+	
+	public String[][] vocablesAsStrings (LinkedList<Vocable> vocables) {
+		
+		String[][] descriptions = new String[vocables.size()][4];
+		
+		int i = 0;
+		
+		for (Vocable vocable : vocables) {
+			descriptions[i][0] = vocable.getWord();
+			descriptions[i][1] = vocable.getRadical();
+			descriptions[i][2] = vocable.getCategory();
+			descriptions[i][3] = vocable.getPropertiesAsString();
+			i++;
+		}
+		
+		return descriptions;
+		
+	}
+	
 }

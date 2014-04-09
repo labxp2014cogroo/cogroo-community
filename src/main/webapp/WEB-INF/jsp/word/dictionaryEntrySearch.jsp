@@ -20,6 +20,32 @@
 	</c:if>
 	<c:if test="${cod_erro == 501}">
 		${mensagem_erro}
-	</c:if>		
+	</c:if>	
+	
+	<h3>Resultado da Consulta</h3>
+	<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
+		<thead>
+			<tr>
+			  <th>Nº.</th>
+			  <th>Palavra</th>
+			  <th>Lemas</th>
+			  <th>Classe</th>
+			  <th>Flexão</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${processResult.sentenceAsTable}" var="token" varStatus="j">
+				<tr>
+					<td>${ j.count }</td>
+					<td>${vocables[0]}</td>
+					<td>${vocables[1]}</td>
+					<td>${vocables[2]}</td>
+					<td>${vocables[3]}</td>
+			    </tr>
+			</c:forEach>
+		</tbody>
+	</table>
+	
+		
 </body>
 </html>

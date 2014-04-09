@@ -1,6 +1,7 @@
 package br.usp.ime.cogroo.model;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class Vocable {
 	
@@ -24,6 +25,21 @@ public class Vocable {
 	public String getCategory() {
 		return properties.get("Categoria");
 	}
+	
+	public String getPropertiesAsString() {
+		
+		StringBuilder description = new StringBuilder();
+		
+		
+		for (Entry<String, String> entry : properties.entrySet()) {
+			description.append(entry.getValue()).append(", ");
+		}
+		
+		
+		return description.toString();
+	}
+	
+	
 	
 	public void addPropierty (String key, String value) {
 		String myKey = null;
@@ -437,10 +453,10 @@ public class Vocable {
 		
 	}
 
-	public Vocable getRadical() {
+	public String getRadical() {
 		return radical;
 	}
-	public void setRadical(Vocable radical) {
+	public void setRadical(String radical) {
 		this.radical = radical;
 	}
 	
