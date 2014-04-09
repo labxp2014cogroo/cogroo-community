@@ -8,54 +8,41 @@ ${word}
 <br>
 <br>
 
-<div id="start_div">
-	Classifique a palavra sintaticamente:<br>
+<form action="<c:url value="/insertEntry?word=${word}"/>" method="post">
+	<div id="start_div">
+		Classifique a palavra sintaticamente:<br>
+		<br>
+		<input type="radio" name="dictionaryEntry.category" value="COMMON_NOUN" />Substantivo simples<br>
+		<input type="radio" name="dictionaryEntry.category" value="PROPER_NOUN" />Substantivo próprio<br>
+		<input type="radio" name="dictionaryEntry.category" value="VERB" />Verbo<br>
+		<input type="radio" name="dictionaryEntry.category" value="ADJECTIVE" />Adjetivo<br>
+	</div>
+	
+	
+	<div id="noun_adj_div" class="vocable_form">
+		Classifique a palavra quanto ao gênero:<br>
+		<br>
+		<input type="radio" name="gender" value="m" />Masculino<br>
+		<input type="radio" name="gender" value="f" />Feminino<br>
+		<input type="radio" name="gender" value="n" />Neutro [ex: o(a) estudante]<br>
+		<br>
+		<br> Classifique a palavra quanto ao número:<br>
+		<br>
+		<input type="radio" name="number" value="s" />Singular<br>
+		<input type="radio" name="number" value="p" />Plural<br>
+		<input type="radio" name="number" value="_" />Indefinido [ex: o(s) óculos]<br>
+	</div>
+	
+	<div id="verb_div" class="vocable_form">
+		Classifique a palavra quanto ao modo verbal:<br>
+		<br>
+		<input type="radio" name="verbtense" value="m" />Indicativo<br>
+		<input type="radio" name="verbtense" value="f" />Subjuntivo<br>
+		<input type="radio" name="verbtense" value="n" />Imperativo<br>
+		<br>
+	</div>
 	<br>
-	<form action="<c:url value="/trataPalavra"/>" method="post">
-		<input type="radio" name="CAT" value="COMMON_NOUN" />Substantivo simples<br>
-		<input type="radio" name="CAT" value="PROPER_NOUN" />Substantivo próprio<br>
-		<input type="radio" name="CAT" value="VERB" />Verbo<br>
-		<input type="radio" name="CAT" value="ADJECTIVE" />Adjetivo<br>
-	</form>
-</div>
-
-
-
-<div id="noun_adj_div" class="vocable_form">
-	Classifique a palavra quanto ao gênero:<br>
 	<br>
-	<form action="<c:url value="/trataPalavra"/>" method="post">
-		<input type="radio" name="G" value="m" />Masculino<br> <input
-			type="radio" name="G" value="f" />Feminino<br> <input
-			type="radio" name="G" value="n" />Neutro [ex: o(a) estudante]<br>
-	</form>
-
-	<br>
-	<br> Classifique a palavra quanto ao número:<br>
-	<br>
-	<form action="<c:url value="/trataPalavra"/>" method="post">
-		<input type="radio" name="N" value="s" />Singular<br>
-		<input type="radio" name="N" value="p" />Plural<br>
-		<input type="radio" name="N" value="_" />Indefinido [ex: o(s) óculos]<br>
-	</form>
-</div>
-
-<div id="verb_div" class="vocable_form">
-	Classifique a palavra quanto ao modo verbal:<br>
-	<br>
-	<form action="<c:url value="/trataPalavra"/>" method="post">
-		<input type="radio" name="G" value="m" />Indicativo<br>
-		<input type="radio" name="G" value="f" />Subjuntivo<br>
-		<input type="radio" name="G" value="n" />Imperativo<br>
-	</form>
-
-	<br>
-</div>
-
-<br>
-<br>
-
-<form action="<c:url value="/trataPalavra"/>" method="post">
 	<input type="submit" value=" OK &raquo; " id="go" />
 </form>
 
@@ -72,4 +59,5 @@ ${word}
 		$("#start_div").hide();
 		});
 	});
+
 </script>
