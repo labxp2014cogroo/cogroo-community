@@ -1,8 +1,5 @@
 package br.usp.ime.cogroo.controller;
 
-import static br.usp.ime.cogroo.util.Tagset.comma;
-import static br.usp.ime.cogroo.util.Tagset.getPOS;
-
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -13,7 +10,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.cogroo.text.Token;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,7 +74,7 @@ public class WordController {
 			wordDescriptor = new JSONArray(scanner.nextLine());
 			JSONArray analisis = wordDescriptor.getJSONObject(0).getJSONArray("analise");
 			// para cada JSONObject
-			for (int i = 1; i < analisis.length(); i++){
+			for (int i = 0; i < analisis.length(); i++){
 				JSONObject json = analisis.getJSONObject(i);
 				Vocable v = new Vocable(json.getString("CAT"), text, json.getString("rad"));
 				// TODO: foreach properties in json -->  v.addProperties
