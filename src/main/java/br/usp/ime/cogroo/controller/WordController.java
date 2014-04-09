@@ -98,12 +98,12 @@ public class WordController {
         HttpGet request = new HttpGet(url + text);
         HttpResponse response;
         Scanner scanner;
-        JSONArray wordDescriptor = null;
+        JSONObject wordDescriptor = null;
 		try {
 			response = client.execute(request);
 			scanner = new Scanner(response.getEntity().getContent());
-			wordDescriptor = new JSONArray(scanner.nextLine());
-			JSONArray analisis = wordDescriptor.getJSONObject(0).getJSONArray("analise");
+			wordDescriptor = new JSONObject(scanner.nextLine());
+			JSONArray analisis = wordDescriptor.getJSONArray("analise");
 
 			for (int i = 0; i < analisis.length(); i++){
 				JSONObject json = analisis.getJSONObject(i);
