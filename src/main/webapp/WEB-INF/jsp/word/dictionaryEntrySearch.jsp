@@ -34,13 +34,13 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${processResult.sentenceAsTable}" var="token" varStatus="j">
+			<c:forEach items="${vocables}" var="vocable" varStatus="j">
 				<tr>
 					<td>${ j.count }</td>
-					<td>${vocables[0]}</td>
-					<td>${vocables[1]}</td>
-					<td>${vocables[2]}</td>
-					<td>${vocables[3]}</td>
+					<td>${vocable[0]}</td>
+					<td>${vocable[1]}</td>
+					<td>${vocable[2]}</td>
+					<td>${vocable[3]}</td>
 			    </tr>
 			</c:forEach>
 		</tbody>

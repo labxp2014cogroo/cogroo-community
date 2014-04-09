@@ -48,16 +48,14 @@ public class WordController {
 		LinkedList<Vocable> json_result;
 		try { 
 			json_result = searchWord(text);
-			//String valueJSON = json_result.getJSONObject(0).getString("analise"); 	
-			//if (valueJSON.equals("[]")) {
+
+			if (json_result.isEmpty()){
 				result.include("mensagem_erro", "Palavra " + text +" não existe");
 				result.include("typed_word", text);
 				result.include("cod_erro", 404);
-			//} else {
-//				result.include("json_result", json_result.toString());
-			//}
+			} else {
 				result.include("vocables", vocablesAsStrings(json_result));
-			
+			}
 		}
 		catch (IOException e) {
 			result.include("mensagem_erro", "Serviço fora do ar");
@@ -69,7 +67,7 @@ public class WordController {
 	public static LinkedList<Vocable> searchWord(String text) throws IOException{
 		LinkedList<Vocable> vocables = new LinkedList<Vocable>();
         HttpClient client = new DefaultHttpClient();
-        String url = "http://logprob.ime.usp.br:4040/query.json?palavra=";
+        String url = "http://logprob.ime.usp.br:4040/jspell/analyse.json?id=default&lexeme=";
         HttpGet request = new HttpGet(url + text);
         HttpResponse response;
         Scanner scanner;
@@ -88,8 +86,8 @@ public class WordController {
 				int k = 0;
 				while(jsonIterator.hasNext()){
 					String key = jsonIterator.next();
-					if (! (key.equals("CAT") || key.equals("rad"))){
-						v.addPropierty(key, json.getString(key));
+					if (!(key.equals("CAT") || key.equals("rad"))){
+						v.addProperty(key, json.getString(key));
 					}
 				}
 				vocables.add(v);
@@ -117,7 +115,6 @@ public class WordController {
 		}
 		
 		return descriptions;
-		
 	}
 	
 }

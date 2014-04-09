@@ -10,9 +10,10 @@ public class Vocable {
 	private HashMap<String, String> properties;
 	
 	public Vocable(String category, String word, String radical) {
-		this.addPropierty("CAT", category);
 		this.word = word;
 		this.radical = radical;
+		this.properties = new HashMap<String, String>();
+		this.addProperty("CAT", category);
 	}
 	
 	
@@ -39,11 +40,10 @@ public class Vocable {
 		return description.toString();
 	}
 	
-	
-	
-	public void addPropierty (String key, String value) {
+	public void addProperty (String key, String value) {
 		String myKey = null;
 		String myValue = null;
+		
 		if (key.equals("LA")){
 			myKey = "Necessita artigo";
 			if (value.equals("1")){
@@ -445,6 +445,7 @@ public class Vocable {
 				myValue = "sim";
 			}
 		}
+
 		if (myKey == null || myValue == null){
 			// TODO: throw Exception ?
 		}else {
