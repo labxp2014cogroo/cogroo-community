@@ -103,10 +103,9 @@ public class WordController {
 		int i = 0;
 		
 		for (Vocable vocable : vocables) {
-			descriptions[i][0] = vocable.getWord();
-			descriptions[i][1] = vocable.getRadical();
-			descriptions[i][2] = vocable.getCategory();
-			descriptions[i][3] = vocable.getPropertiesAsString();
+			descriptions[i][0] = vocable.getRadical();
+			descriptions[i][1] = vocable.getCategory();
+			descriptions[i][2] = vocable.getPropertiesAsString();
 			i++;
 		}
 		

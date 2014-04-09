@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/dataTables_table_jui.css"/>" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/dataTables_table.css"/>" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery-ui/jquery-ui-1.8.5.custom.css"/>" />
+
 <title>Consultar palavras</title>
 </head>
 <body>
@@ -12,7 +13,6 @@
 		<input type="text" name="text" id="text"/>
 		<input type="submit" value=" OK &raquo; " id="go" />
 	</form>
-	${json_result}
 	<br />
 	<c:if test="${cod_erro == 404}">
 		${mensagem_erro} 
@@ -22,12 +22,12 @@
 		${mensagem_erro}
 	</c:if>	
 	
-	<h3>Resultado da Consulta</h3>
+	<h3>Classificações da Palavra Consultada</h3>
+
 	<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
 		<thead>
 			<tr>
 			  <th>Nº.</th>
-			  <th>Palavra</th>
 			  <th>Lemas</th>
 			  <th>Classe</th>
 			  <th>Flexão</th>
@@ -40,7 +40,6 @@
 					<td>${vocable[0]}</td>
 					<td>${vocable[1]}</td>
 					<td>${vocable[2]}</td>
-					<td>${vocable[3]}</td>
 			    </tr>
 			</c:forEach>
 		</tbody>
@@ -48,4 +47,3 @@
 	
 		
 </body>
-</html>
