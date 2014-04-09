@@ -14,36 +14,40 @@
 		<input type="submit" value=" OK &raquo; " id="go" />
 	</form>
 	<br />
-	<c:if test="${cod_erro == 404}">
-		${mensagem_erro} 
-		<a href="/newEntry?word=${typed_word}"> Deseja incluir palavra?</a>
-	</c:if>
-	<c:if test="${cod_erro == 501}">
-		${mensagem_erro}
-	</c:if>	
-	
-	<h3>Classificações da Palavra Consultada</h3>
-
-	<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
-		<thead>
-			<tr>
-			  <th>Nº.</th>
-			  <th>Lemas</th>
-			  <th>Classe</th>
-			  <th>Flexão</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${vocables}" var="vocable" varStatus="j">
-				<tr>
-					<td>${ j.count }</td>
-					<td>${vocable[0]}</td>
-					<td>${vocable[1]}</td>
-					<td>${vocable[2]}</td>
-			    </tr>
-			</c:forEach>
-		</tbody>
-	</table>
-	
+	<c:choose>
+		<c:when test="${status == 400}">
+			${mensagem_erro} 
+		</c:when>
+		<c:when test="${status == 404}">
+			${mensagem_erro} 
+			<a href="/newEntry?word=${typed_word}"> Deseja incluir palavra?</a>
+		</c:when>
+		<c:when test="${status == 501}">
+			${mensagem_erro}
+		</c:when>	
+		<c:when test="${status == 0}">
+			<h3>Classificações da Palavra: ${typed_word}</h3>
+			<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
+				<thead>
+					<tr>
+					  <th>Nº.</th>
+					  <th>Lemas</th>
+					  <th>Classe</th>
+					  <th>Flexão</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${vocables}" var="vocable" varStatus="j">
+						<tr>
+							<td>${ j.count }</td>
+							<td>${vocable[0]}</td>
+							<td>${vocable[1]}</td>
+							<td>${vocable[2]}</td>
+					    </tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</c:when>
+	</c:choose>
 		
 </body>

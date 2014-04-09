@@ -43,19 +43,26 @@ public class WordController {
 	public void searchEntry(String text) throws JSONException {
 		LinkedList<Vocable> json_result;
 		try { 
-			json_result = searchWord(text);
-
-			if (json_result.isEmpty()){
-				result.include("mensagem_erro", "Palavra " + text +" não existe");
+			if (text == null || text.length() < 1) {
+				result.include("status", 400);
+				result.include("mensagem_erro", "Palavra vazia");
+			}
+			else {
+				json_result = searchWord(text);
 				result.include("typed_word", text);
-				result.include("cod_erro", 404);
-			} else {
-				result.include("vocables", vocablesAsStrings(json_result));
+				
+				if (json_result.isEmpty()){
+					result.include("mensagem_erro", "Palavra " + text +" não existe");
+					result.include("status", 404);
+				} else {
+					result.include("vocables", vocablesAsStrings(json_result));
+					result.include("status", 0);
+				}
 			}
 		}
 		catch (IOException e) {
 			result.include("mensagem_erro", "Serviço fora do ar");
-			result.include("cod_erro", 501);
+			result.include("status", 501);
 		}
 		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
