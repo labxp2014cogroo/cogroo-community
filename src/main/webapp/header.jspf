@@ -166,7 +166,6 @@
 				<ul>
 					<li><a title="Faça consultas ao léxico" href="<c:url value="/dictionaryEntrySearch"/>">Consultar palavra</a></li>
 <%-- 					<c:if test="${loggedUser.logged}"> --%>
-						<li><a href="<c:url value="/newEntry"/>">Inserir Palavra</a></li>
 						<li><a href="<c:url value="/dictionaryEntries"/>">Minhas palavras</a></li>
 <%-- 					</c:if> --%>
 				</ul>
