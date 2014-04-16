@@ -128,7 +128,7 @@ public class WordController {
 	
 	public String[][] vocablesAsStrings (LinkedList<Vocable> vocables) {
 		
-		String[][] descriptions = new String[vocables.size()][4];
+		String[][] descriptions = new String[vocables.size()][3];
 		
 		int i = 0;
 		
