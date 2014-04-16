@@ -18,6 +18,7 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
+import br.usp.ime.cogroo.logic.SearchWordJspell;
 import br.usp.ime.cogroo.model.DictionaryEntry;
 import br.usp.ime.cogroo.model.Vocable;
 
@@ -72,7 +73,7 @@ public class WordController {
 				result.include("mensagem_erro", "Palavra vazia");
 			}
 			else {
-				json_result = searchWord(text);
+				json_result = SearchWordJspell.searchWord(text);
 				result.include("typed_word", text);
 				
 				if (json_result.isEmpty()){
@@ -91,40 +92,6 @@ public class WordController {
 		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
 	
-	public static LinkedList<Vocable> searchWord(String text) throws IOException{
-		LinkedList<Vocable> vocables = new LinkedList<Vocable>();
-        HttpClient client = new DefaultHttpClient();
-        String url = "http://logprob.ime.usp.br:4040/jspell/analyse.json?id=default&lexeme=";
-        HttpGet request = new HttpGet(url + text);
-        HttpResponse response;
-        Scanner scanner;
-        JSONObject wordDescriptor = null;
-		try {
-			response = client.execute(request);
-			scanner = new Scanner(response.getEntity().getContent());
-			wordDescriptor = new JSONObject(scanner.nextLine());
-			JSONArray analisis = wordDescriptor.getJSONArray("analise");
-
-			for (int i = 0; i < analisis.length(); i++){
-				JSONObject json = analisis.getJSONObject(i);
-				Vocable v = new Vocable(json.getString("CAT"), text, json.getString("rad"));
-
-				Iterator<String> jsonIterator = json.keys();
-				while(jsonIterator.hasNext()){
-					String key = jsonIterator.next();
-					if (!(key.equals("CAT") || key.equals("rad"))){
-						v.addProperty(key, json.getString(key));
-					}
-				}
-				vocables.add(v);
-			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return vocables;
-	}
 	
 	public String[][] vocablesAsStrings (LinkedList<Vocable> vocables) {
 		

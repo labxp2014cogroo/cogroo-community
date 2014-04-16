@@ -35,6 +35,17 @@
 		    <span id="count">255</span> caracteres restantes<br>
 		    <input type="submit" value=" Analisar &raquo; " id="go"/>
 		</form>
+		<c:set var="unkownWordsList" scope="request" value="${unkownWordsList}" />
+		
+		<c:if test="${! empty unknownWordsList}">
+			<p> As seguintes palavras não existem no dicionário (clique para adicioná-las): </p>
+			<c:forEach items="${unknownWordsList}" var="unknownWord" >
+					<p> <a href="/newEntry?word=${unknownWord}" title="Incluir palavra" > ${unknownWord} </a> </p>
+			</c:forEach>
+		</c:if>
+		
+		
+		
 		<c:set var="processResultList" scope="request" value="${processResultList}" />    
 		<c:set var="id" scope="request" value="id" />
 		<jsp:include page="/analysisdetails.jspf" />
