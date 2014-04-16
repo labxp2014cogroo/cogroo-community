@@ -48,12 +48,12 @@ public class ParserYaml {
 		String key;
 		HashMap<String, String> secondLevel = new HashMap<String, String>();
 		while (scan.hasNext()){
-			line = scan.nextLine();
-			if (line.matches("[a-z][A-Z]:$")){
+			line = scan.nextLine().trim();
+			if (line.matches("[a-zA-Z]+:$")){
 				key = line.split(":")[0].trim();
 				secondLevel = new HashMap<String, String>();
 				this.hash.get(key).setB(secondLevel);
-			}else if (line.matches("[a-zA-Z0-9]: [a-z]+")){
+			}else if (line.matches("[_a-zA-Z0-9]+:\\s*-?[_0-9a-zA-Z]+.*")){
 				pair = line.split(":");
 				secondLevel.put(pair[0].trim(), pair[1].trim());
 			}
@@ -80,7 +80,16 @@ public class ParserYaml {
 		return null;
 	}
 
-	/* TODO: method to return a hashMap (or something better than this...) */
+	public String getValue(String category, String property) {
+		if (this.hash.containsKey(category)){
+			HashMap<String, String> hashProperty = this.hash.get(category).getB(); 
+			if (hashProperty.containsKey(property)) {
+				return hashProperty.get(property); 
+			}
+		}
+		return null;
+	}
+
 	
 	
 }
