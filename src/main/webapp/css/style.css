@@ -458,3 +458,19 @@ DIV.white_box {
 ul.message li {
 	display: inline;
 }
+
+#word ul,ol {
+	padding-left: 12px;
+}
+
+#word ul li {
+	list-style: disc;
+	list-style-position: inside;
+	padding-left: 12px;
+}
+
+#word ol li {
+	list-style: decimal;
+	list-style-position: inside;
+	padding-left: 12px;
+}

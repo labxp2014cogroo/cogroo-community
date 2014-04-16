@@ -1,49 +1,51 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>" />
 
 <h2>Inserir Palavra</h2>
+
 
 ${word}
 <br>
 <br>
 
-<form action="<c:url value="/insertEntry?word=${word}"/>" method="post">
-	<div id="start_div">
-		Classifique a palavra sintaticamente:<br>
+<form id="word" action="<c:url value="/insertEntry?word=${word}"/>" method="post">
+	<div style="float:left;">
+		
+		<h4>Classifique a palavra sintaticamente:</h4>
+		<br>
 		<br>
 		<input type="radio" name="dictionaryEntry.category" value="COMMON_NOUN" />Substantivo simples<br>
 		<input type="radio" name="dictionaryEntry.category" value="PROPER_NOUN" />Substantivo próprio<br>
-		<input type="radio" name="dictionaryEntry.category" value="VERB" />Verbo<br>
 		<input type="radio" name="dictionaryEntry.category" value="ADJECTIVE" />Adjetivo<br>
+		<input type="radio" name="dictionaryEntry.category" value="VERB" />Substantivo simples e adjetivo<br>
+		<input type="radio" name="dictionaryEntry.category" value="VERB" />Verbo<br>
+		<input type="radio" name="dictionaryEntry.category" value="ADJECTIVE" />Outra classe gramatical<br>
+		<br>
+		<input type="submit" value=" OK &raquo; " id="go" />
 	</div>
 	
-	
-	<div id="noun_adj_div" class="vocable_form">
-		Classifique a palavra quanto ao gênero:<br>
+	<div id="word" style="float:right;">
+		<h4>Inserindo a palavra corretamente:</h4>
 		<br>
-		<input type="radio" name="gender" value="m" />Masculino<br>
-		<input type="radio" name="gender" value="f" />Feminino<br>
-		<input type="radio" name="gender" value="n" />Neutro [ex: o(a) estudante]<br>
 		<br>
-		<br> Classifique a palavra quanto ao número:<br>
-		<br>
-		<input type="radio" name="number" value="s" />Singular<br>
-		<input type="radio" name="number" value="p" />Plural<br>
-		<input type="radio" name="number" value="_" />Indefinido [ex: o(s) óculos]<br>
-	</div>
-	
-	<div id="verb_div" class="vocable_form">
-		Classifique a palavra quanto ao modo verbal:<br>
-		<br>
-		<input type="radio" name="verbtense" value="m" />Indicativo<br>
-		<input type="radio" name="verbtense" value="f" />Subjuntivo<br>
-		<input type="radio" name="verbtense" value="n" />Imperativo<br>
+		<h5>Procure sempre buscar a forma mais primitiva da palavra:</h5>
+			<ul>
+				<li>Para substantivos e adjetivos:
+					<ol>
+						<li>Coloque-o no gênero masculino, se existir</li>
+						<li>Coloque-o no singular, se existir</li>
+						<li>Retire qualquer grau da palavra</li>
+					</ol>
+				</li>
+				<li>Para verbos:
+					<ol>
+						<li>Coloque-o no infinitivo impessoal (ex: cantar)</li>
+					</ol>
+				</li>
+			</ul>
 		<br>
 	</div>
-	<br>
-	<br>
-	<input type="submit" value=" OK &raquo; " id="go" />
 </form>
 
 
