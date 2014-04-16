@@ -1,9 +1,7 @@
 package br.usp.ime.cogroo.model;
 
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map.Entry;
 
 public class Vocable {
 	

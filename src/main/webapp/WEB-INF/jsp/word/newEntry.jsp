@@ -1,9 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>" />
-
 <h2>Inserir Palavra</h2>
-
 
 ${word}
 <br>
@@ -16,13 +11,12 @@ ${word}
 		<br>
 		<br>
 		<input type="radio" name="dictionaryEntry.category" value="COMMON_NOUN" />Substantivo simples<br>
-		<input type="radio" name="dictionaryEntry.category" value="PROPER_NOUN" />Substantivo prÃ³prio<br>
+		<input type="radio" name="dictionaryEntry.category" value="PROPER_NOUN" />Substantivo próprio<br>
 		<input type="radio" name="dictionaryEntry.category" value="ADJECTIVE" />Adjetivo<br>
 		<input type="radio" name="dictionaryEntry.category" value="VERB" />Substantivo simples e adjetivo<br>
 		<input type="radio" name="dictionaryEntry.category" value="VERB" />Verbo<br>
 		<input type="radio" name="dictionaryEntry.category" value="ADJECTIVE" />Outra classe gramatical<br>
 		<br>
-		<input type="submit" value=" OK &raquo; " id="go" />
 	</div>
 	
 	<div id="word" style="float:right;">
@@ -33,7 +27,7 @@ ${word}
 			<ul>
 				<li>Para substantivos e adjetivos:
 					<ol>
-						<li>Coloque-o no gÃªnero masculino, se existir</li>
+						<li>Coloque-o no gênero masculino, se existir</li>
 						<li>Coloque-o no singular, se existir</li>
 						<li>Retire qualquer grau da palavra</li>
 					</ol>
@@ -44,22 +38,12 @@ ${word}
 					</ol>
 				</li>
 			</ul>
+		<input type="text" value="Palavra conforme manual..." name="text" id="text"/>
 		<br>
 	</div>
+	<br>
+	<br>
+	<div style="clear:both;">
+		<input type="submit" value=" OK &raquo; " id="go" />
+	</div>
 </form>
-
-
-<script>
-	$(document).ready(function() {
-		$(".vocable_form").hide();
-		$("input[type=radio][name=dictionaryEntry.category]").change(function() {
-			if (this.value == "VERB") {
-				$("#verb_div").show();
-			} else {
-				$("#noun_adj_div").show();
-			}
-		$("#start_div").hide();
-		});
-	});
-
-</script>
