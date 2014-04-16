@@ -18,7 +18,6 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
-import br.usp.ime.cogroo.model.DictionaryEntry;
 import br.usp.ime.cogroo.model.Vocable;
 
 @Resource
@@ -36,27 +35,10 @@ public class WordController {
 	}
 	
 	@Post
-	@Path("/insertEntry")
-	public void insertEntry(String word, DictionaryEntry dictionaryEntry) {
-		String entry = word; 
-		entry += parseCategory(dictionaryEntry);
-		result.redirectTo(getClass()).newEntry(entry);
+	@Path("/grammarProperties")
+	public void grammarProperties(Vocable vocable) {
+
 	}
-	
-	public String parseCategory(DictionaryEntry dictionaryEntry) {
-		String res = new String();
-		switch(dictionaryEntry.getCategory()) {
-			case VERB:
-				res = "/v";
-				break;
-			case COMMON_NOUN:
-				res = "/nm";
-		default:
-			break;
-		}
-		return res;
-	}
-	
 	
 	@Path("/dictionaryEntrySearch")
 	public void dictionaryEntrySearch() {

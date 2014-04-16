@@ -11,6 +11,14 @@ public class Vocable {
 	private LinkedList<String> properties;
 	private ParserYaml parser;
 	
+	public Vocable() {
+		try {
+			parser = ParserYaml.getInstance();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Vocable(String category, String word, String radical) {
 		this.word = word;
 		this.radical = radical;
@@ -36,6 +44,10 @@ public class Vocable {
 	
 	public String getCategory() {
 		return this.category;
+	}
+	
+	public void setCategory(String category) {
+		this.category = parser.getValue("CAT", category);
 	}
 	
 	
