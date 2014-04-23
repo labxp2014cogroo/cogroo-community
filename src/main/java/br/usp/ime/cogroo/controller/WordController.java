@@ -14,30 +14,66 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
+import br.usp.ime.cogroo.model.DictionaryEntry;
 import br.usp.ime.cogroo.model.Vocable;
 
 @Resource
 public class WordController {
-
+	
 	private final Result result;
-
+	
 	public WordController(Result result) {
 		this.result = result;
 	}
 
+	
 	@Path("/newEntry")
 	public void newEntry(String word) {
 		result.include("word", word);
 	}
 	
 	@Post
+	@Path("/chooseCategory")
+	public void chooseCategory(String word, String category) {
+		
+		result.include("word", word);
+		result.include("entry", word + "/#" + category);
+		result.include("category", category);
+		result.redirectTo(getClass()).grammarProperties();
+	}
+	
+	
 	@Path("/grammarProperties")
-	public void grammarProperties(Vocable vocable) {
-
+	public void grammarProperties() {
+		
+	}
+	
+	@Post
+	@Path("/chooseProperties")
+	public void chooseProperties(String entry, String gender, String number, String transitivy, String type) {
+		String newEntry = entry;
+		
+		if (gender != null) {
+			entry = entry + gender;
+			
+		}
+		
+		
+		
+		result.include("entry", entry);
+				
+		result.redirectTo(getClass()).derivations();
+	}
+	
+	@Post
+	@Path("/derivations")
+	public void derivations() {
+		
 	}
 	
 	@Path("/dictionaryEntrySearch")

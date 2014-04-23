@@ -4,18 +4,18 @@ ${word}
 <br>
 <br>
 
-<form action="<c:url value="/grammarProperties"/>" method="post">
+<form action="<c:url value="/chooseCategory"/>" method="post">
 	<div style="float:left;">
 		
 		<h4>Classifique a palavra sintaticamente:</h4>
 		<br>
 		<br>
-		<input type="radio" name="vocable.category" value="nc" />Substantivo simples<br>
-		<input type="radio" name="vocable.category" value="np" />Substantivo próprio<br>
-		<input type="radio" name="vocable.category" value="a" />Adjetivo<br>
-		<input type="radio" name="vocable.category" value="a_nc" />Substantivo simples e adjetivo<br>
-		<input type="radio" name="vocable.category" value="v" />Verbo<br>
-		<input type="radio" name="vocable.category" value="adv" />Advérbio<br>
+		<input type="radio" name="category" value="n" />Substantivo simples<br>
+		<input type="radio" name="category" value="np" />Substantivo próprio<br>
+		<input type="radio" name="category" value="a" />Adjetivo<br>
+		<input type="radio" name="category" value="h" />Substantivo simples e adjetivo<br>
+		<input type="radio" name="category" value="v" />Verbo<br>
+		<input type="radio" name="category" value="av" />Advérbio<br>
 		<br>
 	</div>
 	
@@ -38,7 +38,7 @@ ${word}
 					</ol>
 				</li>
 			</ul>
-		<input type="text" value="${word }" name="vocable.word"/>
+		<input type="text" value="${word }" name="word"/>
 		<br>
 	</div>
 	<br>
