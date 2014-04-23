@@ -89,7 +89,7 @@ public class GrammarController {
 			LinkedList<String> unknownWords = SearchWordJspell.searchUnknownWords(text);
 			result.include("unknownWordsList", unknownWords);
 		} catch (IOException e) {
-
+			e.printStackTrace();
 		}
 	}
 

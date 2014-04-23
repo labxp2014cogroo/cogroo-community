@@ -54,7 +54,6 @@ public class SearchWordJspell {
 		return vocables;
 	}
 	
-	//Acho que num eh mais de vocable 
 	public static LinkedList<String> searchUnknownWords (String text) throws IOException {
 		
 		LinkedList<String> unknownWords = new LinkedList<String>(); 
