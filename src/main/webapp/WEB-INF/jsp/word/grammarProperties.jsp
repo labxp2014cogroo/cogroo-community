@@ -4,33 +4,35 @@ ${entry }
 	<div id="others" class="vocable_form">
 		Classifique a palavra quanto ao gênero:<br>
 		<br>
-		<input type="radio" name="gender" value="m" />Masculino<br>
-		<input type="radio" name="gender" value="f" />Feminino<br>
-		<input type="radio" name="gender" value="n" />Neutro [ex: o(a) estudante]<br>
+		<input type="radio" name="gender" value="G=m," />Masculino<br>
+		<input type="radio" name="gender" value="G=f," />Feminino<br>
+		<input type="radio" name="gender" value="G=n," />Neutro [ex: o(a) estudante]<br>
 		<br>
 		<br> Classifique a palavra quanto ao número:<br>
 		<br>
-		<input type="radio" name="number" value="s" />Singular<br>
-		<input type="radio" name="number" value="p" />Plural<br>
-		<input type="radio" name="number" value="_" />Indefinido [ex: o(s) óculos]<br>
+		<input type="radio" name="number" value="N=s" />Singular<br>
+		<input type="radio" name="number" value="N=p" />Plural<br>
+		<input type="radio" name="number" value="N=_" />Indefinido [ex: o(s) óculos]<br>
 	</div>
 	
 	<div id="v" class="vocable_form">
 		Classifique o verbo :<br>
 		<br>
-		<input type="radio" name="trasitivity" value="t" />Transitivo<br>
-		<input type="radio" name="trasitivity" value="i" />Intransitivo<br>
-		<input type="radio" name="trasitivity" value="_" />Ambos<br>
-		<input type="radio" name="trasitivity" value="l" />De Ligação<br>
+		<input type="radio" name="transitivity" value="TR=t" />Transitivo<br>
+		<input type="radio" name="transitivity" value="TR=i" />Intransitivo<br>
+		<input type="radio" name="transitivity" value="TR=_" />Ambos<br>
+		<input type="radio" name="transitivity" value="TR=l" />De Ligação<br>
 		<br>
 	</div>
 	
-	<div id="av" class="vocable_form">
+	<div id="adv" class="vocable_form">
 		Classifique o verbo :<br>
 		<br>
-		<input type="radio" name="type" value="t" />Modo<br>
-		<input type="radio" name="type" value="i" />Tempo<br>
-		<input type="radio" name="type" value="_" />Lugar<br>
+		<input type="radio" name="type" value="SUBCAT=modo" />Modo<br>
+		<input type="radio" name="type" value="SUBCAT=tempo" />Tempo<br>
+		<input type="radio" name="type" value="SUBCAT=lugar" />Lugar<br>
+		<input type="radio" name="type" value="SUBCAT=quant" />Quantidade<br>
+		<input type="radio" name="type" value="SUBCAT=neg" />Negação<br>
 		<br>
 	</div>
 	<br>

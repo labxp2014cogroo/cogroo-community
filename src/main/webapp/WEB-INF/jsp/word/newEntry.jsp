@@ -10,12 +10,12 @@ ${word}
 		<h4>Classifique a palavra sintaticamente:</h4>
 		<br>
 		<br>
-		<input type="radio" name="category" value="n" />Substantivo simples<br>
+		<input type="radio" name="category" value="nc" />Substantivo simples<br>
 		<input type="radio" name="category" value="np" />Substantivo próprio<br>
-		<input type="radio" name="category" value="a" />Adjetivo<br>
-		<input type="radio" name="category" value="h" />Substantivo simples e adjetivo<br>
+		<input type="radio" name="category" value="adj" />Adjetivo<br>
+		<input type="radio" name="category" value="a_nc" />Substantivo simples e adjetivo<br>
 		<input type="radio" name="category" value="v" />Verbo<br>
-		<input type="radio" name="category" value="av" />Advérbio<br>
+		<input type="radio" name="category" value="adv" />Advérbio<br>
 		<br>
 	</div>
 	

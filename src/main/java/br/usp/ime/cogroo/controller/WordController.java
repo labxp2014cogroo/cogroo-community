@@ -14,12 +14,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
-import br.usp.ime.cogroo.model.DictionaryEntry;
 import br.usp.ime.cogroo.model.Vocable;
 
 @Resource
@@ -42,7 +40,7 @@ public class WordController {
 	public void chooseCategory(String word, String category) {
 		
 		result.include("word", word);
-		result.include("entry", word + "/#" + category);
+		result.include("entry", word + "/CAT=" + category + ",");
 		result.include("category", category);
 		result.redirectTo(getClass()).grammarProperties();
 	}
@@ -55,22 +53,33 @@ public class WordController {
 	
 	@Post
 	@Path("/chooseProperties")
-	public void chooseProperties(String entry, String gender, String number, String transitivy, String type) {
-		String newEntry = entry;
+	public void chooseProperties(String entry, String gender, String number, String transitivity, String type) {
 		
 		if (gender != null) {
 			entry = entry + gender;
 			
 		}
 		
+		if (number != null) {
+			entry = entry + number;
+			
+		}
 		
+		if (transitivity != null) {
+			entry = entry + "T=inf," + transitivity;
+			
+		}
 		
-		result.include("entry", entry);
+		if (type != null) {
+			entry = entry + type;
+			
+		}
+		
+		result.include("entry", entry + "/");
 				
 		result.redirectTo(getClass()).derivations();
 	}
 	
-	@Post
 	@Path("/derivations")
 	public void derivations() {
 		
