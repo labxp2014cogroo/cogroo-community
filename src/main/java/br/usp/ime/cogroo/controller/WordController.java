@@ -1,63 +1,81 @@
 package br.usp.ime.cogroo.controller;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Scanner;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.usp.ime.cogroo.logic.SearchWordJspell;
-import br.usp.ime.cogroo.model.DictionaryEntry;
 import br.usp.ime.cogroo.model.Vocable;
 
 @Resource
 public class WordController {
-
+	
 	private final Result result;
-
+	
 	public WordController(Result result) {
 		this.result = result;
 	}
 
+	
 	@Path("/newEntry")
 	public void newEntry(String word) {
 		result.include("word", word);
 	}
 	
 	@Post
-	@Path("/insertEntry")
-	public void insertEntry(String word, DictionaryEntry dictionaryEntry) {
-		String entry = word; 
-		entry += parseCategory(dictionaryEntry);
-		result.redirectTo(getClass()).newEntry(entry);
+	@Path("/chooseCategory")
+	public void chooseCategory(String word, String category) {
+		
+		result.include("word", word);
+		result.include("entry", word + "/CAT=" + category + ",");
+		result.include("category", category);
+		result.redirectTo(getClass()).grammarProperties();
 	}
 	
-	public String parseCategory(DictionaryEntry dictionaryEntry) {
-		String res = new String();
-		switch(dictionaryEntry.getCategory()) {
-			case VERB:
-				res = "/v";
-				break;
-			case COMMON_NOUN:
-				res = "/nm";
-		default:
-			break;
+	
+	@Path("/grammarProperties")
+	public void grammarProperties() {
+		
+	}
+	
+	@Post
+	@Path("/chooseProperties")
+	public void chooseProperties(String entry, String gender, String number, String transitivity, String type) {
+		
+		if (gender != null) {
+			entry = entry + gender;
+			
 		}
-		return res;
+		
+		if (number != null) {
+			entry = entry + number;
+			
+		}
+		
+		if (transitivity != null) {
+			entry = entry + "T=inf," + transitivity;
+			
+		}
+		
+		if (type != null) {
+			entry = entry + type;
+			
+		}
+		
+		result.include("entry", entry + "/");
+				
+		result.redirectTo(getClass()).derivations();
 	}
 	
+	@Path("/derivations")
+	public void derivations() {
+		
+	}
 	
 	@Path("/dictionaryEntrySearch")
 	public void dictionaryEntrySearch() {

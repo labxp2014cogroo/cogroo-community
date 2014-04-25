@@ -1,9 +1,7 @@
 package br.usp.ime.cogroo.model;
 
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map.Entry;
 
 public class Vocable {
 	
@@ -12,6 +10,14 @@ public class Vocable {
 	private String category;
 	private LinkedList<String> properties;
 	private ParserYaml parser;
+	
+	public Vocable() {
+		try {
+			parser = ParserYaml.getInstance();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public Vocable(String category, String word, String radical) {
 		this.word = word;
@@ -38,6 +44,10 @@ public class Vocable {
 	
 	public String getCategory() {
 		return this.category;
+	}
+	
+	public void setCategory(String category) {
+		this.category = parser.getValue("CAT", category);
 	}
 	
 	
