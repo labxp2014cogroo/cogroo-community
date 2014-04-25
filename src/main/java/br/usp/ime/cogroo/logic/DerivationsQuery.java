@@ -25,7 +25,6 @@ public class DerivationsQuery {
 	{
 		return;
 	}
-
 	
 	/**
 	 * 
@@ -33,40 +32,21 @@ public class DerivationsQuery {
 	 * @return um HashMap que associa uma flag à palavra gerada
 	 */
 	
-	@SuppressWarnings("deprecation")
 	public static HashMap<String, String> queryDerivations(String text) {
 		HashMap<String, String> derivationsHash = null;
 		try {
-			String encodedURL = URLEncoder.encode(text + FLAGS);
-			JSONObject allDerivations = getJSONFromWebService(baseProcessURL + encodedURL);
-			derivationsHash = getRelevantDerivations(allDerivations);
+			JSONObject jsonResult = JSONGetter.getJSONFromWebService(baseProcessURL, text + FLAGS).getJSONObject("derivadas");
+			derivationsHash = getRelevantDerivations(jsonResult);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
+		catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return derivationsHash;
 	}
 	
-	public static JSONObject getJSONFromWebService(String encodedURL) throws IOException
-	{
-        HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet(encodedURL);
-        HttpResponse response;
-        Scanner scanner;
-        JSONObject wordDescriptor = null, allDerivations = null;
-		try {
-			response = client.execute(request);
-			scanner = new Scanner(response.getEntity().getContent());
-			wordDescriptor = new JSONObject(scanner.nextLine());
-			allDerivations = wordDescriptor.getJSONObject("derivadas");
-			scanner.close();
-		}
-		catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}		
-		return allDerivations; 
-	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public static HashMap<String, String> getRelevantDerivations(JSONObject allDerivations) 

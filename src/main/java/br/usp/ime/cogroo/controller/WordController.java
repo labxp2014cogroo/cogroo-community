@@ -119,21 +119,21 @@ public class WordController {
 	@Post
 	@Path("/searchEntry")
 	public void searchEntry(String text) throws JSONException {
-		LinkedList<Vocable> json_result;
+		LinkedList<Vocable> vocablesList;
 		try { 
 			if (text == null || text.length() < 1) {
 				result.include("status", 400);
 				result.include("mensagem_erro", "Palavra vazia");
 			}
 			else {
-				json_result = SearchWordJspell.searchWord(text);
+				vocablesList = SearchWordJspell.searchWord(text);
 				result.include("typed_word", text);
 				
-				if (json_result.isEmpty()){
+				if (vocablesList.isEmpty()){
 					result.include("mensagem_erro", "Palavra " + text +" não existe");
 					result.include("status", 404);
 				} else {
-					result.include("vocables", vocablesAsStrings(json_result));
+					result.include("vocables", vocablesAsStrings(vocablesList));
 					result.include("status", 0);
 				}
 			}
