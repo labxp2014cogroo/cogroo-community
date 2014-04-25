@@ -1,5 +1,7 @@
 package br.usp.ime.cogroo.controller;
 
+import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -9,6 +11,7 @@ import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.usp.ime.cogroo.dao.CogrooFacade;
+import br.usp.ime.cogroo.logic.SearchWordJspell;
 import br.usp.ime.cogroo.logic.TextSanitizer;
 import br.usp.ime.cogroo.model.LoggedUser;
 
@@ -81,6 +84,13 @@ public class GrammarController {
 		result.include("headerTitle", messages.getString("GRAMMAR_HEADER"))
 				.include("headerDescription",
 						messages.getString("GRAMMAR_DESCRIPTION"));
+		
+		try {
+			LinkedList<String> unknownWords = SearchWordJspell.searchUnknownWords(text);
+			result.include("unknownWordsList", unknownWords);
+		} catch (IOException e) {
+
+		}
 	}
 
 }
