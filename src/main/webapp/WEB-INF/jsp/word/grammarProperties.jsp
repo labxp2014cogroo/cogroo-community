@@ -1,5 +1,3 @@
-${entry }
-
 <form action="<c:url value="chooseProperties"/>" method="post">
 	<div id="others" class="vocable_form">
 		Classifique a palavra quanto ao gênero:<br>

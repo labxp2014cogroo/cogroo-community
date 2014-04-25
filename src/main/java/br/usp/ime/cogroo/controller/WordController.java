@@ -1,6 +1,7 @@
 package br.usp.ime.cogroo.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.json.JSONException;
@@ -9,18 +10,29 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.validator.ValidationMessage;
+import br.usp.ime.cogroo.exceptions.ExceptionMessages;
+import br.usp.ime.cogroo.logic.DerivationsQuery;
 import br.usp.ime.cogroo.logic.SearchWordJspell;
 import br.usp.ime.cogroo.model.Vocable;
+
 
 @Resource
 public class WordController {
 	
 	private final Result result;
+	private final Validator validator;
+
 	
-	public WordController(Result result) {
+	public WordController(Result result, Validator validator) {
 		this.result = result;
+		this.validator = validator;
 	}
 
+	@Path("/dictionaryEntrySearch")
+	public void dictionaryEntrySearch() {
+	}
 	
 	@Path("/newEntry")
 	public void newEntry(String word) {
@@ -30,10 +42,15 @@ public class WordController {
 	@Post
 	@Path("/chooseCategory")
 	public void chooseCategory(String word, String category) {
+		if (category == null) {
+			validator.add(new ValidationMessage(ExceptionMessages.NO_CATEGORY_SELECTED, ExceptionMessages.ERROR));
+		}
+		
 		
 		result.include("word", word);
 		result.include("entry", word + "/CAT=" + category + ",");
 		result.include("category", category);
+		validator.onErrorUsePageOf(getClass()).newEntry(word);
 		result.redirectTo(getClass()).grammarProperties();
 	}
 	
@@ -67,8 +84,13 @@ public class WordController {
 			
 		}
 		
-		result.include("entry", entry + "/");
-				
+		entry = entry + "/";
+		
+		HashMap<String, String> derivations = DerivationsQuery.queryDerivations(entry);
+		
+		result.include("entry", entry);
+		
+		result.include("derivations", derivations);
 		result.redirectTo(getClass()).derivations();
 	}
 	
@@ -77,9 +99,22 @@ public class WordController {
 		
 	}
 	
-	@Path("/dictionaryEntrySearch")
-	public void dictionaryEntrySearch() {
+	@Post
+	@Path("/chooseFlags")
+	public void chooseFlags(String entry, String[] flag) {
+		
+		for (String f : flag) {
+			entry += f;
+		}
+		
+//		TODO: Aqui tá a entrada!!!!
+//		Falta inserir utilizando o WebService
+		
+		System.out.println(entry);
+		
+		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
+	
 
 	@Post
 	@Path("/searchEntry")

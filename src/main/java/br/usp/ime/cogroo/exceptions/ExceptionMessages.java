@@ -35,4 +35,6 @@ public class ExceptionMessages {
   public static final String EXPIRED_RECOVERY_CODE = "EXPIRED_RECOVERY_CODE";
   public static final String MINIMUM_TIME_RECOVERY_CODE = "MINIMUM_TIME_RECOVERY_CODE";
   public static final String BAD_OPT_OUT_CODE = "BAD_OPT_OUT_CODE";
+  
+  public static final String NO_CATEGORY_SELECTED = "NO_CATEGORY_SELECTED";
 }
