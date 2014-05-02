@@ -51,13 +51,13 @@ public class WordController {
 		result.include("entry", word + "/CAT=" + category + ",");
 		result.include("category", category);
 		validator.onErrorUsePageOf(getClass()).newEntry(word);
-		result.redirectTo(getClass()).grammarProperties();
+		result.redirectTo(getClass()).grammarProperties(word);
 	}
 	
 	
 	@Path("/grammarProperties")
-	public void grammarProperties() {
-		
+	public void grammarProperties(String word) {
+		result.include("word", word);
 	}
 	
 	@Post
@@ -66,22 +66,18 @@ public class WordController {
 		
 		if (gender != null) {
 			entry = entry + gender;
-			
 		}
 		
 		if (number != null) {
 			entry = entry + number;
-			
 		}
 		
 		if (transitivity != null) {
 			entry = entry + "T=inf," + transitivity;
-			
 		}
 		
 		if (type != null) {
 			entry = entry + type;
-			
 		}
 		
 		entry = entry + "/";
@@ -92,17 +88,17 @@ public class WordController {
 		result.include("entry", entry);
 		
 		result.include("derivations", derivations);
-		result.redirectTo(getClass()).derivations();
+		result.redirectTo(getClass()).derivations(word);
 	}
 	
 	@Path("/derivations")
-	public void derivations() {
-		
+	public void derivations(String word) {
+		result.include("word", word);
 	}
 	
 	@Post
 	@Path("/chooseFlags")
-	public void chooseFlags(String word, String entry, String[] flag) {
+	public void chooseFlags(String entry, String[] flag) {
 		
 		for (String f : flag) {
 			entry += f;
@@ -113,7 +109,6 @@ public class WordController {
 		
 		System.out.println(entry);
 		
-		result.include("word", word);
 		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
 	

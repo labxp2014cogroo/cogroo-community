@@ -45,6 +45,7 @@
 	<br>
 	<input type="submit" value=" OK &raquo; " id="go" />
 	<input type="hidden" name="entry" value="${entry}" />
+	<input type="hidden" name="word" value="${word}" />
 	</div>
 </form>
 
