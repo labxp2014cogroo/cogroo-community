@@ -62,7 +62,7 @@ public class WordController {
 	
 	@Post
 	@Path("/chooseProperties")
-	public void chooseProperties(String entry, String gender, String number, String transitivity, String type) {
+	public void chooseProperties(String word, String entry, String gender, String number, String transitivity, String type) {
 		
 		if (gender != null) {
 			entry = entry + gender;
@@ -88,6 +88,7 @@ public class WordController {
 		
 		HashMap<String, String> derivations = DerivationsQuery.queryDerivations(entry);
 		
+		result.include("word", word);
 		result.include("entry", entry);
 		
 		result.include("derivations", derivations);
@@ -101,7 +102,7 @@ public class WordController {
 	
 	@Post
 	@Path("/chooseFlags")
-	public void chooseFlags(String entry, String[] flag) {
+	public void chooseFlags(String word, String entry, String[] flag) {
 		
 		for (String f : flag) {
 			entry += f;
@@ -112,6 +113,7 @@ public class WordController {
 		
 		System.out.println(entry);
 		
+		result.include("word", word);
 		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
 	

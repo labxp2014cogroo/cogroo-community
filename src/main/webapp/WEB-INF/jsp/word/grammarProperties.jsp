@@ -1,6 +1,9 @@
 <form action="<c:url value="chooseProperties"/>" method="post">
-	<div id="others" class="white_box">
-		<h3>Classifique a palavra quanto ao gênero:</h3>
+	<div class="white_box">
+	<h2>Classifique a palavra "${word }"</h2>
+	<br>
+	<div id="others" class="vocable_form">
+		<h3>Quanto ao gênero:</h3>
 		<br>
 		<div class="dashed_white">
 			<input type="radio" name="gender" value="G=m," />Masculino<br>
@@ -8,7 +11,7 @@
 			<input type="radio" name="gender" value="G=n," />Neutro [ex: o(a) estudante]<br>
 		</div>
 		<br>
-		<h3>Classifique a palavra quanto ao número:</h3>
+		<h3>Quanto ao número:</h3>
 		<br>
 		<div class="dashed_white">
 			<input type="radio" name="number" value="N=s" />Singular<br>
@@ -17,8 +20,8 @@
 		</div>
 	</div>
 	
-	<div id="v" class="white_box">
-		<h3>Classifique o verbo:</h3>
+	<div id="v" class="vocable_form">
+		<h3>Quanto à transitividade:</h3>
 		<br>
 		<div class="dashed_white">
 			<input type="radio" name="transitivity" value="TR=t" />Transitivo<br>
@@ -28,8 +31,8 @@
 		</div>
 	</div>
 	
-	<div id="adv" class="white_box">
-		<h3>Classifique o advérbio:</h3>
+	<div id="adv" class="vocable_form">
+		<h3>Quanto à circunstância:</h3>
 		<br>
 		<div class="dashed_white">
 			<input type="radio" name="type" value="SUBCAT=modo" />Modo<br>
@@ -42,13 +45,14 @@
 	<br>
 	<input type="submit" value=" OK &raquo; " id="go" />
 	<input type="hidden" name="entry" value="${entry}" />
+	</div>
 </form>
 
 
 <script>
 $(document).ready(
 function() {
-	$(".white_box").each(
+	$(".vocable_form").each(
 		function(i, e) {
 			$(this).hide();
 		}

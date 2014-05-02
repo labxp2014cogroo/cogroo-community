@@ -1,38 +1,36 @@
-<div class="yellow_box">
-	<h1>Inserindo a palavra: "${word}"
-		<span class="help"><a onclick="onOff('helpRuleList'); return false" href="#"><img src="<c:url value='/images/help.png' />" /></a></span>
-	</h1>
-	<div id="helpRuleList" style="display: none;" class="help" class="white_box">
-		<h4>Instruções...</h4>
-	</div>
-	<div class="dashed_white">
-	<h3>Manual de inserção:</h3>
-	<br>
-	<h5>Procure sempre buscar a forma mais primitiva da palavra:</h5>
-		<br>
-		<ul>
-			<li>Para substantivos e adjetivos, flexione a palavra:
-				<ol>
-					<li>No gênero masculino, se existir</li>
-					<li>No singular, se houver</li>
-					<li>Retirando qualquer grau da palavra</li>
-				</ol>
-			</li>
-			<br>
-			<li>Para verbos:
-				<ol>
-					<li>Coloque-o no infinitivo impessoal (ex: cantar)</li>
-				</ol>
-			</li>
-		</ul>
-	<br>
-	<input type="text" value="${word }" name="word"/>
-	<br>
-	</div>
-</div>
-	
-<br>
 <form action="<c:url value="/chooseCategory"/>" method="post">
+	<div class="yellow_box">
+		<h1>Inserindo a palavra: "${word}"
+			<span class="help"><a onclick="onOff('helpRuleList'); return false" href="#"><img src="<c:url value='/images/help.png' />" /></a></span>
+		</h1>
+		<div id="helpRuleList" style="display: none;" class="help" class="white_box">
+			<h4>Instruções...</h4>
+		</div>
+		<div class="dashed_white">
+		<h3>Manual de inserção:</h3>
+		<br>
+		<h5>Procure sempre buscar a forma mais primitiva da palavra:</h5>
+			<br>
+			<ul>
+				<li>Para substantivos e adjetivos, flexione a palavra:
+					<ol>
+						<li>No gênero masculino, se existir</li>
+						<li>No singular, se houver</li>
+						<li>Retirando qualquer grau da palavra</li>
+					</ol>
+				</li>
+				<br>
+				<li>Para verbos:
+					<ol>
+						<li>Coloque-o no infinitivo impessoal (ex: cantar)</li>
+					</ol>
+				</li>
+			</ul>
+		<br>
+		<input type="text" value="${word }" name="word"/>
+		<br>
+		</div>
+	</div>
 	<div class="white_box">
 		<h2>Classifique a palavra sintaticamente:</h2>
 		<div class="dashed_white">
