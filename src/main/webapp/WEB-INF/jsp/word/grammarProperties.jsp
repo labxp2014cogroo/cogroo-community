@@ -52,8 +52,8 @@ function() {
 	if ('${category}' == "v") {
 		$("#v").show();
 	
-	} else if ('${category}' == "av"){
-		$("#av").show();
+	} else if ('${category}' == "adv"){
+		$("#adv").show();
 	} else {
 		$("#others").show();
 		}
