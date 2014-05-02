@@ -46,7 +46,6 @@ public class WordController {
 			validator.add(new ValidationMessage(ExceptionMessages.NO_CATEGORY_SELECTED, ExceptionMessages.ERROR));
 		}
 		
-		
 		result.include("word", word);
 		result.include("entry", word + "/CAT=" + category + ",");
 		result.include("category", category);
@@ -127,7 +126,7 @@ public class WordController {
 				result.include("typed_word", text);
 				
 				if (vocablesList.isEmpty()){
-					result.include("mensagem_erro", "Palavra " + text +" não existe");
+					result.include("mensagem_erro", "Essa palavra não consta no dicionário");
 					result.include("status", 404);
 				} else {
 					result.include("vocables", vocablesAsStrings(vocablesList));
