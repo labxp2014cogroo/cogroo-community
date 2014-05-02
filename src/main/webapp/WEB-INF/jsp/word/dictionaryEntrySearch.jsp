@@ -15,9 +15,6 @@
 </div>
 <div class="yellow_box">
 	<c:choose>
-		<c:when test="${status == 400}">
-			${mensagem_erro} 
-		</c:when>
 		<c:when test="${status == 404}">
 			${mensagem_erro}.
 			Clique <a href="/newEntry?word=${typed_word}">aqui </a>

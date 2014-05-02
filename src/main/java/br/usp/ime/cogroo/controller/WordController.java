@@ -15,19 +15,22 @@ import br.com.caelum.vraptor.validator.ValidationMessage;
 import br.usp.ime.cogroo.exceptions.ExceptionMessages;
 import br.usp.ime.cogroo.logic.DerivationsQuery;
 import br.usp.ime.cogroo.logic.SearchWordJspell;
+import br.usp.ime.cogroo.model.LoggedUser;
 import br.usp.ime.cogroo.model.Vocable;
 
 
 @Resource
 public class WordController {
 	
-	private final Result result;
-	private final Validator validator;
+	private Result result;
+	private Validator validator;
+	private LoggedUser loggedUser;
 
 	
-	public WordController(Result result, Validator validator) {
+	public WordController(Result result, Validator validator, LoggedUser loggedUser) {
 		this.result = result;
 		this.validator = validator;
+		this.loggedUser = loggedUser;
 	}
 
 	@Path("/dictionaryEntrySearch")
@@ -118,8 +121,8 @@ public class WordController {
 		LinkedList<Vocable> vocablesList;
 		try { 
 			if (text == null || text.length() < 1) {
-				result.include("status", 400);
-				result.include("mensagem_erro", "Palavra vazia");
+				validator.add(new ValidationMessage(ExceptionMessages.EMPTY_FIELD, ExceptionMessages.EMPTY_FIELD));
+				validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 			}
 			else {
 				vocablesList = SearchWordJspell.searchWord(text);
