@@ -19,19 +19,12 @@ import br.usp.ime.cogroo.model.Vocable;
 
 public class SearchWordJspell {
 	
+	static final String baseAnalyseURL = "http://logprob.ime.usp.br:4040/jspell/analyse.json?id=default&lexeme="; 
+	
 	public static LinkedList<Vocable> searchWord(String text) throws IOException{
 		LinkedList<Vocable> vocables = new LinkedList<Vocable>();
-        HttpClient client = new DefaultHttpClient();
-        String url = "http://logprob.ime.usp.br:4040/jspell/analyse.json?id=default&lexeme=";
-        HttpGet request = new HttpGet(url + text);
-        HttpResponse response;
-        Scanner scanner;
-        JSONObject wordDescriptor = null;
 		try {
-			response = client.execute(request);
-			scanner = new Scanner(response.getEntity().getContent());
-			wordDescriptor = new JSONObject(scanner.nextLine());
-			JSONArray analisis = wordDescriptor.getJSONArray("analise");
+			JSONArray analisis = JSONGetter.getJSONFromWebService(baseAnalyseURL, text).getJSONArray("analise");
 
 			for (int i = 0; i < analisis.length(); i++){
 				JSONObject json = analisis.getJSONObject(i);
@@ -46,15 +39,12 @@ public class SearchWordJspell {
 				}
 				vocables.add(v);
 			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
+		}  catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return vocables;
 	}
 	
-	//Acho que num eh mais de vocable 
 	public static LinkedList<String> searchUnknownWords (String text) throws IOException {
 		
 		LinkedList<String> unknownWords = new LinkedList<String>(); 
