@@ -50,7 +50,7 @@ ${word}
 <script>
 	$(document).ready(function() {
 		$(".vocable_form").hide();
-		$("input[type=radio][name=CAT]").change(function() {
+		$("input[type=radio][name=dictionaryEntry.category]").change(function() {
 			if (this.value == "VERB") {
 				$("#verb_div").show();
 			} else {
