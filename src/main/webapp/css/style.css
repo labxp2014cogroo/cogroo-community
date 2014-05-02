@@ -136,20 +136,6 @@ DIV.help
 	text-align: justify;
 }
 
-DIV.dashed_white {
-	border: 1px dashed rgb(128, 128, 128);
-	margin-right: 12px;
-	padding: 15px 15px 15px 15px;
-	margin-bottom:6px;
-}
-
-DIV.red_border_box {
-	border: 2px solid red;
-	margin-right: 12px;
-	padding: 5px 5px 5px 5px;
-/*	BACKGROUND-COLOR: PaleGreen;*/
-	margin-bottom:6px;
-}
 
 DIV.report_details_table
 {
@@ -380,12 +366,6 @@ SPAN.help {
 	margin-bottom:6px;
 }
 
-DIV.white_box {
-	border: 1px solid #D7D7D7;
-	padding: 15px 15px 15px 15px;
-	BACKGROUND-COLOR: White;
-	margin-bottom:6px;
-}
 
 .rule_details table {
 	width: 100%;
@@ -447,6 +427,28 @@ DIV.white_box {
 	BACKGROUND-COLOR: #CEDFEF;
 	margin-right: 12px;
 	padding: 15px 15px 15px 15px;
+	margin-bottom:6px;
+}
+
+.white_box {
+	border: 1px solid #D7D7D7;
+	padding: 15px 15px 15px 15px;
+	BACKGROUND-COLOR: White;
+	margin-bottom:6px;
+}
+
+DIV.dashed_white {
+	border: 1px dashed rgb(128, 128, 128);
+	margin-right: 12px;
+	padding: 15px 15px 15px 15px;
+	margin-bottom:6px;
+}
+
+DIV.red_border_box {
+	border: 2px solid red;
+	margin-right: 12px;
+	padding: 5px 5px 5px 5px;
+/*	BACKGROUND-COLOR: PaleGreen;*/
 	margin-bottom:6px;
 }
 
