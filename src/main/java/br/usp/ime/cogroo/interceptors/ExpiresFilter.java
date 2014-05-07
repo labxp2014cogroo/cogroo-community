@@ -762,22 +762,26 @@ public class ExpiresFilter implements Filter {
             this.response = response;
         }
 
-        public PrintWriter append(char c) {
+        @Override
+		public PrintWriter append(char c) {
             fireBeforeWriteResponseBodyEvent();
             return out.append(c);
         }
 
-        public PrintWriter append(CharSequence csq) {
+        @Override
+		public PrintWriter append(CharSequence csq) {
             fireBeforeWriteResponseBodyEvent();
             return out.append(csq);
         }
 
-        public PrintWriter append(CharSequence csq, int start, int end) {
+        @Override
+		public PrintWriter append(CharSequence csq, int start, int end) {
             fireBeforeWriteResponseBodyEvent();
             return out.append(csq, start, end);
         }
 
-        public void close() {
+        @Override
+		public void close() {
             fireBeforeWriteResponseBodyEvent();
             out.close();
         }
@@ -789,137 +793,164 @@ public class ExpiresFilter implements Filter {
             }
         }
 
-        public void flush() {
+        @Override
+		public void flush() {
             fireBeforeWriteResponseBodyEvent();
             out.flush();
         }
 
-        public void print(boolean b) {
+        @Override
+		public void print(boolean b) {
             fireBeforeWriteResponseBodyEvent();
             out.print(b);
         }
 
-        public void print(char c) {
+        @Override
+		public void print(char c) {
             fireBeforeWriteResponseBodyEvent();
             out.print(c);
         }
 
-        public void print(char[] s) {
+        @Override
+		public void print(char[] s) {
             fireBeforeWriteResponseBodyEvent();
             out.print(s);
         }
 
-        public void print(double d) {
+        @Override
+		public void print(double d) {
             fireBeforeWriteResponseBodyEvent();
             out.print(d);
         }
 
-        public void print(float f) {
+        @Override
+		public void print(float f) {
             fireBeforeWriteResponseBodyEvent();
             out.print(f);
         }
 
-        public void print(int i) {
+        @Override
+		public void print(int i) {
             fireBeforeWriteResponseBodyEvent();
             out.print(i);
         }
 
-        public void print(long l) {
+        @Override
+		public void print(long l) {
             fireBeforeWriteResponseBodyEvent();
             out.print(l);
         }
 
-        public void print(Object obj) {
+        @Override
+		public void print(Object obj) {
             fireBeforeWriteResponseBodyEvent();
             out.print(obj);
         }
 
-        public void print(String s) {
+        @Override
+		public void print(String s) {
             fireBeforeWriteResponseBodyEvent();
             out.print(s);
         }
 
-        public PrintWriter printf(Locale l, String format, Object... args) {
+        @Override
+		public PrintWriter printf(Locale l, String format, Object... args) {
             fireBeforeWriteResponseBodyEvent();
             return out.printf(l, format, args);
         }
 
-        public PrintWriter printf(String format, Object... args) {
+        @Override
+		public PrintWriter printf(String format, Object... args) {
             fireBeforeWriteResponseBodyEvent();
             return out.printf(format, args);
         }
 
-        public void println() {
+        @Override
+		public void println() {
             fireBeforeWriteResponseBodyEvent();
             out.println();
         }
 
-        public void println(boolean x) {
+        @Override
+		public void println(boolean x) {
             fireBeforeWriteResponseBodyEvent();
             out.println(x);
         }
 
-        public void println(char x) {
+        @Override
+		public void println(char x) {
             fireBeforeWriteResponseBodyEvent();
             out.println(x);
         }
 
-        public void println(char[] x) {
+        @Override
+		public void println(char[] x) {
             fireBeforeWriteResponseBodyEvent();
             out.println(x);
         }
 
-        public void println(double x) {
+        @Override
+		public void println(double x) {
             fireBeforeWriteResponseBodyEvent();
             out.println(x);
         }
 
-        public void println(float x) {
+        @Override
+		public void println(float x) {
             fireBeforeWriteResponseBodyEvent();
             out.println(x);
         }
 
-        public void println(int x) {
+        @Override
+		public void println(int x) {
             fireBeforeWriteResponseBodyEvent();
             out.println(x);
         }
 
-        public void println(long x) {
+        @Override
+		public void println(long x) {
             fireBeforeWriteResponseBodyEvent();
             out.println(x);
         }
 
-        public void println(Object x) {
+        @Override
+		public void println(Object x) {
             fireBeforeWriteResponseBodyEvent();
             out.println(x);
         }
 
-        public void println(String x) {
+        @Override
+		public void println(String x) {
             fireBeforeWriteResponseBodyEvent();
             out.println(x);
         }
 
-        public void write(char[] buf) {
+        @Override
+		public void write(char[] buf) {
             fireBeforeWriteResponseBodyEvent();
             out.write(buf);
         }
 
-        public void write(char[] buf, int off, int len) {
+        @Override
+		public void write(char[] buf, int off, int len) {
             fireBeforeWriteResponseBodyEvent();
             out.write(buf, off, len);
         }
 
-        public void write(int c) {
+        @Override
+		public void write(int c) {
             fireBeforeWriteResponseBodyEvent();
             out.write(c);
         }
 
-        public void write(String s) {
+        @Override
+		public void write(String s) {
             fireBeforeWriteResponseBodyEvent();
             out.write(s);
         }
 
-        public void write(String s, int off, int len) {
+        @Override
+		public void write(String s, int off, int len) {
             fireBeforeWriteResponseBodyEvent();
             out.write(s, off, len);
         }
@@ -945,7 +976,8 @@ public class ExpiresFilter implements Filter {
             this.request = request;
         }
 
-        public void close() throws IOException {
+        @Override
+		public void close() throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.close();
         }
@@ -957,97 +989,116 @@ public class ExpiresFilter implements Filter {
             }
         }
 
-        public void flush() throws IOException {
+        @Override
+		public void flush() throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.flush();
         }
 
-        public void print(boolean b) throws IOException {
+        @Override
+		public void print(boolean b) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.print(b);
         }
 
-        public void print(char c) throws IOException {
+        @Override
+		public void print(char c) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.print(c);
         }
 
-        public void print(double d) throws IOException {
+        @Override
+		public void print(double d) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.print(d);
         }
 
-        public void print(float f) throws IOException {
+        @Override
+		public void print(float f) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.print(f);
         }
 
-        public void print(int i) throws IOException {
+        @Override
+		public void print(int i) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.print(i);
         }
 
-        public void print(long l) throws IOException {
+        @Override
+		public void print(long l) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.print(l);
         }
 
-        public void print(String s) throws IOException {
+        @Override
+		public void print(String s) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.print(s);
         }
 
-        public void println() throws IOException {
+        @Override
+		public void println() throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.println();
         }
 
-        public void println(boolean b) throws IOException {
+        @Override
+		public void println(boolean b) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.println(b);
         }
 
-        public void println(char c) throws IOException {
+        @Override
+		public void println(char c) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.println(c);
         }
 
-        public void println(double d) throws IOException {
+        @Override
+		public void println(double d) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.println(d);
         }
 
-        public void println(float f) throws IOException {
+        @Override
+		public void println(float f) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.println(f);
         }
 
-        public void println(int i) throws IOException {
+        @Override
+		public void println(int i) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.println(i);
         }
 
-        public void println(long l) throws IOException {
+        @Override
+		public void println(long l) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.println(l);
         }
 
-        public void println(String s) throws IOException {
+        @Override
+		public void println(String s) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.println(s);
         }
 
-        public void write(byte[] b) throws IOException {
+        @Override
+		public void write(byte[] b) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.write(b);
         }
 
-        public void write(byte[] b, int off, int len) throws IOException {
+        @Override
+		public void write(byte[] b, int off, int len) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.write(b, off, len);
         }
 
-        public void write(int b) throws IOException {
+        @Override
+		public void write(int b) throws IOException {
             fireOnBeforeWriteResponseBodyEvent();
             servletOutputStream.write(b);
         }
@@ -1223,11 +1274,13 @@ public class ExpiresFilter implements Filter {
      */
     private Map<String, ExpiresConfiguration> expiresConfigurationByContentType = new LinkedHashMap<String, ExpiresConfiguration>();
 
-    public void destroy() {
+    @Override
+	public void destroy() {
 
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    @Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpServletResponse httpResponse = (HttpServletResponse) response;
@@ -1320,16 +1373,16 @@ public class ExpiresFilter implements Filter {
         Calendar calendar;
         switch (configuration.getStartingPoint()) {
         case ACCESS_TIME:
-            calendar = GregorianCalendar.getInstance();
+            calendar = Calendar.getInstance();
             break;
         case LAST_MODIFICATION_TIME:
             if (response.isLastModifiedHeaderSet()) {
                 long lastModified = response.getLastModifiedHeader();
-                calendar = GregorianCalendar.getInstance();
+                calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(lastModified);
             } else {
                 // Last-Modified header not found, use now
-                calendar = GregorianCalendar.getInstance();
+                calendar = Calendar.getInstance();
             }
             break;
         default:
@@ -1346,7 +1399,8 @@ public class ExpiresFilter implements Filter {
         return expiresConfigurationByContentType;
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public void init(FilterConfig filterConfig) throws ServletException {
         for (Enumeration<String> names = filterConfig.getInitParameterNames(); names.hasMoreElements();) {
             String name = names.nextElement();

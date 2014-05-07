@@ -27,6 +27,10 @@ public class WordUser {
 
 	private boolean deleted = false;
 	
+	public WordUser() {
+		
+	}
+	
 	public WordUser(Word word, User user) {
 		setWord(word);
 		setUser(user);

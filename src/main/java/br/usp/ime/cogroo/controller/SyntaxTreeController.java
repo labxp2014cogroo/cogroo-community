@@ -15,15 +15,15 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Strings;
-
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.interceptor.download.Download;
 import br.com.caelum.vraptor.interceptor.download.FileDownload;
 import br.usp.ime.cogroo.logic.TextSanitizer;
+
+import com.google.common.base.Charsets;
+import com.google.common.base.Strings;
 
 @Resource
 public class SyntaxTreeController {

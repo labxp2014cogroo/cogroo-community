@@ -25,5 +25,6 @@ public final class Pair<A, B> {
       this.b = b;
     }
 
-    public String toString() { return "["+a+"/"+b+"]"; }
+    @Override
+	public String toString() { return "["+a+"/"+b+"]"; }
 }

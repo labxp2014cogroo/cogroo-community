@@ -1,7 +1,9 @@
 package br.usp.ime.cogroo.integration.stories.common;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
 import com.thoughtworks.selenium.Selenium;
-import static junit.framework.Assert.*;
 
 public class ThenAsserts {
 	private final Selenium browser;

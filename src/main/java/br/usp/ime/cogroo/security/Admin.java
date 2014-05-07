@@ -24,6 +24,7 @@ public class Admin extends Developer {
 		return true;
 	}
 	
+	@Override
 	public boolean getCanManageRSS() {
 		return true;
 	}

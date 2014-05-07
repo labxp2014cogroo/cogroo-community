@@ -73,7 +73,8 @@ class EmailSender {
     Timer timer = new Timer();
 
     timer.scheduleAtFixedRate(new TimerTask() {
-      public void run() {
+      @Override
+	public void run() {
 
         if (!emailQueue.isEmpty()) {
           if (LOG.isDebugEnabled()) {
