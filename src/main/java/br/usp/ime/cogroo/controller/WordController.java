@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONException;
 
 import br.com.caelum.vraptor.Path;
@@ -17,6 +19,7 @@ import br.usp.ime.cogroo.logic.DerivationsQuery;
 import br.usp.ime.cogroo.logic.SearchWordJspell;
 import br.usp.ime.cogroo.model.LoggedUser;
 import br.usp.ime.cogroo.model.Vocable;
+import br.usp.ime.cogroo.security.annotations.LoggedIn;
 
 
 @Resource
@@ -25,20 +28,48 @@ public class WordController {
 	private Result result;
 	private Validator validator;
 	private LoggedUser loggedUser;
+	private HttpServletRequest request;
 
 	
-	public WordController(Result result, Validator validator, LoggedUser loggedUser) {
+	public WordController(Result result, Validator validator, LoggedUser loggedUser, HttpServletRequest request) {
 		this.result = result;
 		this.validator = validator;
 		this.loggedUser = loggedUser;
+		this.request = request;
 	}
 
 	@Path("/dictionaryEntrySearch")
 	public void dictionaryEntrySearch() {
+		
 	}
 	
+	@Path("/newEntry/loggedUser")
+	public void verifyLoggedUser(String word) {
+		
+//		TODO ARRUMAR este método!!!
+
+		System.out.println("-----");
+		System.out.println(word);
+		System.out.println("-----");
+		
+		request.getSession().setAttribute("word", word);
+		
+		if(loggedUser.isLogged()) {
+			// if not logged we save the text.
+			result.redirectTo(getClass()).newEntry();
+		}
+		else {
+//			VALIDATOR
+			result.redirectTo(LoginController.class).login();
+		}
+		
+	}
+	
+	@LoggedIn
 	@Path("/newEntry")
-	public void newEntry(String word) {
+	public void newEntry() {
+		String word = (String) request.getSession().getAttribute("word");
+		
 		result.include("word", word);
 	}
 	
@@ -52,7 +83,7 @@ public class WordController {
 		result.include("word", word);
 		result.include("entry", word + "/CAT=" + category + ",");
 		result.include("category", category);
-		validator.onErrorUsePageOf(getClass()).newEntry(word);
+		validator.onErrorUsePageOf(getClass()).newEntry();
 		result.redirectTo(getClass()).grammarProperties(word);
 	}
 	
