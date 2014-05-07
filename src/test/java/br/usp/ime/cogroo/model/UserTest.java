@@ -1,7 +1,8 @@
 package br.usp.ime.cogroo.model;
 
+import static junit.framework.Assert.assertEquals;
+
 import org.junit.Test;
-import static junit.framework.Assert.*;
 
 
 public class UserTest {

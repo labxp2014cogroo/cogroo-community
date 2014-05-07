@@ -31,6 +31,7 @@ public class LoggedUser implements Serializable {
 	/**
 	 * @deprecated Use {@link #login(User)} instead
 	 */
+	@Deprecated
 	public void setUser(User user) {
 		this.user = user;
 	}

@@ -22,7 +22,8 @@ public class CogrooMemoryReport {
     Timer timer = new Timer();
 
     timer.scheduleAtFixedRate(new TimerTask() {
-      public void run() {
+      @Override
+	public void run() {
 
           double free =  Runtime.getRuntime().freeMemory() / 1024d / 1024d;
           double max =  Runtime.getRuntime().maxMemory() / 1024d / 1024d;

@@ -120,27 +120,30 @@ public class WordController {
 	@Path("/searchEntry")
 	public void searchEntry(String text) throws JSONException {
 		LinkedList<Vocable> vocablesList;
+		String status = "status";
+		String mensagem_erro = "mensagem_erro";
+		
 		try { 
 			if (text == null || text.length() < 1) {
-				result.include("status", 400);
-				result.include("mensagem_erro", "Palavra vazia");
+				result.include(status, 400);
+				result.include(mensagem_erro, "Palavra vazia");
 			}
 			else {
 				vocablesList = SearchWordJspell.searchWord(text);
 				result.include("typed_word", text);
 				
 				if (vocablesList.isEmpty()){
-					result.include("mensagem_erro", "Palavra " + text +" não existe");
-					result.include("status", 404);
+					result.include(mensagem_erro, "Palavra " + text +" não existe");
+					result.include(status, 404);
 				} else {
 					result.include("vocables", vocablesAsStrings(vocablesList));
-					result.include("status", 0);
+					result.include(status, 0);
 				}
 			}
 		}
 		catch (IOException e) {
-			result.include("mensagem_erro", "Serviço fora do ar");
-			result.include("status", 501);
+			result.include(mensagem_erro, "Serviço fora do ar");
+			result.include(status, 501);
 		}
 		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}

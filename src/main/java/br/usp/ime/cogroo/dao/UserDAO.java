@@ -126,7 +126,7 @@ public class UserDAO {
 	private List<User> retrieveAll(String value1, String field1, String value2, String field2) {
 		List<User> users = null;
 		try {
-			users = (List<User>) em.createQuery(
+			users = em.createQuery(
 					"from " + USER_ENTITY + " w where w." + field1 + "=?1 and w." + field2 + "=?2")
 					.setParameter(1, value1).setParameter(2, value2).getResultList();
 		} catch (RuntimeException e) {

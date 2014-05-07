@@ -1,7 +1,13 @@
 package br.usp.ime.cogroo.model;
 
+import static br.usp.ime.cogroo.util.Tagset.comma;
+import static br.usp.ime.cogroo.util.Tagset.getChunk;
+import static br.usp.ime.cogroo.util.Tagset.getClause;
+import static br.usp.ime.cogroo.util.Tagset.getFeatures;
+import static br.usp.ime.cogroo.util.Tagset.getPOS;
+
 import java.util.List;
-import static br.usp.ime.cogroo.util.Tagset.*;
+
 import org.cogroo.entities.Mistake;
 import org.cogroo.text.Sentence;
 import org.cogroo.text.Token;

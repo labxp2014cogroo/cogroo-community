@@ -111,7 +111,7 @@ class RssFeed {
 			entry.setDescription(description);
 			entries.add(entry);
 			
-			entries.addAll((List<SyndEntry>)feed.getEntries());
+			entries.addAll(feed.getEntries());
 			
 			Collections.sort(entries, new Comparator<SyndEntry>() {
 

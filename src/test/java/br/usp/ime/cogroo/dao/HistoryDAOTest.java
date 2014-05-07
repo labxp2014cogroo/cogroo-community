@@ -1,12 +1,14 @@
 package br.usp.ime.cogroo.dao;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-
-import static junit.framework.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;

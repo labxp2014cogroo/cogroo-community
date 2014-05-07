@@ -48,8 +48,6 @@ import com.octo.captcha.component.image.textpaster.textdecorator.TextDecorator;
 import com.octo.captcha.component.image.wordtoimage.ComposedWordToImage;
 import com.octo.captcha.component.image.wordtoimage.DeformedComposedWordToImage;
 import com.octo.captcha.component.image.wordtoimage.WordToImage;
-import com.octo.captcha.component.word.wordgenerator.DictionaryWordGenerator;
-import com.octo.captcha.component.word.wordgenerator.WordGenerator;
 import com.octo.captcha.engine.image.ListImageCaptchaEngine;
 import com.octo.captcha.image.gimpy.GimpyFactory;
 
@@ -65,7 +63,8 @@ import com.octo.captcha.image.gimpy.GimpyFactory;
  */
 public class ImageEngine extends ListImageCaptchaEngine {
 
-    protected void buildInitialFactories() {
+    @Override
+	protected void buildInitialFactories() {
 
         //build filters
         com.jhlabs.image.EmbossFilter emboss = new com.jhlabs.image.EmbossFilter();

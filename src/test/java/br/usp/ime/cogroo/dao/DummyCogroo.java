@@ -16,7 +16,8 @@ import org.cogroo.text.impl.TokenImpl;
 public class DummyCogroo implements CheckAnalyzer {
 	
   
-  public void analyze(CheckDocument document) {
+  @Override
+public void analyze(CheckDocument document) {
         
 		List<Sentence> sentences = new ArrayList<Sentence>();
 		Sentence s0 = new SentenceImpl(0, 10, document);
