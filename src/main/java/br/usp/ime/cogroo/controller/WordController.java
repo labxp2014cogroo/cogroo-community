@@ -15,19 +15,22 @@ import br.com.caelum.vraptor.validator.ValidationMessage;
 import br.usp.ime.cogroo.exceptions.ExceptionMessages;
 import br.usp.ime.cogroo.logic.DerivationsQuery;
 import br.usp.ime.cogroo.logic.SearchWordJspell;
+import br.usp.ime.cogroo.model.LoggedUser;
 import br.usp.ime.cogroo.model.Vocable;
 
 
 @Resource
 public class WordController {
 	
-	private final Result result;
-	private final Validator validator;
+	private Result result;
+	private Validator validator;
+	private LoggedUser loggedUser;
 
 	
-	public WordController(Result result, Validator validator) {
+	public WordController(Result result, Validator validator, LoggedUser loggedUser) {
 		this.result = result;
 		this.validator = validator;
+		this.loggedUser = loggedUser;
 	}
 
 	@Path("/dictionaryEntrySearch")
@@ -46,57 +49,53 @@ public class WordController {
 			validator.add(new ValidationMessage(ExceptionMessages.NO_CATEGORY_SELECTED, ExceptionMessages.ERROR));
 		}
 		
-		
 		result.include("word", word);
 		result.include("entry", word + "/CAT=" + category + ",");
 		result.include("category", category);
 		validator.onErrorUsePageOf(getClass()).newEntry(word);
-		result.redirectTo(getClass()).grammarProperties();
+		result.redirectTo(getClass()).grammarProperties(word);
 	}
 	
 	
 	@Path("/grammarProperties")
-	public void grammarProperties() {
-		
+	public void grammarProperties(String word) {
+		result.include("word", word);
 	}
 	
 	@Post
 	@Path("/chooseProperties")
-	public void chooseProperties(String entry, String gender, String number, String transitivity, String type) {
+	public void chooseProperties(String word, String entry, String gender, String number, String transitivity, String type) {
 		
 		if (gender != null) {
 			entry = entry + gender;
-			
 		}
 		
 		if (number != null) {
 			entry = entry + number;
-			
 		}
 		
 		if (transitivity != null) {
 			entry = entry + "T=inf," + transitivity;
-			
 		}
 		
 		if (type != null) {
 			entry = entry + type;
-			
 		}
 		
 		entry = entry + "/";
 		
 		HashMap<String, String> derivations = DerivationsQuery.queryDerivations(entry);
 		
+		result.include("word", word);
 		result.include("entry", entry);
 		
 		result.include("derivations", derivations);
-		result.redirectTo(getClass()).derivations();
+		result.redirectTo(getClass()).derivations(word);
 	}
 	
 	@Path("/derivations")
-	public void derivations() {
-		
+	public void derivations(String word) {
+		result.include("word", word);
 	}
 	
 	@Post
@@ -125,15 +124,15 @@ public class WordController {
 		
 		try { 
 			if (text == null || text.length() < 1) {
-				result.include(status, 400);
-				result.include(mensagem_erro, "Palavra vazia");
+				validator.add(new ValidationMessage(ExceptionMessages.EMPTY_FIELD, ExceptionMessages.EMPTY_FIELD));
+				validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 			}
 			else {
 				vocablesList = SearchWordJspell.searchWord(text);
 				result.include("typed_word", text);
 				
 				if (vocablesList.isEmpty()){
-					result.include(mensagem_erro, "Palavra " + text +" não existe");
+					result.include(mensagem_erro, "Essa palavra não consta no dicionário");
 					result.include(status, 404);
 				} else {
 					result.include("vocables", vocablesAsStrings(vocablesList));
