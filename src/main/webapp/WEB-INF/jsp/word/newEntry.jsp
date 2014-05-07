@@ -1,11 +1,6 @@
 <form action="<c:url value="/chooseCategory"/>" method="post">
 	<div class="yellow_box">
-		<h1>Inserindo a palavra: "${word}"
-			<span class="help"><a onclick="onOff('helpRuleList'); return false" href="#"><img src="<c:url value='/images/help.png' />" /></a></span>
-		</h1>
-		<div id="helpRuleList" style="display: none;" class="help" class="white_box">
-			<h4>Instruções...</h4>
-		</div>
+		<h1>Inserindo a palavra: "${word}"</h1>
 		<div class="dashed_white">
 		<h3>Manual de inserção:</h3>
 		<br>
