@@ -32,7 +32,6 @@ public class WordController {
 	private Validator validator;
 	private LoggedUser loggedUser;
 	private HttpServletRequest request;
-
 	
 	public WordController(Result result, Validator validator, LoggedUser loggedUser, HttpServletRequest request) {
 		this.result = result;
@@ -48,31 +47,25 @@ public class WordController {
 	
 	@Path("/newEntry/loggedUser")
 	public void verifyLoggedUser(String word) {
-		
-//		TODO ARRUMAR este método!!!
+		if (word != null) {
+			request.getSession().setAttribute("word", word);
+		}
 
-		System.out.println("-----");
-		System.out.println(word);
-		System.out.println("-----");
-		
-		request.getSession().setAttribute("word", word);
-		
 		if(loggedUser.isLogged()) {
-			// if not logged we save the text.
-			result.redirectTo(getClass()).newEntry();
+
+			if (word == null) {
+				word = (String) request.getSession().getAttribute("word");
+			}
+			result.redirectTo(getClass()).newEntry(word);
 		}
 		else {
-//			VALIDATOR
 			result.redirectTo(LoginController.class).login();
 		}
-		
 	}
 	
 	@LoggedIn
 	@Path("/newEntry")
-	public void newEntry() {
-		String word = (String) request.getSession().getAttribute("word");
-		
+	public void newEntry(String word) {
 		result.include("word", word);
 	}
 	
@@ -86,7 +79,7 @@ public class WordController {
 		result.include("word", word);
 		result.include("entry", word + "/CAT=" + category + ",");
 		result.include("category", category);
-		validator.onErrorUsePageOf(getClass()).newEntry();
+		validator.onErrorUsePageOf(getClass()).newEntry(word);
 		result.redirectTo(getClass()).grammarProperties(word);
 	}
 	
