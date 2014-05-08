@@ -209,7 +209,7 @@ public class LoginController {
 			provider = manager.connect(SocialAuthUtil
 					.getRequestParametersMap(request));
 			service = provider.getProviderId();
-			p = (Profile) provider.getUserProfile();
+			p = provider.getUserProfile();
 		} catch (Exception e) {
 			LOG.error("Could not verify user using OAuth on " + service, e);
 			validator.add(new ValidationMessage(

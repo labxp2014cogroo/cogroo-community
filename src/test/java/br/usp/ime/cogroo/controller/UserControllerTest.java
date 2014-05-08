@@ -3,6 +3,7 @@ package br.usp.ime.cogroo.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,7 +17,6 @@ import org.junit.Test;
 
 import utils.HSQLDBEntityManagerFactory;
 import utils.InterceptorUtil;
-import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.util.test.MockResult;
 import br.com.caelum.vraptor.util.test.MockValidator;
@@ -29,7 +29,6 @@ import br.usp.ime.cogroo.model.ApplicationData;
 import br.usp.ime.cogroo.model.LoggedUser;
 import br.usp.ime.cogroo.model.User;
 import br.usp.ime.cogroo.security.Admin;
-import static org.mockito.Mockito.*;
 
 
 public class UserControllerTest {

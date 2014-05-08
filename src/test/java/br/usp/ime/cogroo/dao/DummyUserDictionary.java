@@ -29,20 +29,24 @@ public class DummyUserDictionary implements LexicalDictionary {
 
 	}
 	
+	@Override
 	public boolean wordExists(String arg0) {
 		return this.dictionary.containsKey(arg0);
 	}
 
+	@Override
 	public List<PairWordPOSTag> getLemmasAndPosTagsForWord(String arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	public List<String> getPOSTagsForWord(String arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	public List<PairWordPOSTag> getWordsAndPosTagsForLemma(String arg0) {
 		// TODO Auto-generated method stub
 		return null;

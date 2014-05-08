@@ -1,16 +1,18 @@
 package br.usp.ime.cogroo.dao;
 
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNotSame;
+
 import javax.persistence.EntityManager;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static junit.framework.Assert.*;
-
-import br.usp.ime.cogroo.model.GrammarCheckerVersion;
 
 import utils.HSQLDBEntityManagerFactory;
+import br.usp.ime.cogroo.model.GrammarCheckerVersion;
 
 public class GrammarCheckerVersionDAOTest {
 	

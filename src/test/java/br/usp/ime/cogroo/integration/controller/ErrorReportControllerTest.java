@@ -1,5 +1,9 @@
 package br.usp.ime.cogroo.integration.controller;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -20,12 +24,9 @@ import org.junit.Test;
 
 import utils.HSQLDBEntityManagerFactory;
 import utils.RestUtil;
-
 import br.usp.ime.cogroo.dao.UserDAO;
 import br.usp.ime.cogroo.logic.SecurityUtil;
 import br.usp.ime.cogroo.model.User;
-
-import static org.junit.Assert.*;
 
 public class ErrorReportControllerTest {
 	

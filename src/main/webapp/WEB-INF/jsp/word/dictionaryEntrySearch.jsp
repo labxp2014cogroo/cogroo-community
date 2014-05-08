@@ -17,7 +17,7 @@
 	<c:choose>
 		<c:when test="${status == 404}">
 			${mensagem_erro}.
-			Clique <a href="/newEntry?word=${typed_word}">aqui </a>
+			Clique <a href="/newEntry/loggedUser?word=${typed_word}">aqui </a>
 			para incluir <b>${typed_word}</b>.
 		</c:when>
 		<c:when test="${status == 501}">

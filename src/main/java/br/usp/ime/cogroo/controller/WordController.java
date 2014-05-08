@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONException;
 
 import br.com.caelum.vraptor.Path;
@@ -20,6 +22,7 @@ import br.usp.ime.cogroo.logic.SearchWordJspell;
 import br.usp.ime.cogroo.model.Flags;
 import br.usp.ime.cogroo.model.LoggedUser;
 import br.usp.ime.cogroo.model.Vocable;
+import br.usp.ime.cogroo.security.annotations.LoggedIn;
 
 
 @Resource
@@ -28,20 +31,48 @@ public class WordController {
 	private Result result;
 	private Validator validator;
 	private LoggedUser loggedUser;
+	private HttpServletRequest request;
 
 	
-	public WordController(Result result, Validator validator, LoggedUser loggedUser) {
+	public WordController(Result result, Validator validator, LoggedUser loggedUser, HttpServletRequest request) {
 		this.result = result;
 		this.validator = validator;
 		this.loggedUser = loggedUser;
+		this.request = request;
 	}
 
 	@Path("/dictionaryEntrySearch")
 	public void dictionaryEntrySearch() {
+		
 	}
 	
+	@Path("/newEntry/loggedUser")
+	public void verifyLoggedUser(String word) {
+		
+//		TODO ARRUMAR este método!!!
+
+		System.out.println("-----");
+		System.out.println(word);
+		System.out.println("-----");
+		
+		request.getSession().setAttribute("word", word);
+		
+		if(loggedUser.isLogged()) {
+			// if not logged we save the text.
+			result.redirectTo(getClass()).newEntry();
+		}
+		else {
+//			VALIDATOR
+			result.redirectTo(LoginController.class).login();
+		}
+		
+	}
+	
+	@LoggedIn
 	@Path("/newEntry")
-	public void newEntry(String word) {
+	public void newEntry() {
+		String word = (String) request.getSession().getAttribute("word");
+		
 		result.include("word", word);
 	}
 	
@@ -55,7 +86,7 @@ public class WordController {
 		result.include("word", word);
 		result.include("entry", word + "/CAT=" + category + ",");
 		result.include("category", category);
-		validator.onErrorUsePageOf(getClass()).newEntry(word);
+		validator.onErrorUsePageOf(getClass()).newEntry();
 		result.redirectTo(getClass()).grammarProperties(word);
 	}
 	
@@ -139,6 +170,9 @@ public class WordController {
 	@Path("/searchEntry")
 	public void searchEntry(String text) throws JSONException {
 		LinkedList<Vocable> vocablesList;
+		String status = "status";
+		String mensagem_erro = "mensagem_erro";
+		
 		try { 
 			if (text == null || text.length() < 1) {
 				validator.add(new ValidationMessage(ExceptionMessages.EMPTY_FIELD, ExceptionMessages.EMPTY_FIELD));
@@ -149,17 +183,17 @@ public class WordController {
 				result.include("typed_word", text);
 				
 				if (vocablesList.isEmpty()){
-					result.include("mensagem_erro", "Essa palavra não consta no dicionário");
-					result.include("status", 404);
+					result.include(mensagem_erro, "Essa palavra não consta no dicionário");
+					result.include(status, 404);
 				} else {
 					result.include("vocables", vocablesAsStrings(vocablesList));
-					result.include("status", 0);
+					result.include(status, 0);
 				}
 			}
 		}
 		catch (IOException e) {
-			result.include("mensagem_erro", "Serviço fora do ar");
-			result.include("status", 501);
+			result.include(mensagem_erro, "Serviço fora do ar");
+			result.include(status, 501);
 		}
 		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}

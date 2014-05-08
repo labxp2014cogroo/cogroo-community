@@ -2,7 +2,7 @@ package br.usp.ime.cogroo.logic;
 
 // d=abismalidades, F=hiperabismal G=abismalices, A=antiabismal, L=abismal-lhas, O=pós-abismal
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 
