@@ -9,8 +9,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class DictionaryPatch {
 	
-	
-	
+	public DictionaryPatch() {}
 	
 	public DictionaryPatch(String comment, Short approved, User user,
 			String newEntry, String previousEntry) {
@@ -25,6 +24,14 @@ public class DictionaryPatch {
 	@Id
 	@GeneratedValue
 	private Long id;
+
+	public String getNewEntry() {
+		return newEntry;
+	}
+
+	public void setNewEntry(String newEntry) {
+		this.newEntry = newEntry;
+	}
 
 	private String comment;
 
