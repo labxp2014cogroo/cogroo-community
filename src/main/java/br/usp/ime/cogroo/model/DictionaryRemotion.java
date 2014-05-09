@@ -7,7 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class DictionaryPatch {
+public class DictionaryRemotion {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -19,8 +19,8 @@ public class DictionaryPatch {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-
-	private String entry;
+	
+	private String previousEntry;
 
 	public Long getId() {
 		return id;
@@ -53,13 +53,13 @@ public class DictionaryPatch {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	public String getEntry() {
-		return entry;
+	
+	public String getPreviousEntry() {
+		return previousEntry;
 	}
 
-	public void setEntry(String entry) {
-		this.entry = entry;
+	public void setPreviousEntry(String previousEntry) {
+		this.previousEntry = previousEntry;
 	}
 
 }

@@ -62,7 +62,7 @@ public class User {
 	private List<WordUser> wordUserList = new ArrayList<WordUser>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-	private List<DictionaryPatch> dictionaryPatches = new ArrayList<DictionaryPatch>();
+	private List<DictionaryRemotion> dictionaryPatches = new ArrayList<DictionaryRemotion>();
 
 	@Column(length = 10)
 	private String roleName;
@@ -198,11 +198,11 @@ public class User {
 		return roleName;
 	}
 	
-	public List<DictionaryPatch> getDictionaryPatches() {
+	public List<DictionaryRemotion> getDictionaryPatches() {
 		return dictionaryPatches;
 	}
 
-	public void setDictionaryPatches(List<DictionaryPatch> dictionaryPatches) {
+	public void setDictionaryPatches(List<DictionaryRemotion> dictionaryPatches) {
 		this.dictionaryPatches = dictionaryPatches;
 	}
 
