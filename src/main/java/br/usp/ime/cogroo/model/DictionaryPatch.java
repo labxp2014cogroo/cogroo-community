@@ -20,7 +20,9 @@ public class DictionaryPatch {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	private String entry;
+	private String newEntry;
+	
+	private String previousEntry;
 
 	public Long getId() {
 		return id;
@@ -55,11 +57,19 @@ public class DictionaryPatch {
 	}
 
 	public String getEntry() {
-		return entry;
+		return newEntry;
 	}
 
 	public void setEntry(String entry) {
-		this.entry = entry;
+		this.newEntry = entry;
+	}
+
+	public String getPreviousEntry() {
+		return previousEntry;
+	}
+
+	public void setPreviousEntry(String previousEntry) {
+		this.previousEntry = previousEntry;
 	}
 
 }
