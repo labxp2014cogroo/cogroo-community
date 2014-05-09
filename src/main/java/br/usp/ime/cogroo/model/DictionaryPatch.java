@@ -11,15 +11,15 @@ public class DictionaryPatch {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private String comment;
-	
-	private Boolean approved;
-	
+
+	private Short approved;
+
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	private String entry;
 
 	public Long getId() {
@@ -38,14 +38,14 @@ public class DictionaryPatch {
 		this.comment = comment;
 	}
 
-	public Boolean getApproved() {
+	public Short getApproved() {
 		return approved;
 	}
 
-	public void setApproved(Boolean approved) {
+	public void setApproved(Short approved) {
 		this.approved = approved;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
@@ -61,7 +61,5 @@ public class DictionaryPatch {
 	public void setEntry(String entry) {
 		this.entry = entry;
 	}
-	
-	
 
 }
