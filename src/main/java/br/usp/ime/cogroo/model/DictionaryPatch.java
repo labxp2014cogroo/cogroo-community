@@ -8,6 +8,20 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class DictionaryPatch {
+	
+	
+	
+	
+	public DictionaryPatch(String comment, Short approved, User user,
+			String newEntry, String previousEntry) {
+		super();
+		this.comment = comment;
+		this.approved = approved;
+		this.user = user;
+		this.newEntry = newEntry;
+		this.previousEntry = previousEntry;
+	}
+
 	@Id
 	@GeneratedValue
 	private Long id;
