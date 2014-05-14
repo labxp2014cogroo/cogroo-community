@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import br.usp.ime.cogroo.model.errorreport.Comment;
+import br.usp.ime.cogroo.model.errorreport.HistoryEntry;
 import br.usp.ime.cogroo.model.errorreport.State;
 
 @Entity
@@ -34,9 +35,13 @@ public class DictionaryPatch {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creation;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modified;
 
+	@OneToMany(mappedBy = "errorEntry", cascade = CascadeType.ALL)
+	private List<HistoryEntry> historyEntries;
+	
 	private State state;
 	
 	private String newEntry;
@@ -152,6 +157,14 @@ public class DictionaryPatch {
 	@PreUpdate
 	protected void onUpdate() {
 		modified = new Date();
+	}
+	
+	public List<HistoryEntry> getHistoryEntries() {
+		return historyEntries;
+	}
+
+	public void setHistoryEntries(List<HistoryEntry> historyEntries) {
+		this.historyEntries = historyEntries;
 	}
 
 }
