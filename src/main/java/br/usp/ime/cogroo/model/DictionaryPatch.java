@@ -1,72 +1,63 @@
 package br.usp.ime.cogroo.model;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import br.usp.ime.cogroo.model.errorreport.Comment;
+import br.usp.ime.cogroo.model.errorreport.State;
 
 @Entity
 public class DictionaryPatch {
-	
-	public DictionaryPatch() {}
-	
-	public DictionaryPatch(String comment, Short approved, User user,
-			String newEntry, String previousEntry) {
-		super();
-		this.comment = comment;
-		this.approved = approved;
-		this.user = user;
-		this.newEntry = newEntry;
-		this.previousEntry = previousEntry;
-	}
-
 	@Id
 	@GeneratedValue
 	private Long id;
-
-	public String getNewEntry() {
-		return newEntry;
-	}
-
-	public void setNewEntry(String newEntry) {
-		this.newEntry = newEntry;
-	}
-
-	private String comment;
-
-	private Short approved;
-
+	
+	@OneToMany(mappedBy = "errorEntry", cascade = CascadeType.ALL)
+	private List<Comment> comments;
+	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	private String newEntry;
+	private Date creation;
+	private Date modified;
+
+	private State state;
 	
+	private String newEntry;
 	private String previousEntry;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
+	
+	public DictionaryPatch() {}
+	
+	public DictionaryPatch(List<Comment> comments, User user,
+			Date creation, Date modified, State state, Long id,
+			String newEntry, String previousEntry) {
+		super();
+		this.comments = comments;
+		this.user = user;
+		this.creation = creation;
+		this.modified = modified;
+		this.state = state;
 		this.id = id;
+		this.newEntry = newEntry;
+		this.previousEntry = previousEntry;
 	}
 
-	public String getComment() {
-		return comment;
+
+	public List<Comment> getComments() {
+		return comments;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public Short getApproved() {
-		return approved;
-	}
-
-	public void setApproved(Short approved) {
-		this.approved = approved;
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 	public User getUser() {
@@ -77,12 +68,36 @@ public class DictionaryPatch {
 		this.user = user;
 	}
 
-	public String getEntry() {
+	public Date getCreation() {
+		return creation;
+	}
+
+	public void setCreation(Date creation) {
+		this.creation = creation;
+	}
+
+	public Date getModified() {
+		return modified;
+	}
+
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public String getNewEntry() {
 		return newEntry;
 	}
 
-	public void setEntry(String entry) {
-		this.newEntry = entry;
+	public void setNewEntry(String newEntry) {
+		this.newEntry = newEntry;
 	}
 
 	public String getPreviousEntry() {
@@ -91,6 +106,14 @@ public class DictionaryPatch {
 
 	public void setPreviousEntry(String previousEntry) {
 		this.previousEntry = previousEntry;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }
