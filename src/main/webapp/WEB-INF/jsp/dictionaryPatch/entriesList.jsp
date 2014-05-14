@@ -1,0 +1,72 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/dataTables_table_jui.css"/>" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/dataTables_table.css"/>" />
+<script src="<c:url value='/js/jquery.dataTables.min.js' />" type="text/javascript" ></script>
+<script src="<c:url value='/js/jquery.dataTables.sort.js' />" type="text/javascript" ></script>
+
+<h2>
+Lista de palavras
+<span class="help"><a onclick="onOff('helpErrorList'); return false" href="#"><img src="<c:url value='/images/help.png' />" /></a></span>
+</h2>
+
+<div id="helpErrorList" style="display: none;" class="help">
+	<p>Exibe todas as palavras sugeridas pelos usuários.</p>
+</div>
+
+<span style="FLOAT: right; POSITION: static">
+	<c:if test="${loggedUser.user.role.canEditErrorReport}">
+		<a href="<c:url value="/reports/edit"/>">Edição múltipla</a>
+	</c:if>
+</span>
+
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="errorList">
+		<thead>
+			<tr>
+			  <th></th> 			<!-- 0 -->
+			  <th title="Exibe o número do problema reportado.">Nº.</th>			<!-- 1 -->
+			  <th title="Indica a situação (aberta, em andamento, resolvida, aguardando resposta, fechada ou rejeitada) do problema.">Situação</th>				<!-- 2 -->
+			  <th title="Exibe a entrada anterior.">Entrada anterior</th>     <!-- 3 -->
+			  <th title="Exibe a nova entrada.">Entrada modificada</th>		<!-- 4 -->
+			  <th title="Exibe a data da última alteração realizada no problema.">Data</th>	<!-- 5 -->
+			  <th title="Exibe o número de comentários feitos sobre o problema.">Comentários</th>	<!-- 6 -->
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${dictionaryPatchList}" var="patch" varStatus="i">
+
+				<c:if test="${patch.isNew}">
+					<tr id="tr_dictionaryPatch_${ i.count }" class="highlighted" title="<c:url value="/entries/${patch.id}"/>">
+				</c:if>
+				<c:if test="${not errorEntry.isNew}">
+					<tr id="tr_dictionaryPatch_${ i.count }" title="<c:url value="/entries/${patch.id}"/>">
+				</c:if>
+			
+					<td valign="middle"><img src="./images/details_open.png"></td>		<!-- 0 -->
+					<td><a href="<c:url value="/entries/${patch.id}"/>">${patch.id}</a></td>		<!-- 1 -->
+					
+					<td><fmt:message key="${patch.state}" /></td>					<!-- 2 -->
+					<td>${patch.previousEntry}</td>			<!-- 3 -->
+					<td>${patch.newEntry}</td>			<!-- 4 -->
+					<td><span title="${patch.modified}"></span><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${patch.modified}" /></td>		<!-- 5 -->
+					<td>${patch.commentCount}</td>									<!-- 6 -->
+	  			  	<td>																<!-- 7 -->
+<!-- 	  			  	TODO -->
+<%--   					<c:if test="${(patch.submitter.login == loggedUser.user.login) && (patch.submitter.service == loggedUser.user.service) || loggedUser.user.role.canDeleteOtherUserErrorReport }">  --%>
+<%-- 						<a onclick="remove_error('${ i.count }'); return false;" id="_${ i.count }" href="about:blank" class="remove_error">excluir</a> --%>
+<%-- 						<form action="<c:url value="/entries/${patch.id}"/>" method="post" id="form_remove_error_${ i.count }"> --%>
+<!-- 						    <input type="hidden" name="_method" value="DELETE"/> -->
+<%-- 						    <input name="patch.id" value="${errorEntry.id}" type="hidden" /> --%>
+<!-- 						</form> -->
+<%-- 					</c:if> --%>
+	  			  	<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">
+		  			  	<tr><td>Palavras envolvidas</td></tr>
+						<tr><td>Enviado por:</td><td><a href="<c:url value="/users/${patch.submitter.service}/${patch.submitter.login}"/>">${patch.submitter.name}</a></td></tr>
+	  			  	</table>
+					</td>
+			</c:forEach>
+		</tbody>
+	</table>
