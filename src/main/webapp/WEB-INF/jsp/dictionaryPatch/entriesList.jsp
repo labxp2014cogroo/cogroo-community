@@ -10,71 +10,92 @@
 
 
 <script>
+
+function displayPatchDetails (nTr, idPatch) {
+	datum = {'idPatch':idPatch}
+	$.ajax({
+		url : 'URL_DO_CONTROLER',
+		type : "post",
+		data : datum,
+		success: function (response){
+					alert ("WORKING...  ?");
+					json = JSON.parse(resposta);
+					html = "<p> PALAVRA 1" + json.palavra1 + "</p>;"
+					oTable.fnOpen( nTr, html, 'details' );
+			},
+		error: function(response){
+					alert ("Sorry, I can't be perfect.");
+					oTable.fnOpen( nTr, 'TESsdfasdfTE', 'details' );
+			}
+		});
+	
+}
+
 $(document).ready(function() {
 	oTable = $('#entriesList').dataTable( {
-			"oLanguage": {
-				"sLengthMenu": "Exibir _MENU_ entradas por página",
-				"sSearch": "Filtrar entradas:",
-				"sFirst": "Primeira página",
-				"sLast": "Última página",
-				"sNext": "Próxima página",
-				"sPrevious": "Página anterior",
-				"sZeroRecords": "Desculpe, nada encontrado.",
-				"sInfo": "Exibindo de _START_ até _END_ de um total de _TOTAL_ entradas",
-				"sInfoEmpty": "Exibindo de 0 até 0 de um total de 0 entradas",
-				"sInfoFiltered": "(filtrados de um total de _MAX_ entradas)"
-			},
-			"aLengthMenu": [20,50,100,200],
-			"aaSorting": [[ 6, 'desc' ]],
-			"iDisplayLength": 20,
-			"aoColumns": [
-				{ "bSortable": false }, 	//0
-				{ "sType": "num-html" }, 	//1
-				null,  						//2
-				null,						//3
-				null,  						//4
-				{ "sType": "title-string" },//5
-				null,						//6
-				{ "bVisible": false }		//7
-			],
-			
-			
-			"fnDrawCallback": function ( oSettings ) {
-				$('#entriesList tbody tr').each( function () {
-					var title = $(this).attr('title');
-					$(this).click( function () {
-						window.location = title;
-						alert (title);
-					} );
-					$(this).hover(function() {
-			            $(this).css('cursor', 'pointer');
-			        }, function() {
-			            $(this).css('cursor', 'auto');
-			        });
+		"oLanguage": {
+			"sLengthMenu": "Exibir _MENU_ entradas por página",
+			"sSearch": "Filtrar entradas:",
+			"sFirst": "Primeira página",
+			"sLast": "Última página",
+			"sNext": "Próxima página",
+			"sPrevious": "Página anterior",
+			"sZeroRecords": "Desculpe, nada encontrado.",
+			"sInfo": "Exibindo de _START_ até _END_ de um total de _TOTAL_ entradas",
+			"sInfoEmpty": "Exibindo de 0 até 0 de um total de 0 entradas",
+			"sInfoFiltered": "(filtrados de um total de _MAX_ entradas)"
+		},
+		"aLengthMenu": [20,50,100,200],
+		"aaSorting": [[ 6, 'desc' ]],
+		"iDisplayLength": 20,
+		"aoColumns": [
+			{ "bSortable": false }, 	//0
+			{ "sType": "num-html" }, 	//1
+			null,  						//2
+			null,						//3
+			null,  						//4
+			{ "sType": "title-string" },//5
+			null,						//6
+			{ "bVisible": false }		//7
+		],
+		
+		
+		"fnDrawCallback": function ( oSettings ) {
+			$('#entriesList tbody tr').each( function () {
+				var title = $(this).attr('title');
+				$(this).click( function () {
+					window.location = title;
+					alert (title);
 				} );
+				$(this).hover(function() {
+		            $(this).css('cursor', 'pointer');
+		        }, function() {
+		            $(this).css('cursor', 'auto');
+		        });
+			} );
+		}
+	} );
+	
+	/* Add click event handler for user interaction */
+	$('td img', oTable.fnGetNodes() ).each( function () {
+		$(this).click( function (e) {
+			e.stopPropagation();
+			var nTr = this.parentNode.parentNode;
+			if ( this.src.match('details_close') )
+			{
+				/* This row is already open - close it */
+				this.src = "./images/details_open.png";
+				oTable.fnClose( nTr );
+			}
+			else if(this.src.match('details_open'))
+			{
+				/* Open this row */
+				this.src = "./images/details_close.png";
+				//oTable.fnOpen( nTr, fnFormatDetails(nTr), 'details' );
+				displayPatchDetails (nTr, 3);
 			}
 		} );
-		
-		/* Add click event handler for user interaction */
-		$('td img', oTable.fnGetNodes() ).each( function () {
-			$(this).click( function (e) {
-				e.stopPropagation();
-				var nTr = this.parentNode.parentNode;
-				if ( this.src.match('details_close') )
-				{
-					/* This row is already open - close it */
-					this.src = "./images/details_open.png";
-					oTable.fnClose( nTr );
-				}
-				else if(this.src.match('details_open'))
-				{
-					/* Open this row */
-					this.src = "./images/details_close.png";
-					oTable.fnOpen( nTr, fnFormatDetails(nTr), 'details' );
-				}
-			} );
-		} );
-
+	} );
 });
 </script>
 
@@ -134,6 +155,7 @@ Lista de palavras
 <!-- 						</form> -->
 <%-- 					</c:if> --%>
 	  			  	<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">
+	  			  		<tr><td><input name="patch.id" value="${errorEntry.id}" type="hidden" /></td></tr>
 		  			  	<tr><td>Palavras envolvidas</td></tr>
 						<tr><td>Enviado por:</td><td><a href="<c:url value="/users/${patch.user.service}/${patch.user.login}"/>">${patch.user.name}</a></td></tr>
 	  			  	</table>
