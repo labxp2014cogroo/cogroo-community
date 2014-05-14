@@ -38,6 +38,8 @@ public class DictionaryPatchTest {
 		assertEquals(state, sample.getState());
 		assertEquals(newEntry, sample.getNewEntry());
 		assertEquals(previousEntry, sample.getPreviousEntry());
+		assertEquals(1, sample.getCommentCount());
+		
 		
 	}
 

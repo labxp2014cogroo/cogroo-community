@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import br.usp.ime.cogroo.model.errorreport.Comment;
 import br.usp.ime.cogroo.model.errorreport.State;
@@ -35,6 +36,9 @@ public class DictionaryPatch {
 	private String newEntry;
 	private String previousEntry;
 	
+	@Transient
+	private boolean isNew = false;
+	
 	public DictionaryPatch() {}
 	
 	public DictionaryPatch(List<Comment> comments, User user,
@@ -48,7 +52,16 @@ public class DictionaryPatch {
 		this.newEntry = newEntry;
 		this.previousEntry = previousEntry;
 	}
-
+	
+	@Transient
+	public boolean isNew() {
+		return isNew;
+	}
+	
+	@Transient
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
 
 	public List<Comment> getComments() {
 		return comments;
@@ -112,6 +125,14 @@ public class DictionaryPatch {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public int getCommentCount() {
+		int count = 0;
+		for (Comment comment : getComments()) {
+			count += comment.getCount();
+		}
+		return count;
 	}
 
 }
