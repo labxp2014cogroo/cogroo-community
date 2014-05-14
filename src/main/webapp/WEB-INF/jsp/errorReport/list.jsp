@@ -148,7 +148,7 @@
 	
 	<span style="FLOAT: right; POSITION: static">
 		<c:if test="${loggedUser.user.role.canEditErrorReport}">
-			<a href="<c:url value="/reports/edit"/>">Edição multipla</a>
+			<a href="<c:url value="/reports/edit"/>">Edição múltipla</a>
 		</c:if>
 	</span>
 	<table cellpadding="0" cellspacing="0" border="0" class="display" id="errorList">
