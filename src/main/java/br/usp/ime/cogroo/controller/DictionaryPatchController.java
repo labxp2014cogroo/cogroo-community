@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.api.client.json.Json;
+
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.view.Results;
 import br.usp.ime.cogroo.dao.DictionaryPatchDAO;
 import br.usp.ime.cogroo.model.DictionaryPatch;
 import br.usp.ime.cogroo.model.User;
@@ -19,8 +23,7 @@ public class DictionaryPatchController {
 	
 	private Result result;
 	private DictionaryPatchDAO dictionaryPatchDAO;
-	
-	
+
 	
 	public DictionaryPatchController(Result result,
 			DictionaryPatchDAO dictionaryPatchDAO) {
@@ -28,6 +31,14 @@ public class DictionaryPatchController {
 		this.dictionaryPatchDAO = dictionaryPatchDAO;
 	}
 
+	@Get
+	@Path("/getPatch")
+	public void getPatchDetails(Long idPatch){
+		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
+		result.use(Results.json()).from(dictionaryPatch).include("response").serialize();
+	}
+	
+	
 	@Path("/entries")
 	public void entriesList() {
 		

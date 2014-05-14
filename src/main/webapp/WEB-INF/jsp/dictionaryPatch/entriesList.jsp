@@ -12,20 +12,22 @@
 <script>
 
 function displayPatchDetails (nTr, idPatch) {
-	datum = {'idPatch':idPatch}
+	datum = {'idPatch':idPatch};
 	$.ajax({
-		url : 'URL_DO_CONTROLER',
-		type : "post",
+		url : '<c:url value="/getPatch" />',
+		type : "get",
 		data : datum,
-		success: function (response){
+		
+		success: function(response){
 					alert ("WORKING...  ?");
-					json = JSON.parse(resposta);
-					html = "<p> PALAVRA 1" + json.palavra1 + "</p>;"
-					oTable.fnOpen( nTr, html, 'details' );
+					//json = JSON.parse(resposta);
+					//html = "<p> PALAVRA 1" + json.palavra1 + "</p>;"
+					//oTable.fnOpen( nTr, html, 'details' );
+					oTable.fnOpen( nTr, response, 'details' );
 			},
 		error: function(response){
 					alert ("Sorry, I can't be perfect.");
-					oTable.fnOpen( nTr, 'TESsdfasdfTE', 'details' );
+					oTable.fnOpen( nTr, 'TESsdfasdfTE\n'+response, 'details' );
 			}
 		});
 	
@@ -92,7 +94,7 @@ $(document).ready(function() {
 				/* Open this row */
 				this.src = "./images/details_close.png";
 				//oTable.fnOpen( nTr, fnFormatDetails(nTr), 'details' );
-				displayPatchDetails (nTr, 3);
+				displayPatchDetails (nTr, $(this).attr('idPatch'));
 			}
 		} );
 	} );
@@ -137,7 +139,7 @@ Lista de palavras
 					<tr id="tr_dictionaryPatch_${ i.count }" title="<c:url value="/entries/${patch.id}"/>">
 				</c:if>
 			
-					<td valign="middle"><img src="./images/details_open.png"></td>		<!-- 0 -->
+					<td valign="middle"><img src="./images/details_open.png" idPatch=${patch.id} ></td>		<!-- 0 -->
 					<td><a href="<c:url value="/entries/${patch.id}"/>">${patch.id}</a></td>		<!-- 1 -->
 					
 					<td><fmt:message key="${patch.state}" /></td>					<!-- 2 -->
