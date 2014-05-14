@@ -54,12 +54,12 @@ public class DictionaryPatch {
 	}
 	
 	@Transient
-	public boolean isNew() {
+	public boolean getIsNew() {
 		return isNew;
 	}
 	
 	@Transient
-	public void setNew(boolean isNew) {
+	public void setIsNew(boolean isNew) {
 		this.isNew = isNew;
 	}
 
