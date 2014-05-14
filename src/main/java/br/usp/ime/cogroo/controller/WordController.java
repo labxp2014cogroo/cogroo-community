@@ -16,28 +16,34 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.ValidationMessage;
+import br.usp.ime.cogroo.dao.DictionaryPatchDAO;
 import br.usp.ime.cogroo.exceptions.ExceptionMessages;
 import br.usp.ime.cogroo.logic.DerivationsQuery;
 import br.usp.ime.cogroo.logic.SearchWordJspell;
+import br.usp.ime.cogroo.model.DictionaryPatch;
 import br.usp.ime.cogroo.model.Flags;
 import br.usp.ime.cogroo.model.LoggedUser;
+import br.usp.ime.cogroo.model.User;
 import br.usp.ime.cogroo.model.Vocable;
+import br.usp.ime.cogroo.model.errorreport.State;
 import br.usp.ime.cogroo.security.annotations.LoggedIn;
 
 
 @Resource
 public class WordController {
 	
+	private DictionaryPatchDAO dictionarypatchdao;
 	private Result result;
 	private Validator validator;
 	private LoggedUser loggedUser;
 	private HttpServletRequest request;
 	
-	public WordController(Result result, Validator validator, LoggedUser loggedUser, HttpServletRequest request) {
+	public WordController(Result result, Validator validator, LoggedUser loggedUser, HttpServletRequest request, DictionaryPatchDAO dictionarypatchdao) {
 		this.result = result;
 		this.validator = validator;
 		this.loggedUser = loggedUser;
 		this.request = request;
+		this.dictionarypatchdao = dictionarypatchdao;
 	}
 
 	@Path("/dictionaryEntrySearch")
@@ -149,10 +155,12 @@ public class WordController {
 		for (String f : flag) {
 			entry += f;
 		}
-		
-//		TODO: Aqui tá a entrada!!!!
-//		Falta inserir utilizando o WebService
-		
+	
+		DictionaryPatch dictionarypatch = new DictionaryPatch();
+		dictionarypatch.setNewEntry(entry);
+		dictionarypatch.setUser(loggedUser.getUser());
+		dictionarypatchdao.add(dictionarypatch);
+
 		System.out.println(entry);
 		
 		result.redirectTo(getClass()).dictionaryEntrySearch();

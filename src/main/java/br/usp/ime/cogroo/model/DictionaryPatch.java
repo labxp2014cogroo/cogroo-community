@@ -39,7 +39,10 @@ public class DictionaryPatch {
 	@Transient
 	private boolean isNew = false;
 	
-	public DictionaryPatch() {}
+	public DictionaryPatch() {
+		this.isNew = true;
+		this.state = State.OPEN;
+	}
 	
 	public DictionaryPatch(List<Comment> comments, User user,
 			Date creation, Date modified, State state, String newEntry, String previousEntry) {

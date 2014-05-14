@@ -5,8 +5,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
+import br.com.caelum.vraptor.ioc.Component;
 import br.usp.ime.cogroo.model.DictionaryPatch;
 
+@Component
 public class DictionaryPatchDAO {
 	EntityManager em;
 	
