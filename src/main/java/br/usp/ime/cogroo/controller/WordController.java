@@ -2,7 +2,11 @@ package br.usp.ime.cogroo.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
 
@@ -15,8 +19,10 @@ import br.com.caelum.vraptor.validator.ValidationMessage;
 import br.usp.ime.cogroo.exceptions.ExceptionMessages;
 import br.usp.ime.cogroo.logic.DerivationsQuery;
 import br.usp.ime.cogroo.logic.SearchWordJspell;
+import br.usp.ime.cogroo.model.Flags;
 import br.usp.ime.cogroo.model.LoggedUser;
 import br.usp.ime.cogroo.model.Vocable;
+import br.usp.ime.cogroo.security.annotations.LoggedIn;
 
 
 @Resource
@@ -25,18 +31,39 @@ public class WordController {
 	private Result result;
 	private Validator validator;
 	private LoggedUser loggedUser;
-
+	private HttpServletRequest request;
 	
-	public WordController(Result result, Validator validator, LoggedUser loggedUser) {
+	public WordController(Result result, Validator validator, LoggedUser loggedUser, HttpServletRequest request) {
 		this.result = result;
 		this.validator = validator;
 		this.loggedUser = loggedUser;
+		this.request = request;
 	}
 
 	@Path("/dictionaryEntrySearch")
 	public void dictionaryEntrySearch() {
+		
 	}
 	
+	@Path("/newEntry/loggedUser")
+	public void verifyLoggedUser(String word) {
+		if (word != null) {
+			request.getSession().setAttribute("word", word);
+		}
+
+		if(loggedUser.isLogged()) {
+
+			if (word == null) {
+				word = (String) request.getSession().getAttribute("word");
+			}
+			result.redirectTo(getClass()).newEntry(word);
+		}
+		else {
+			result.redirectTo(LoginController.class).login();
+		}
+	}
+	
+	@LoggedIn
 	@Path("/newEntry")
 	public void newEntry(String word) {
 		result.include("word", word);
@@ -86,10 +113,27 @@ public class WordController {
 		
 		HashMap<String, String> derivations = DerivationsQuery.queryDerivations(entry);
 		
+
 		result.include("word", word);
 		result.include("entry", entry);
-		
 		result.include("derivations", derivations);
+		
+		HashMap<String, String> mapFlags = new HashMap<String, String>();
+		
+		Flags flags;
+		try {
+			flags = Flags.getInstance();
+			Set<String> keys = derivations.keySet();
+			Iterator<String> it = keys.iterator();
+			while (it.hasNext()){
+				String key = it.next();
+				mapFlags.put(key, flags.getTextFromFlag(key));
+			}
+			result.include("flagsTexts", mapFlags);	
+		} catch (IOException e) {
+			result.include("flagsTexts", null);
+		}
+		
 		result.redirectTo(getClass()).derivations(word);
 	}
 	
