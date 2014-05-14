@@ -38,15 +38,13 @@ public class DictionaryPatch {
 	public DictionaryPatch() {}
 	
 	public DictionaryPatch(List<Comment> comments, User user,
-			Date creation, Date modified, State state, Long id,
-			String newEntry, String previousEntry) {
+			Date creation, Date modified, State state, String newEntry, String previousEntry) {
 		super();
 		this.comments = comments;
 		this.user = user;
 		this.creation = creation;
 		this.modified = modified;
 		this.state = state;
-		this.id = id;
 		this.newEntry = newEntry;
 		this.previousEntry = previousEntry;
 	}
