@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import br.usp.ime.cogroo.model.errorreport.Comment;
@@ -28,7 +32,9 @@ public class DictionaryPatch {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date creation;
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date modified;
 
 	private State state;
@@ -136,6 +142,16 @@ public class DictionaryPatch {
 			count += comment.getCount();
 		}
 		return count;
+	}
+	
+	@PrePersist
+	protected void onCreate() {
+		creation = modified = new Date();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		modified = new Date();
 	}
 
 }
