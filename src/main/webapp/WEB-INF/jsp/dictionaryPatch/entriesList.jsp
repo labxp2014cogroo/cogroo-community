@@ -14,20 +14,26 @@
 function displayPatchDetails (nTr, idPatch) {
 	datum = {'idPatch':idPatch};
 	$.ajax({
+		timeout: 5000,
 		url : '<c:url value="/getPatch" />',
 		type : "get",
 		data : datum,
-		
+		beforeSend: function(response){
+				oTable.fnOpen( nTr, "Carregando...", 'details' );
+		},
 		success: function(response){
 					console.log(response);
 					json = JSON.parse(response);
-					/* TODO: criar o HTML que será mostrado na div que é aberta na página */
-					html = json.msg;
-					oTable.fnOpen( nTr, json.msg, 'details' );
+					if (json.status == json.ok){
+						/* TODO: criar o HTML que será mostrado na div que é aberta na página */
+						html = 'Derivações: ' + json.derivations;
+					}else {
+						html = json.msg;
+					}
+					oTable.fnOpen( nTr, html, 'details' );
 			},
 		error: function(response){
-					json = JSON.parse(response);
-					oTable.fnOpen( nTr, json.msg, 'details' );
+					oTable.fnOpen( nTr, 'Erro ao se comunicar com o servidor', 'details' );
 			}
 		});
 	

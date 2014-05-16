@@ -1,8 +1,11 @@
 package br.usp.ime.cogroo.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +19,7 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.usp.ime.cogroo.dao.DictionaryPatchDAO;
+import br.usp.ime.cogroo.logic.DerivationsQuery;
 import br.usp.ime.cogroo.model.DictionaryPatch;
 import br.usp.ime.cogroo.model.User;
 import br.usp.ime.cogroo.model.errorreport.Comment;
@@ -36,10 +40,11 @@ public class DictionaryPatchController {
 
 	@Get
 	@Path("/getPatch")
-	public void getPatchDetails(Long idPatch){
+	public void getPatchDetails(Long idPatch) throws JSONException{
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 		JSONObject response = new JSONObject();
 		try {
+			response.append("ok", 0);
 			if (dictionaryPatch == null){
 				response.append("status", 1);
 				response.append("msg", "Erro: o id passado não existe no banco");
@@ -47,13 +52,21 @@ public class DictionaryPatchController {
 			}else {
 				response.append("status", 0);
 				response.append("msg", "OK");
+				HashMap<String, Set<String>> derivationsHash = DerivationsQuery.getDerivationsFromFlags(dictionaryPatch.getNewEntry());
+				JSONObject jsonDerivations = new JSONObject(derivationsHash); 
+				
+				response.append("derivations", jsonDerivations);
 				response.append("tipo","inserção");
+				
 				// j.append("comentarios", new JSONObject(dictionaryPatch.getComments()));
 				result.use(Results.http()).body(response.toString());
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
+			catch (IOException e) {
+			response.append("status", 2);
+			response.append("msg", "Erro: houve algum problema ao tentar pegar as derivações (Webservice ?)");
+		}
+		result.use(Results.http()).body(response.toString());
 	}
 	
 	
@@ -62,7 +75,6 @@ public class DictionaryPatchController {
 		
 		List<DictionaryPatch> dictionaryPatchList = new ArrayList<DictionaryPatch>();
 		
-
 		User user = new User("ricardo");
 		Date creation = new Date(0);
 		Date modified = new Date(1000);
@@ -97,13 +109,6 @@ public class DictionaryPatchController {
 			result.redirectTo(getClass()).entriesList();
 			return;
 		}
-		
-//		DictionaryPatch dictionaryPatchFromDB = dictionaryPatchDAO.retrieve(new Long(dictionaryPatch.getId()));
-//		
-//		if (dictionaryPatchFromDB == null) {
-//			result.notFound();
-//			return;
-//		}
 		
 		result.include("dictionaryPatch", dictionaryPatch);	
 	}
