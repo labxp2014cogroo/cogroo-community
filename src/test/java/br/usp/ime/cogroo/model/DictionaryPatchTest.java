@@ -7,10 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+import utils.LabXP2014;
 import br.usp.ime.cogroo.model.errorreport.Comment;
 import br.usp.ime.cogroo.model.errorreport.State;
 
+@Category(LabXP2014.class)
 public class DictionaryPatchTest {
 	
 	@Test
