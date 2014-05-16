@@ -357,7 +357,7 @@
 	<build>
 	    <filters>
 			<filter>${basedir}/target/filter.properties</filter>
-			<filter>../comunidade.properties</filter>
+			<filter>/comunidade.properties</filter>
 	    </filters>
 
         <outputDirectory>${basedir}/src/main/webapp/WEB-INF/classes</outputDirectory>
