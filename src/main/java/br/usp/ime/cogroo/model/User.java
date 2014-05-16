@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -61,7 +62,7 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<WordUser> wordUserList = new ArrayList<WordUser>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private List<DictionaryPatch> dictionaryPatches = new ArrayList<DictionaryPatch>();
 
 	@Column(length = 10)

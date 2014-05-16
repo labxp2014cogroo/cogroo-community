@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import br.usp.ime.cogroo.model.DictionaryPatch;
 import br.usp.ime.cogroo.model.User;
 
 @Entity
@@ -27,6 +28,9 @@ public class HistoryEntry {
 	@OneToMany(mappedBy = "historyEntry", cascade = CascadeType.ALL)
 	private List<HistoryEntryField> historyEntryField;
 	
+	@ManyToOne
+	private DictionaryPatch dictionaryPatch; 
+
 	@ManyToOne
 	private ErrorEntry errorEntry;
 	
@@ -92,5 +96,13 @@ public class HistoryEntry {
 			sb.append("\t - " + entry + "\n");
 		}
 		return sb.toString();
+	}
+	
+	public DictionaryPatch getDictionaryPatch() {
+		return dictionaryPatch;
+	}
+
+	public void setDictionaryPatch(DictionaryPatch dictionaryPatch) {
+		this.dictionaryPatch = dictionaryPatch;
 	}
 }

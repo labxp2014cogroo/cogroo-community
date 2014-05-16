@@ -10,9 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import br.usp.ime.cogroo.model.errorreport.Comment;
+import br.usp.ime.cogroo.model.errorreport.HistoryEntry;
 import br.usp.ime.cogroo.model.errorreport.State;
 
 @Entity
@@ -28,9 +33,15 @@ public class DictionaryPatch {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date creation;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date modified;
 
+	@OneToMany(mappedBy = "errorEntry", cascade = CascadeType.ALL)
+	private List<HistoryEntry> historyEntries;
+	
 	private State state;
 	
 	private String newEntry;
@@ -39,7 +50,10 @@ public class DictionaryPatch {
 	@Transient
 	private boolean isNew = false;
 	
-	public DictionaryPatch() {}
+	public DictionaryPatch() {
+		this.isNew = true;
+		this.state = State.OPEN;
+	}
 	
 	public DictionaryPatch(List<Comment> comments, User user,
 			Date creation, Date modified, State state, String newEntry, String previousEntry) {
@@ -133,6 +147,24 @@ public class DictionaryPatch {
 			count += comment.getCount();
 		}
 		return count;
+	}
+	
+	@PrePersist
+	protected void onCreate() {
+		creation = modified = new Date();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		modified = new Date();
+	}
+	
+	public List<HistoryEntry> getHistoryEntries() {
+		return historyEntries;
+	}
+
+	public void setHistoryEntries(List<HistoryEntry> historyEntries) {
+		this.historyEntries = historyEntries;
 	}
 
 }
