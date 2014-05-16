@@ -19,15 +19,15 @@ function displayPatchDetails (nTr, idPatch) {
 		data : datum,
 		
 		success: function(response){
-					alert ("WORKING...  ?");
-					//json = JSON.parse(resposta);
-					//html = "<p> PALAVRA 1" + json.palavra1 + "</p>;"
-					//oTable.fnOpen( nTr, html, 'details' );
-					oTable.fnOpen( nTr, response, 'details' );
+					console.log(response);
+					json = JSON.parse(response);
+					/* TODO: criar o HTML que será mostrado na div que é aberta na página */
+					html = json.msg;
+					oTable.fnOpen( nTr, json.msg, 'details' );
 			},
 		error: function(response){
-					alert ("Sorry, I can't be perfect.");
-					oTable.fnOpen( nTr, 'TESsdfasdfTE\n'+response, 'details' );
+					json = JSON.parse(response);
+					oTable.fnOpen( nTr, json.msg, 'details' );
 			}
 		});
 	

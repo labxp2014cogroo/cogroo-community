@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.api.client.json.Json;
 
 import br.com.caelum.vraptor.Get;
@@ -35,7 +38,22 @@ public class DictionaryPatchController {
 	@Path("/getPatch")
 	public void getPatchDetails(Long idPatch){
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
-		result.use(Results.json()).from(dictionaryPatch).include("response").serialize();
+		JSONObject response = new JSONObject();
+		try {
+			if (dictionaryPatch == null){
+				response.append("status", 1);
+				response.append("msg", "Erro: o id passado não existe no banco");
+				result.use(Results.http()).body(response.toString());
+			}else {
+				response.append("status", 0);
+				response.append("msg", "OK");
+				response.append("tipo","inserção");
+				// j.append("comentarios", new JSONObject(dictionaryPatch.getComments()));
+				result.use(Results.http()).body(response.toString());
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
