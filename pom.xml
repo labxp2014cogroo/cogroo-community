@@ -413,10 +413,11 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<excludes>
-						<exclude>**/systest/**</exclude>
-						<exclude>**/integration/**</exclude>
-					</excludes>
+					<groups>utils.LabXP2014</groups>
+<!-- 					<excludes> -->
+<!-- 						<exclude>**/systest/**</exclude> -->
+<!-- 						<exclude>**/integration/**</exclude> -->
+<!-- 					</excludes> -->
 				</configuration>
 			</plugin>
 
