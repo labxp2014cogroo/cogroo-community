@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 public class DerivationsQuery {
 	static final String FLAGS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	static final String baseProcessURL = "http://logprob.ime.usp.br:4040/jspell/try.json?entry=";
+	static final String baseProcessURL = "http://interno.cogroo.org:4040/jspell/try.json?entry=";
 
 	private DerivationsQuery() {
 		return;
