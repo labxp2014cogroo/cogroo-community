@@ -2,6 +2,7 @@ package br.usp.ime.cogroo.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -12,7 +13,9 @@ public class ParserYaml {
     private static ParserYaml singleton = null;
     
     private ParserYaml() throws FileNotFoundException {
-        this.parse("port.yaml");
+    	Map<String, Pair<String, HashMap<String, String>>> hash = new HashMap<String, Pair<String, HashMap<String, String>>>();
+        this.parse("port.yaml", hash);
+        this.hash = Collections.unmodifiableMap(hash);
     }
     
     public static ParserYaml getInstance() throws FileNotFoundException{
@@ -22,28 +25,31 @@ public class ParserYaml {
         return ParserYaml.singleton;
     }
     
-    private  final Map<String, Pair<String, HashMap<String, String>>> hash = new HashMap<String, Pair<String, HashMap<String, String>>>();
+    private final Map<String, Pair<String, HashMap<String, String>>> hash;
+    
+    
+ 
     
     /* XXX: static or not ? */
     private static void ignoreHeader (Scanner scan){
         while (scan.hasNext() && !scan.nextLine().equals(" PROPS:"));
     }
     
-    private void generateFirstLevel (Scanner scan){
+    private void generateFirstLevel (Scanner scan, Map<String, Pair<String, HashMap<String, String>>> hash){
         String line;
         String[] pair;
         while (scan.hasNext()){
             line = scan.nextLine().trim();
             if (line.matches("[a-zA-Z0-9]+: [a-zA-Z]+.*")){
                 pair = line.split(":");
-                this.hash.put(pair[0].trim(), new Pair<String, HashMap<String,String>>(pair[1].trim(), null));
+                hash.put(pair[0].trim(), new Pair<String, HashMap<String,String>>(pair[1].trim(), null));
             }else {
                 break;
             }
         }
     }
     
-    private void generateSecondLevel(Scanner scan){
+    private void generateSecondLevel(Scanner scan, Map<String, Pair<String, HashMap<String, String>>> hash){
         String line;
         String[] pair;
         String key;
@@ -53,7 +59,7 @@ public class ParserYaml {
             if (line.matches("[a-zA-Z]+:$")){
                 key = line.split(":")[0].trim();
                 secondLevel = new HashMap<String, String>();
-                this.hash.get(key).setB(secondLevel);
+                hash.get(key).setB(secondLevel);
             }else if (line.matches("[_a-zA-Z0-9]+:\\s*-?[_0-9a-zA-Z]+.*")){
                 pair = line.split(":");
                 secondLevel.put(pair[0].trim(), pair[1].trim());
@@ -61,11 +67,11 @@ public class ParserYaml {
         }
     }
     
-    private  void parse (String fileName) throws FileNotFoundException{        
+    private  void parse (String fileName, Map<String, Pair<String, HashMap<String, String>>> hash) throws FileNotFoundException{
         Scanner scan = new Scanner(new File (fileName));
         ParserYaml.ignoreHeader(scan);
-        this.generateFirstLevel(scan);
-        this.generateSecondLevel(scan);
+        this.generateFirstLevel(scan, hash);
+        this.generateSecondLevel(scan, hash);
     }
     
     /**
