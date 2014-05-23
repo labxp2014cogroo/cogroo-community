@@ -23,9 +23,7 @@ import br.usp.ime.cogroo.logic.SearchWordJspell;
 import br.usp.ime.cogroo.model.DictionaryPatch;
 import br.usp.ime.cogroo.model.Flags;
 import br.usp.ime.cogroo.model.LoggedUser;
-import br.usp.ime.cogroo.model.User;
 import br.usp.ime.cogroo.model.Vocable;
-import br.usp.ime.cogroo.model.errorreport.State;
 import br.usp.ime.cogroo.security.annotations.LoggedIn;
 
 
