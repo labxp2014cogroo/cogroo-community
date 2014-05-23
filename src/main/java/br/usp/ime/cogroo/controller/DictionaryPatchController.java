@@ -64,21 +64,20 @@ public class DictionaryPatchController {
 	}
 	
 	
-	@Path("/entries")
-	public void entriesList() {
+	@Path("/dictionaryEntries")
+	public void dictionaryEntries() {
 		List<DictionaryPatch> dictionaryPatchList = new ArrayList<DictionaryPatch>();
 		
 		dictionaryPatchList = dictionaryPatchDAO.retriveFromUser(loggedUser.getUser().getId());
-		
 		
 		result.include("dictionaryPatchList", dictionaryPatchList);
 	}
 	
 	@Get
-	@Path("/entries/{patch.id}")
+	@Path("/dictionaryEntries/{patch.id}")
 	public void entriesDetails(DictionaryPatch dictionaryPatch) {
 		if (dictionaryPatch == null) {
-			result.redirectTo(getClass()).entriesList();
+			result.redirectTo(getClass()).dictionaryEntries();
 			return;
 		}
 		
