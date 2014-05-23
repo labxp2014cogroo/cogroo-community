@@ -153,11 +153,11 @@ Lista de palavras
 					<tr id="tr_dictionaryPatch_${ i.count }" class="highlighted" title="<c:url value="/entries/${patch.id}"/>">
 				</c:if>
 				<c:if test="${not errorEntry.isNew}">
-					<tr id="tr_dictionaryPatch_${ i.count }" title="<c:url value="/entries/${patch.id}"/>">
+					<tr id="tr_dictionaryPatch_${ i.count }" title="<c:url value="/dictionaryEntries/${patch.id}"/>">
 				</c:if>
 			
 					<td valign="middle"><img src="./images/details_open.png" idPatch=${patch.id} ></td>		<!-- 0 -->
-					<td><a href="<c:url value="/entries/${patch.id}"/>">${patch.id}</a></td>		<!-- 1 -->
+					<td><a href="<c:url value="/dictionaryEntries/${patch.id}"/>">${patch.id}</a></td>		<!-- 1 -->
 					
 					<td><fmt:message key="${patch.state}" /></td>					<!-- 2 -->
 					<td>${patch.previousEntry}</td>			<!-- 3 -->

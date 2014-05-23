@@ -23,6 +23,16 @@ public class DictionaryPatchDAO {
 		return patch;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<DictionaryPatch> retriveFromUser(long idUser) {
+		return em
+				.createQuery(
+						"from "
+								+ PATCH_ENTITY
+								+ " where user_id = ? ")
+				.setParameter(1, idUser).getResultList();
+	}
+	
 	public void add(DictionaryPatch patch) {
 		try {
 			em.persist(patch);
@@ -36,6 +46,7 @@ public class DictionaryPatchDAO {
 	public List<DictionaryPatch> listAll() {
 		return em.createQuery("from " + PATCH_ENTITY).getResultList();
 	}
+	
 }
 
 
