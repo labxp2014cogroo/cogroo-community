@@ -43,7 +43,7 @@ public class DictionaryPatchController {
 	public void getPatchDetails(Long idPatch) throws JSONException{
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 		JSONObject response = new JSONObject();
-		try {
+		try{
 			response.append("ok", 0);
 			if (dictionaryPatch == null){
 				response.append("status", 1);
@@ -61,8 +61,7 @@ public class DictionaryPatchController {
 				// j.append("comentarios", new JSONObject(dictionaryPatch.getComments()));
 				result.use(Results.http()).body(response.toString());
 			}
-		}
-			catch (IOException e) {
+		}catch(JSONException e){
 			response.append("status", 2);
 			response.append("msg", "Erro: houve algum problema ao tentar pegar as derivações (Webservice ?)");
 		}
