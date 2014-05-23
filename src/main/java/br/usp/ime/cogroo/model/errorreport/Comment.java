@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import br.usp.ime.cogroo.model.DictionaryPatch;
 import br.usp.ime.cogroo.model.User;
 
 @Entity
@@ -31,6 +32,9 @@ public class Comment {
 	
 	@Column(length=700)
 	private String comment;
+	
+	@ManyToOne
+	private DictionaryPatch dictionaryPatch; 
 	
 	//@ManyToOne(fetch = FetchType.EAGER)
 	//@JoinColumn(nullable = false, insertable = false, updatable = false)
@@ -163,6 +167,14 @@ public class Comment {
 			count += comment.getCount();
 		}
 		return count;
+	}
+	
+	public DictionaryPatch getDictionaryPatch() {
+		return dictionaryPatch;
+	}
+
+	public void setDictionaryPatch(DictionaryPatch dictionaryPatch) {
+		this.dictionaryPatch = dictionaryPatch;
 	}
 	
 }

@@ -13,7 +13,7 @@ import br.usp.ime.cogroo.model.Vocable;
 
 public class SearchWordJspell {
 	
-	static final String baseAnalyseURL = "http://logprob.ime.usp.br:4040/jspell/analyse.json?id=default&lexeme="; 
+	static final String baseAnalyseURL = "http://interno.cogroo.org:4040/jspell/analyse.json?id=default&lexeme="; 
 	
 	public static LinkedList<Vocable> searchWord(String text) throws IOException{
 		LinkedList<Vocable> vocables = new LinkedList<Vocable>();

@@ -1,17 +1,17 @@
 package br.usp.ime.cogroo.logic;
 
-// d=abismalidades, F=hiperabismal G=abismalices, A=antiabismal, L=abismal-lhas, O=pós-abismal
-
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 
 public class DerivationQueryTest {
 	
 	@Test
-	public void testqueryDerivations() {
+	public void testQueryDerivations() {
 		
 		HashMap<String, String> derivationsHash = DerivationsQuery.queryDerivations("abismal/#an/");
 		assertEquals(derivationsHash.get("d"), "abismalidades");
@@ -40,4 +40,54 @@ public class DerivationQueryTest {
 			assertEquals(key.length(), 1);
 		}
 	}
+	
+	@Test
+	public void testGetDerivationsFromFlags() {
+		
+		HashMap<String, Set<String>> derivationsHash = DerivationsQuery.getDerivationsFromFlags("abismal/#an/p");
+		Set<String> test = new HashSet<String>();
+		test.add("abismais");
+		assertEquals(derivationsHash.get("p"), test);
+		
+		derivationsHash = DerivationsQuery.getDerivationsFromFlags("amar/#v/X");
+		test = new HashSet<String>();
+		test.add("amai");
+		test.add("ames");
+		test.add("amas");
+		test.add("amemos");
+		test.add("amem");
+		test.add("ame");
+		test.add("ameis");
+		test.add("amam");
+		test.add("amo");
+		test.add("amais");
+		test.add("ama");
+		test.add("amamos");
+		
+		assertEquals(derivationsHash.get("X"), test);
+		
+		derivationsHash = DerivationsQuery.getDerivationsFromFlags("amar/#v/Xn");
+		test = new HashSet<String>();
+		test.add("amai");
+		test.add("ames");
+		test.add("amas");
+		test.add("amemos");
+		test.add("amem");
+		test.add("ame");
+		test.add("ameis");
+		test.add("amam");
+		test.add("amo");
+		test.add("amais");
+		test.add("ama");
+		test.add("amamos");
+		
+		assertEquals(derivationsHash.get("X"), test);
+		
+		test = new HashSet<String>();
+		test.add("amante");
+		test.add("amantes");
+		
+		assertEquals(derivationsHash.get("n"), test);
+	}
+		
 }
