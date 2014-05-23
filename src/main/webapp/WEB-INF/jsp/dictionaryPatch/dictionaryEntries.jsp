@@ -14,7 +14,7 @@
 function displayPatchDetails (nTr, idPatch) {
 	datum = {'idPatch':idPatch};
 	$.ajax({
-		timeout: 5000,
+		timeout: 10000, // ten seconds
 		url : '<c:url value="/getPatch" />',
 		type : "get",
 		data : datum,
@@ -84,7 +84,6 @@ $(document).ready(function() {
 				var title = $(this).attr('title');
 				$(this).click( function () {
 					window.location = title;
-					alert (title);
 				} );
 				$(this).hover(function() {
 		            $(this).css('cursor', 'pointer');
@@ -150,9 +149,9 @@ Lista de palavras
 			<c:forEach items="${dictionaryPatchList}" var="patch" varStatus="i">
 
 				<c:if test="${patch.isNew}">
-					<tr id="tr_dictionaryPatch_${ i.count }" class="highlighted" title="<c:url value="/entries/${patch.id}"/>">
+					<tr id="tr_dictionaryPatch_${ i.count }" class="highlighted" title="<c:url value="/dictionaryEntries/${patch.id}"/>">
 				</c:if>
-				<c:if test="${not errorEntry.isNew}">
+				<c:if test="${not patch.isNew}">
 					<tr id="tr_dictionaryPatch_${ i.count }" title="<c:url value="/dictionaryEntries/${patch.id}"/>">
 				</c:if>
 			
@@ -165,19 +164,7 @@ Lista de palavras
 					<td><span title="${patch.modified}"></span><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${patch.modified}" /></td>		<!-- 5 -->
 					<td>${patch.commentCount}</td>									<!-- 6 -->
 	  			  	<td>																<!-- 7 -->
-<!-- 	  			  	TODO -->
-<%--   					<c:if test="${(patch.submitter.login == loggedUser.user.login) && (patch.submitter.service == loggedUser.user.service) || loggedUser.user.role.canDeleteOtherUserErrorReport }">  --%>
-<%-- 						<a onclick="remove_error('${ i.count }'); return false;" id="_${ i.count }" href="about:blank" class="remove_error">excluir</a> --%>
-<%-- 						<form action="<c:url value="/entries/${patch.id}"/>" method="post" id="form_remove_error_${ i.count }"> --%>
-<!-- 						    <input type="hidden" name="_method" value="DELETE"/> -->
-<%-- 						    <input name="patch.id" value="${errorEntry.id}" type="hidden" /> --%>
-<!-- 						</form> -->
-<%-- 					</c:if> --%>
-	  			  	<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">
-	  			  		<tr><td><input name="patch.id" value="${errorEntry.id}" type="hidden" /></td></tr>
-		  			  	<tr><td>Palavras envolvidas</td></tr>
-						<tr><td>Enviado por:</td><td><a href="<c:url value="/users/${patch.user.service}/${patch.user.login}"/>">${patch.user.name}</a></td></tr>
-	  			  	</table>
+	  			  	Enviado por: <a href="<c:url value="/users/${patch.user.service}/${patch.user.login}"/>">${patch.user.name}</a>
 					</td>
 			</c:forEach>
 		</tbody>
