@@ -44,26 +44,23 @@ public class DictionaryPatchController {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 		JSONObject response = new JSONObject();
 		try{
-			response.append("ok", 0);
+			response.put("ok", 0);
 			if (dictionaryPatch == null){
-				response.append("status", 1);
-				response.append("msg", "Erro: o id passado não existe no banco");
+				response.put("status", 1);
+				response.put("msg", "Erro: o id passado não existe no banco");
 				result.use(Results.http()).body(response.toString());
 			}else {
-				response.append("status", 0);
-				response.append("msg", "OK");
+				response.put("status", 0);
+				response.put("msg", "OK");
 				HashMap<String, Set<String>> derivationsHash = DerivationsQuery.getDerivationsFromFlags(dictionaryPatch.getNewEntry());
 				JSONObject jsonDerivations = new JSONObject(derivationsHash); 
 				
-				response.append("derivations", jsonDerivations);
-				response.append("tipo","inserção");
-				
-				// j.append("comentarios", new JSONObject(dictionaryPatch.getComments()));
-				result.use(Results.http()).body(response.toString());
+				response.put("derivations", jsonDerivations);
+				response.put("tipo","inserção");
 			}
 		}catch(JSONException e){
-			response.append("status", 2);
-			response.append("msg", "Erro: houve algum problema ao tentar pegar as derivações (Webservice ?)");
+			response.put("status", 2);
+			response.put("msg", "Erro: houve algum problema ao tentar pegar as derivações (Webservice ?)");
 		}
 		result.use(Results.http()).body(response.toString());
 	}
@@ -93,7 +90,7 @@ public class DictionaryPatchController {
 		dictionaryPatchList.add(sample);
 		previousEntry = "ttpalavra";
 		sample = new DictionaryPatch(comments, user, creation, modified, state, newEntry, previousEntry);
-		sample.setId(2L);
+		sample.setId(3L);
 		dictionaryPatchList.add(sample);
 		
 		

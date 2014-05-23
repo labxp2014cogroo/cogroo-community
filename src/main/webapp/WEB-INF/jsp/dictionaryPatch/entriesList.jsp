@@ -22,11 +22,22 @@ function displayPatchDetails (nTr, idPatch) {
 				oTable.fnOpen( nTr, "Carregando...", 'details' );
 		},
 		success: function(response){
-					console.log(response);
+					var k = 0;
+					var colors = Array();
+					colors[0] = '#CFCFCF';
+					colors[1] = '#B9B9B9';
 					json = JSON.parse(response);
 					if (json.status == json.ok){
-						/* TODO: criar o HTML que será mostrado na div que é aberta na página */
-						html = 'Derivações: ' + json.derivations;
+						html = '<h4>Derivações:</h4><br/>';
+						derivations = json.derivations;
+						for (var flag in derivations){
+							html += '<div style="background-color:' + colors[k++ % colors.length] + '" >';
+							html += 'Para a flag ' + flag + ':<br/>';
+	 						for(var l = 0; l < derivations[flag].length; l++){
+	 							html += derivations[flag][l] + ', ';	
+	 						}
+	 						html += '<div><br/>';
+						}
 					}else {
 						html = json.msg;
 					}
