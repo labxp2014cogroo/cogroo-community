@@ -22,6 +22,10 @@ public class LoggedUser implements Serializable {
 	public boolean isLogged(){
 		return (this.user != null);
 	}
+	
+	public boolean isAdmin(){
+		return (this.user.getRole().getRoleName().equals("admin"));
+	}
 
 	public void login(User user) {
 		appData.addLoggedUser(user);

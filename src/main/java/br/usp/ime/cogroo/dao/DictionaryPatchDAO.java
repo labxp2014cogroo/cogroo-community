@@ -33,6 +33,14 @@ public class DictionaryPatchDAO {
 				.setParameter(1, idUser).getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<DictionaryPatch> retrieveAll() {
+		return em.createQuery(
+				"from "
+				+ PATCH_ENTITY)
+				.getResultList();
+	}
+	
 	public void add(DictionaryPatch patch) {
 		try {
 			em.persist(patch);
