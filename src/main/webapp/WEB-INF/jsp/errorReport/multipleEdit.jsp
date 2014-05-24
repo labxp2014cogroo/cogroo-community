@@ -26,34 +26,10 @@
 			e.preventDefault();
 		}
 		if (r==true) {
-			
 			_gaq.push(['_trackEvent', 'Problems', 'multiple edit', '${loggedUser.user.service}']);
-			
 		};
-		
 	}
 	
-/* 	var remove_error = function(currentId) {
-
-		var r=confirm("Você deseja remover este erro?");
-		if (r==true) {
-			
-			var form = $("#form_apply");
-			var url = form.attr('action');
-
-			
-			$.post(url, form.serialize(),
-		   		function(data){
-		   });
-			//location.reload();
-			_gaq.push(['_trackEvent', 'Problems', 'removed report', '${loggedUser.user.service}']);
-			var nTr = $('#tr_errorEntry_' + currentId).get(0);
-			oTable.fnClose( nTr );
-			oTable.fnDeleteRow(nTr);
-			
-		};
-	}; */
-
 	/* Formating function for row details */
 	var fnFormatDetails = function ( nTr )
 	{

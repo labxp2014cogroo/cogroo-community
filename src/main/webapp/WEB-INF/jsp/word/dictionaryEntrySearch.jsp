@@ -37,7 +37,7 @@
 				<tbody>
 					<c:forEach items="${vocables}" var="vocable" varStatus="j">
 						<tr>
-							<td>${ j.count }</td>
+							<td>${j.count }</td>
 							<td>${vocable[0]}</td>
 							<td>${vocable[1]}</td>
 							<td>${vocable[2]}</td>
