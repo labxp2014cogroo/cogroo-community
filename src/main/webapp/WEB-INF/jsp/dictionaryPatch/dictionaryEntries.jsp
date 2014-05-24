@@ -123,14 +123,13 @@ Lista de palavras
 </h2>
 
 <div id="helpErrorList" style="display: none;" class="help">
-	<p>Exibe todas as palavras sugeridas pelos usuários.</p>
-</div>
-
-<span style="FLOAT: right; POSITION: static">
-	<c:if test="${loggedUser.user.role.canEditErrorReport}">
-		<a href="<c:url value="/reports/edit"/>">Edição múltipla</a>
+	<c:if test="${loggedUser.admin }">
+		<p>Exibe todas as palavras sugeridas pelos usuários.</p>
 	</c:if>
-</span>
+	<c:if test="${not loggedUser.admin }">
+		<p>Exibe todas as palavras que você sugeriu.</p>
+	</c:if>
+</div>
 
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="entriesList">
 		<thead>
@@ -143,6 +142,9 @@ Lista de palavras
 			  <th title="Exibe o usuário que enviou a sugestão.">Usuário</th>  <!-- 5 -->
 			  <th title="Exibe a data da última alteração realizada no problema.">Data</th>	<!-- 6 -->
 			  <th title="Exibe o número de comentários feitos sobre o problema.">Comentários</th>	<!-- 7 -->
+			  <c:if test="${loggedUser.admin }">
+			  	<th>Aprovação</th>
+			  </c:if>
 			</tr>
 		</thead>
 		<tbody>
@@ -164,6 +166,9 @@ Lista de palavras
 	  			  	<td>Enviado por: <a href="<c:url value="/users/${patch.user.service}/${patch.user.login}"/>">${patch.user.name}</a></td><!-- 5 -->
 					<td><span title="${patch.modified}"></span><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${patch.modified}" /></td>		<!-- 6 -->
 					<td>${patch.commentCount}</td>									<!-- 7 -->
+					<c:if test="${loggedUser.admin }">
+				  		<td><input type="checkbox"></td>
+				  	</c:if>
 			</c:forEach>
 		</tbody>
 	</table>
