@@ -49,8 +49,7 @@ public class WebServiceProxy {
 	
 	private JSONObject getJSONFromWebService(String suffix) throws IOException
 	{
-		String requestURL = this.baseURL + suffix; 
-		System.out.println(requestURL);
+		String requestURL = this.baseURL + suffix;
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(requestURL);
         HttpResponse response;
