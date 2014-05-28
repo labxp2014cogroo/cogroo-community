@@ -2,6 +2,9 @@ package br.usp.ime.cogroo.model;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,10 +72,16 @@ public class ParserYaml {
     
     private  void parse (String fileName, Map<String, Pair<String, HashMap<String, String>>> hash) throws FileNotFoundException{
     	InputStream portYamlInputStream = this.getClass().getResourceAsStream(fileName);
-    	Scanner scan = new Scanner(portYamlInputStream);
-        ParserYaml.ignoreHeader(scan);
-        this.generateFirstLevel(scan, hash);
-        this.generateSecondLevel(scan, hash);
+
+    	try {
+			Reader reader = new InputStreamReader(portYamlInputStream, "UTF-8");
+			Scanner scan = new Scanner(reader);
+			ParserYaml.ignoreHeader(scan);
+	        this.generateFirstLevel(scan, hash);
+	        this.generateSecondLevel(scan, hash);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
     }
     
     /**
