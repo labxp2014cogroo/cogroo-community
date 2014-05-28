@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
@@ -60,7 +61,7 @@ public class DictionaryPatchController {
 		result.use(Results.http()).body(response.toString());
 	}
 	
-	
+	@Get
 	@Path("/dictionaryEntries")
 	public void dictionaryEntries() {
 		List<DictionaryPatch> dictionaryPatchList = new ArrayList<DictionaryPatch>();
@@ -71,9 +72,24 @@ public class DictionaryPatchController {
 		else {
 			dictionaryPatchList = dictionaryPatchDAO.retrieveAll();
 		}
-		
-		
 		result.include("dictionaryPatchList", dictionaryPatchList);
+	}
+	
+	@Post
+	@Path("/patchApproval")
+	public void patchApproval(String[] flags, long idPatch){
+		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
+		
+		String newEntry = dictionaryPatch.getNewEntry().substring(0, dictionaryPatch.getNewEntry().lastIndexOf("/")+1);
+		
+		for (String flag : flags) {
+			newEntry += flag;
+		}
+		
+		System.out.println(newEntry);
+		// TODO jogar a newEntry no WebService 
+		
+		result.redirectTo(getClass()).dictionaryEntries();
 	}
 	
 	@Get
@@ -86,6 +102,4 @@ public class DictionaryPatchController {
 		
 		result.include("dictionaryPatch", dictionaryPatch);	
 	}
-	
-	
 }

@@ -30,7 +30,8 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 					var k = 0;
 					json = JSON.parse(response);
 					if (json.status == json.ok){
-						html = '<table class="display"><tr><td><h4>Derivações:</h4></td><td align="center">';
+						html = '<form action="<c:url value="/patchApproval"/>" method="post">';
+						html += '<table class="display"><tr><td><h4>Derivações:</h4></td><td align="center">';
 						if (isAdmin) {
  							html += '<input id="checkAllFlags" type="checkbox" onchange="isChecked = $(this).attr(\'checked\');';
  	 						html += '$(\'.flagscheckbox\').attr(\'checked\', isChecked);">';
@@ -38,9 +39,6 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 						html += '</td></tr>';
 						derivations = json.derivations;
 
-						if (isAdmin) {
-							html += '<form action="approval" method="post">';
-						}
 						var obs = false;
 						
 						for (var flag in derivations){
@@ -52,7 +50,7 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 	 						html += '</td><td align="center">'
 							if (isAdmin) {
 								if (flag.length == 1) {
-	 								html += '<input class="flagscheckbox" type="checkbox"';
+	 								html += '<input name="flags[]" value="' + flag + '" class="flagscheckbox" type="checkbox"';
 		 							html += 'onchange="$(\'#checkAllFlags\').attr(\'checked\', false);">';
 								}
 								else {
@@ -67,9 +65,10 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 							if (obs == true) {
 								html += '*fc = flags combinadas (são aprovadas se ambas isoladamente também forem)'
 							}
-							html += '</td><td align="center"><input value="Aprovar" type="submit"></form></td>';
+							html += '</td><td align="center"><input value="Aprovar" type="submit">';
+							html += '<input name="idPatch" type="hidden" value="' + idPatch + '"></td></tr>';
 						}
-						html += '</table>';
+						html += '</table></form>';
 						
 					}else {
 						html = json.msg;
@@ -179,17 +178,14 @@ Lista de palavras
 		</thead>
 		<tbody>
 			<c:forEach items="${dictionaryPatchList}" var="patch" varStatus="i">
-
 				<c:if test="${patch.isNew}">
 					<tr id="tr_dictionaryPatch_${ i.count }" class="highlighted" title="<c:url value="/dictionaryEntries/${patch.id}"/>">
 				</c:if>
 				<c:if test="${not patch.isNew}">
 					<tr id="tr_dictionaryPatch_${ i.count }" title="<c:url value="/dictionaryEntries/${patch.id}"/>">
 				</c:if>
-			
 					<td valign="middle"><img src="./images/details_open.png" idPatch=${patch.id} ></td>		<!-- 0 -->
 					<td><a href="<c:url value="/dictionaryEntries/${patch.id}"/>">${patch.id}</a></td>		<!-- 1 -->
-					
 					<td><fmt:message key="${patch.state}" /></td>					<!-- 2 -->
 					<td>${patch.previousEntry}</td>			<!-- 3 -->
 					<td>${patch.newEntry}</td>			<!-- 4 -->
