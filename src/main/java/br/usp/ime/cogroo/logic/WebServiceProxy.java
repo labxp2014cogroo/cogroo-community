@@ -40,7 +40,7 @@ public class WebServiceProxy {
 	}
 	
 	public JSONObject tryRequest (String text) throws IOException {
-		return this.getJSONFromWebService(this.webServiceProperties.getProperty("try") + text); 
+		return this.getJSONFromWebService(this.webServiceProperties.getProperty("try") + URLEncoder.encode(text, "ISO-8859-1")); 
 	}
 	
 	public JSONObject analysisRequest (String text) throws IOException {
@@ -49,9 +49,10 @@ public class WebServiceProxy {
 	
 	private JSONObject getJSONFromWebService(String suffix) throws IOException
 	{
-		String encodedURL = this.baseURL + URLEncoder.encode(suffix, "ISO-8859-1"); 
+		String requestURL = this.baseURL + suffix; 
+		System.out.println(requestURL);
         HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet(encodedURL);
+        HttpGet request = new HttpGet(requestURL);
         HttpResponse response;
         Scanner scanner;
         JSONObject jsonResult = null;
