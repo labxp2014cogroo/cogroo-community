@@ -10,10 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.apache.log4j.Logger;
-
-import br.usp.ime.cogroo.model.errorreport.ErrorEntry;
-
 
 public class ParserYaml {
 

@@ -1,7 +1,6 @@
 package br.usp.ime.cogroo.logic;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,7 +48,7 @@ public class DerivationsQuery {
 					String flag = allDerivations.getJSONObject(derivation)
 							.getString("flags");
 					if (flag.length() == 1)
-						relevantDerivations.put(flag, Charset.forName("UTF-8").encode(derivation).toString());
+						relevantDerivations.put(flag, derivation);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
