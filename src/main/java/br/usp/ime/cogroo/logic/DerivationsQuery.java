@@ -11,7 +11,6 @@ import org.json.JSONObject;
 
 public class DerivationsQuery {
 	static final String FLAGS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	static final String baseProcessURL = "http://interno.cogroo.org:4040/jspell/try.json?entry=";
 
 	private DerivationsQuery() {
 		return;
@@ -27,8 +26,7 @@ public class DerivationsQuery {
 	public static HashMap<String, String> queryDerivations(String text) {
 		HashMap<String, String> derivationsHash = null;
 		try {
-			JSONObject jsonResult = JSONGetter.getJSONFromWebService(
-					baseProcessURL, text + FLAGS).getJSONObject("derivadas");
+			JSONObject jsonResult = WebServiceProxy.getInstance().tryRequest(text + FLAGS).getJSONObject("derivadas");
 			derivationsHash = getRelevantDerivations(jsonResult);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -66,8 +64,7 @@ public class DerivationsQuery {
 		HashMap<String, Set<String>> derivationsHash = null;
 
 		try {
-			JSONObject jsonResult = JSONGetter
-									.getJSONFromWebService(baseProcessURL, entry)
+			JSONObject jsonResult = WebServiceProxy.getInstance().tryRequest(entry)
 									.getJSONObject("derivadas");
 			derivationsHash = fillHashMapDerivations(jsonResult);
 		} catch (IOException e) {
