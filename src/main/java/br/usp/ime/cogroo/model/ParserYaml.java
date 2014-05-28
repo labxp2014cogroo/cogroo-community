@@ -14,7 +14,7 @@ public class ParserYaml {
     
     private ParserYaml() throws FileNotFoundException {
     	Map<String, Pair<String, HashMap<String, String>>> hash = new HashMap<String, Pair<String, HashMap<String, String>>>();
-        this.parse("port.yaml", hash);
+        this.parse("/port.yaml", hash);
         this.hash = Collections.unmodifiableMap(hash);
     }
     
