@@ -11,7 +11,12 @@
 
 <script>
 
-function displayPatchDetails (nTr, idPatch) {
+var colors = Array();
+colors[1] = '#CFCFCF';
+colors[0] = '#B9B9B9';
+
+
+function displayPatchDetails (nTr, idPatch, isAdmin) {
 	datum = {'idPatch':idPatch};
 	$.ajax({
 		timeout: 10000, // ten seconds
@@ -23,21 +28,49 @@ function displayPatchDetails (nTr, idPatch) {
 		},
 		success: function(response){
 					var k = 0;
-					var colors = Array();
-					colors[0] = '#CFCFCF';
-					colors[1] = '#B9B9B9';
 					json = JSON.parse(response);
 					if (json.status == json.ok){
-						html = '<h4>Derivações:</h4><br/>';
+						html = '<table class="display"><tr><td><h4>Derivações:</h4></td><td align="center">';
+						if (isAdmin) {
+ 							html += '<input id="checkAllFlags" type="checkbox" onchange="isChecked = $(this).attr(\'checked\');';
+ 	 						html += '$(\'.flagscheckbox\').attr(\'checked\', isChecked);">';
+						}
+						html += '</td></tr>';
 						derivations = json.derivations;
+
+						if (isAdmin) {
+							html += '<form action="approval" method="post">';
+						}
+						var obs = false;
+						
 						for (var flag in derivations){
-							html += '<div style="background-color:' + colors[k++ % colors.length] + '" >';
+							html += '<tr style="background-color:' + colors[k++ % colors.length] + '"><td>';
 							html += 'Para a flag ' + flag + ':<br/>';
 	 						for(var l = 0; l < derivations[flag].length; l++){
 	 							html += derivations[flag][l] + ', ';	
 	 						}
-	 						html += '<div><br/>';
+	 						html += '</td><td align="center">'
+							if (isAdmin) {
+								if (flag.length == 1) {
+	 								html += '<input class="flagscheckbox" type="checkbox"';
+		 							html += 'onchange="$(\'#checkAllFlags\').attr(\'checked\', false);">';
+								}
+								else {
+									html += '*fc';
+									obs = true;
+								}
+							}
+	 						html += '</td></tr>';
 						}
+						if (isAdmin) {
+							html += '<tr><td>';
+							if (obs == true) {
+								html += '*fc = flags combinadas (são aprovadas se ambas isoladamente também forem)'
+							}
+							html += '</td><td align="center"><input value="Aprovar" type="submit"></form></td>';
+						}
+						html += '</table>';
+						
 					}else {
 						html = json.msg;
 					}
@@ -75,7 +108,7 @@ $(document).ready(function() {
 			null,  						//4
 			{ "sType": "title-string" },//5
 			null,						//6
-			{ "bSortable": false }		//7
+			{ "bSortable": false },		//7
 		],
 		
 		
@@ -110,7 +143,7 @@ $(document).ready(function() {
 				/* Open this row */
 				this.src = "./images/details_close.png";
 				//oTable.fnOpen( nTr, fnFormatDetails(nTr), 'details' );
-				displayPatchDetails (nTr, $(this).attr('idPatch'));
+				displayPatchDetails (nTr, $(this).attr('idPatch'), ${loggedUser.admin});
 			}
 		} );
 	} );
@@ -131,7 +164,7 @@ Lista de palavras
 	</c:if>
 </div>
 
-<table cellpadding="0" cellspacing="0" border="0" class="display" id="entriesList">
+<table class="display" id="entriesList">
 		<thead>
 			<tr>
 			  <th></th> 			<!-- 0 -->
@@ -142,9 +175,6 @@ Lista de palavras
 			  <th title="Exibe o usuário que enviou a sugestão.">Usuário</th>  <!-- 5 -->
 			  <th title="Exibe a data da última alteração realizada no problema.">Data</th>	<!-- 6 -->
 			  <th title="Exibe o número de comentários feitos sobre o problema.">Comentários</th>	<!-- 7 -->
-			  <c:if test="${loggedUser.admin }">
-			  	<th>Aprovação</th>
-			  </c:if>
 			</tr>
 		</thead>
 		<tbody>
@@ -166,9 +196,6 @@ Lista de palavras
 	  			  	<td>Enviado por: <a href="<c:url value="/users/${patch.user.service}/${patch.user.login}"/>">${patch.user.name}</a></td><!-- 5 -->
 					<td><span title="${patch.modified}"></span><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${patch.modified}" /></td>		<!-- 6 -->
 					<td>${patch.commentCount}</td>									<!-- 7 -->
-					<c:if test="${loggedUser.admin }">
-				  		<td><input type="checkbox"></td>
-				  	</c:if>
 			</c:forEach>
 		</tbody>
 	</table>
