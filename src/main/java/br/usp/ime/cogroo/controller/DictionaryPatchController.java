@@ -82,8 +82,10 @@ public class DictionaryPatchController {
 		
 		String newEntry = dictionaryPatch.getNewEntry().substring(0, dictionaryPatch.getNewEntry().lastIndexOf("/")+1);
 		
-		for (String flag : flags) {
-			newEntry += flag;
+		if (flags != null) {
+			for (String flag : flags) {
+				newEntry += flag;
+			}
 		}
 		
 		// TODO jogar a newEntry no WebService 
