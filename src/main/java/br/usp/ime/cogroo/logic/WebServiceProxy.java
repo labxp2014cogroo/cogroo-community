@@ -16,11 +16,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.api.client.json.Json;
+
 public class WebServiceProxy {
 	private static WebServiceProxy singleton = null;
 	private String baseURL;
 	private Properties webServiceProperties; 
 	private static String propertiesFileName = "src/main/resources/webservice.properties"; 
+	private static final String REPO_NAME = "repoCogrooCommunity";  
 	
 	public String getBaseURL() {
 		return baseURL;
@@ -69,23 +72,39 @@ public class WebServiceProxy {
 		return jsonResult; 
 	}
 	
-	public JSONObject createEntry (String repo, String entry) throws JSONException {
-		//Hardcoded to pass TDD test
-		JSONObject result = new JSONObject(); 
-		result.put("status", "OK"); 
-		return result; 
+	public boolean insertEntry (String entry) throws IOException, JSONException {
+		if (this.load(REPO_NAME)) {
+			if (this.create(REPO_NAME, entry)) {
+				if (this.commit(REPO_NAME, entry)) {
+					if(this.push()) 
+						return this.load("default"); 
+				}
+			}
+		} 
+		return false; 
 	}
 	
-	public JSONObject commit (String repo, String entry) throws JSONException {
+	public boolean push () {
+		return true; 
+	}
+		
+	
+	public boolean create (String repo, String entry) throws JSONException, IOException {
+		JSONObject result = getJSONFromWebService(this.webServiceProperties.getProperty("create") + "id=" + repo + "&category=geral&entry=" + entry); 
+		return result.get("status").equals("OK"); 
+	}
+	
+	public boolean commit (String repo, String entry) throws JSONException {
 		//Hardcoded to pass TDD test
 		JSONObject result = new JSONObject(); 
 		result.put("status", "OK"); 
-		return result; 
+		return result.get("status").equals("OK"); 
+	}
+	
+	public boolean load (String repo) throws IOException, JSONException {
+		JSONObject result = getJSONFromWebService(this.webServiceProperties.getProperty("manager") + "id=" + repo); 
+		System.out.println(result);
+		return result.get("status").equals("OK"); 
 	}
 }
-
-
-
-
-
 

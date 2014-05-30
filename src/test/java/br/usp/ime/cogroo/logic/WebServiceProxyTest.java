@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.springframework.test.AssertThrows;
 
 import utils.LabXP2014;
 
@@ -38,16 +39,19 @@ public class WebServiceProxyTest {
 	
 	@Test 
 	public void testCreateEntry () throws FileNotFoundException, JSONException, IOException {
-		JSONObject result = WebServiceProxy.getInstance().createEntry(REPO, "orkut/#nm//"); 
-		assertEquals("OK", result.get("status"));
+		boolean result = WebServiceProxy.getInstance().load(REPO); 
+		assertEquals(true, result);
 		
-		result = WebServiceProxy.getInstance().createEntry(REPO, "Lalalar/CAT=v,T=inf,TR=t/EPa");
-		assertEquals("OK", result.get("status"));
+		result = WebServiceProxy.getInstance().create(REPO, "orkut/#nm//"); 
+		assertEquals(true, result);
+		
+		result = WebServiceProxy.getInstance().create(REPO, "Lalalar/CAT=v,T=inf,TR=t/EPa");
+		assertEquals(true, result);
 	}
 	
 	@Test
 	public void testCommit () throws FileNotFoundException, JSONException, IOException {
-		JSONObject result = WebServiceProxy.getInstance().commit(REPO, "commit test");
-		assertEquals("OK", result.get("status")); 		
+		boolean result = WebServiceProxy.getInstance().commit(REPO, "commit test");
+		assertEquals(true, result); 		
 	}
 }
