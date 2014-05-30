@@ -86,8 +86,8 @@ public class DictionaryPatchController {
 			newEntry += flag;
 		}
 		
-		System.out.println(newEntry);
 		// TODO jogar a newEntry no WebService 
+		System.out.println(newEntry);
 		
 		result.redirectTo(getClass()).dictionaryEntries();
 	}
