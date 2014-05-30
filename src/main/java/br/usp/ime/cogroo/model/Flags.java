@@ -13,7 +13,7 @@ public class Flags {
 	
 	private Flags() throws IOException {
 		this.flagsProperties = new Properties();
-		this.flagsProperties.load(new FileInputStream(new File("flags.properties")));
+		this.flagsProperties.load(new FileInputStream(new File("src/main/resources/flags.properties")));
 	}
 	
 

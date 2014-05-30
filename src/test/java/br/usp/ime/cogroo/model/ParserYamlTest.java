@@ -1,6 +1,7 @@
 package br.usp.ime.cogroo.model;
 
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 
 import junit.framework.Assert;
 
@@ -13,7 +14,7 @@ import utils.LabXP2014;
 public class ParserYamlTest {
 
 	@Test
-	public void testeHashNivel1() throws FileNotFoundException {
+	public void testeHashNivel1() throws FileNotFoundException, UnsupportedEncodingException {
 		ParserYaml p = ParserYaml.getInstance();
 		Assert.assertEquals("Categoria", p.getValue("CAT"));
 		Assert.assertEquals("Semântica", p.getValue("SEM"));
@@ -23,7 +24,7 @@ public class ParserYamlTest {
 	}
 	
 	@Test
-	public void testeHashNivel2() throws FileNotFoundException {
+	public void testeHashNivel2() throws FileNotFoundException, UnsupportedEncodingException {
 		ParserYaml p = ParserYaml.getInstance();
 		Assert.assertEquals("obra literária", p.getValue("SEM", "livro"));
 		Assert.assertEquals("interjeição", p.getValue("CAT", "in"));
