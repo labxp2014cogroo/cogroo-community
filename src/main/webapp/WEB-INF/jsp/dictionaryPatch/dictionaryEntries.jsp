@@ -33,8 +33,8 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 						html = '<form action="<c:url value="/patchApproval"/>" method="post">';
 						html += '<table class="display"><tr><td><h4>Derivações:</h4></td><td align="center">';
 						if (isAdmin) {
- 							html += '<input id="checkAllFlags" type="checkbox" onchange="isChecked = $(this).attr(\'checked\');';
- 	 						html += '$(\'.flagscheckbox\').attr(\'checked\', isChecked);">';
+ 							html += '<input id="checkAllFlags'+ idPatch +'" type="checkbox" onchange="isChecked = $(this).attr(\'checked\');';
+ 	 						html += '$(\'.flagscheckbox'+ idPatch +'\').attr(\'checked\', isChecked);">';
 						}
 						html += '</td></tr>';
 						derivations = json.derivations;
@@ -50,8 +50,8 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 	 						html += '</td><td align="center">'
 							if (isAdmin) {
 								if (flag.length == 1) {
-	 								html += '<input name="flags[]" value="' + flag + '" class="flagscheckbox" type="checkbox"';
-		 							html += 'onchange="$(\'#checkAllFlags\').attr(\'checked\', false);">';
+	 								html += '<input name="flags[]" value="' + flag + '" class="flagscheckbox'+idPatch+'" type="checkbox"';
+		 							html += 'onchange="$(\'#checkAllFlags'+idPatch+'\').attr(\'checked\', false);">';
 								}
 								else {
 									html += '*fc';
@@ -63,12 +63,14 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 						if (isAdmin) {
 							html += '<tr><td>';
 							if (obs == true) {
-								html += '*fc = flags combinadas (são aprovadas se ambas isoladamente também forem)'
+								html += '*fc = flags combinadas (são aprovadas se ambas isoladamente também forem)';
 							}
-							html += '</td><td align="center"><input value="Aprovar" type="submit">';
+							html += '</td><td align="center">';
 							html += '<input name="idPatch" type="hidden" value="' + idPatch + '"></td></tr>';
 						}
-						html += '</table></form>';
+						html += '</table>';
+						html += '<div> <input style="float: right" name="desaprovar" value="Desaprovar" type="submit"> <input style="float: right;" name="aprovar" value="Aprovar" type="submit"> </div>';
+						html += '</form>';
 						
 					}else {
 						html = json.msg;
