@@ -18,7 +18,7 @@ public class SearchWordJspell {
 	public static LinkedList<Vocable> searchWord(String text) throws IOException{
 		LinkedList<Vocable> vocables = new LinkedList<Vocable>();
 		try {
-			JSONArray analisis = JSONGetter.getJSONFromWebService(baseAnalyseURL, text).getJSONArray("analise");
+			JSONArray analisis = WebServiceProxy.getInstance().analysisRequest(text).getJSONArray("analise");
 
 			for (int i = 0; i < analisis.length(); i++){
 				JSONObject json = analisis.getJSONObject(i);
