@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javassist.tools.web.Webserver;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +18,8 @@ import utils.LabXP2014;
 @Category(LabXP2014.class)
 public class WebServiceProxyTest {
 
+	private final String REPO = "TestRepo"; 
+	
 	@Test
 	public void testTryRequest() throws FileNotFoundException, IOException, JSONException {
 		JSONObject result = WebServiceProxy.getInstance().tryRequest("abismal/#an/dFGALO");
@@ -31,5 +35,19 @@ public class WebServiceProxyTest {
 		assertEquals( ((JSONObject) result.get("derivadas")).getJSONObject("casas").get("rad"), "casa");
 		assertEquals( ((JSONObject) result.get("derivadas")).getJSONObject("casas").get("G"), "f");
 	}
-
+	
+	@Test 
+	public void testCreateEntry () throws FileNotFoundException, JSONException, IOException {
+		JSONObject result = WebServiceProxy.getInstance().createEntry(REPO, "orkut/#nm//"); 
+		assertEquals("OK", result.get("status"));
+		
+		result = WebServiceProxy.getInstance().createEntry(REPO, "Lalalar/CAT=v,T=inf,TR=t/EPa");
+		assertEquals("OK", result.get("status"));
+	}
+	
+	@Test
+	public void testCommit () throws FileNotFoundException, JSONException, IOException {
+		JSONObject result = WebServiceProxy.getInstance().commit(REPO, "commit test");
+		assertEquals("OK", result.get("status")); 		
+	}
 }
