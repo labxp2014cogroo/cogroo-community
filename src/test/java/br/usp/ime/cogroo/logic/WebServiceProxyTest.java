@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javassist.tools.web.Webserver;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

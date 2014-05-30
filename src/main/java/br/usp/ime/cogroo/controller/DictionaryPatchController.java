@@ -1,8 +1,8 @@
 package br.usp.ime.cogroo.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.json.JSONException;
@@ -18,6 +18,7 @@ import br.usp.ime.cogroo.dao.DictionaryPatchDAO;
 import br.usp.ime.cogroo.logic.DerivationsQuery;
 import br.usp.ime.cogroo.model.DictionaryPatch;
 import br.usp.ime.cogroo.model.LoggedUser;
+import br.usp.ime.cogroo.model.errorreport.State;
 
 @Resource
 public class DictionaryPatchController {
@@ -48,7 +49,7 @@ public class DictionaryPatchController {
 			}else {
 				response.put("status", 0);
 				response.put("msg", "OK");
-				HashMap<String, Set<String>> derivationsHash = DerivationsQuery.getDerivationsFromFlags(dictionaryPatch.getNewEntry());
+				Map<String, Set<String>> derivationsHash = DerivationsQuery.getDerivationsFromFlags(dictionaryPatch.getNewEntry());
 				JSONObject jsonDerivations = new JSONObject(derivationsHash); 
 				
 				response.put("derivations", jsonDerivations);
@@ -80,6 +81,8 @@ public class DictionaryPatchController {
 	public void patchApproval(String[] flags, long idPatch){
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 		
+		dictionaryPatch.setState(State.RESOLVED);
+		
 		String newEntry = dictionaryPatch.getNewEntry().substring(0, dictionaryPatch.getNewEntry().lastIndexOf("/")+1);
 		
 		if (flags != null) {
@@ -90,6 +93,16 @@ public class DictionaryPatchController {
 		
 		// TODO jogar a newEntry no WebService 
 		System.out.println(newEntry);
+		
+		result.redirectTo(getClass()).dictionaryEntries();
+	}
+	
+	@Post
+	@Path("/patchDisapproval")
+	public void patchDisapproval(String[] flags, long idPatch){
+		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
+		
+		dictionaryPatch.setState(State.REJECTED);
 		
 		result.redirectTo(getClass()).dictionaryEntries();
 	}

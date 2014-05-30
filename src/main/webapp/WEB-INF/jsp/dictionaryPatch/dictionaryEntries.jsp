@@ -69,7 +69,9 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 							html += '<input name="idPatch" type="hidden" value="' + idPatch + '"></td></tr>';
 						}
 						html += '</table>';
-						html += '<div> <input style="float: right" name="desaprovar" value="Desaprovar" type="submit"> <input style="float: right;" name="aprovar" value="Aprovar" type="submit"> </div>';
+						var disapproval_url = '<c:url value="/patchDisapproval"/>';
+						html += '<div> <input style="float: right" value="Desaprovar" type="submit" onclick="form.action='+disapproval_url+'">';
+						html += '<input style="float: right;" value="Aprovar" type="submit"></div>';
 						html += '</form>';
 						
 					}else {

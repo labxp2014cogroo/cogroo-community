@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class ParserYaml {
 
 	private static ParserYaml singleton = null;
-	public final static String YAML_FILE = "/port.yaml";
+	public static final String YAML_FILE = "/port.yaml";
 
 	private ParserYaml() throws FileNotFoundException, UnsupportedEncodingException {
 		Map<String, Pair<String, HashMap<String, String>>> hash = new HashMap<String, Pair<String, HashMap<String, String>>>();
@@ -32,7 +32,7 @@ public class ParserYaml {
 	private final Map<String, Pair<String, HashMap<String, String>>> hash;
 
 	private static void ignoreHeader (Scanner scan){
-		while (scan.hasNext() && !scan.nextLine().equals(" PROPS:"));
+		while (scan.hasNext() && !(" PROPS:").equals(scan.nextLine())) {};
 	}
 
 	private void generateFirstLevel (Scanner scan, Map<String, Pair<String, HashMap<String, String>>> hash){

@@ -2,8 +2,8 @@ package br.usp.ime.cogroo.logic;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class DerivationQueryTest {
 	@Test
 	public void testQueryDerivations() {
 		
-		HashMap<String, String> derivationsHash = DerivationsQuery.queryDerivations("abismal/#an/");
+		Map<String, String> derivationsHash = DerivationsQuery.queryDerivations("abismal/#an/");
 		assertEquals(derivationsHash.get("d"), "abismalidades");
 		assertEquals(derivationsHash.get("F"), "hiperabismal");
 		assertEquals(derivationsHash.get("G"), "abismalices");
@@ -38,7 +38,7 @@ public class DerivationQueryTest {
 	
 	@Test 
 	public void testRelevantDerivations () {
-		HashMap<String, String> relevantDerivations = DerivationsQuery.queryDerivations("abismal"); 
+		Map<String, String> relevantDerivations = DerivationsQuery.queryDerivations("abismal"); 
 		
 		for (String key : relevantDerivations.keySet()) {
 			assertEquals(key.length(), 1);
@@ -48,7 +48,7 @@ public class DerivationQueryTest {
 	@Test
 	public void testGetDerivationsFromFlags() {
 		
-		HashMap<String, Set<String>> derivationsHash = DerivationsQuery.getDerivationsFromFlags("abismal/#an/p");
+		Map<String, Set<String>> derivationsHash = DerivationsQuery.getDerivationsFromFlags("abismal/#an/p");
 		Set<String> test = new HashSet<String>();
 		test.add("abismais");
 		assertEquals(derivationsHash.get("p"), test);

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.json.JSONException;
@@ -23,8 +24,8 @@ public class DerivationsQuery {
 	 * @return um HashMap que associa uma flag à palavra gerada
 	 */
 
-	public static HashMap<String, String> queryDerivations(String text) {
-		HashMap<String, String> derivationsHash = null;
+	public static Map<String, String> queryDerivations(String text) {
+		Map<String, String> derivationsHash = null;
 		try {
 			JSONObject jsonResult = WebServiceProxy.getInstance().tryRequest(text + FLAGS).getJSONObject("derivadas");
 			derivationsHash = getRelevantDerivations(jsonResult);
@@ -37,9 +38,9 @@ public class DerivationsQuery {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static HashMap<String, String> getRelevantDerivations(
+	private static Map<String, String> getRelevantDerivations(
 			JSONObject allDerivations) {
-		HashMap<String, String> relevantDerivations = new HashMap<String, String>();
+		Map<String, String> relevantDerivations = new HashMap<String, String>();
 		Iterator<String> jsonIterator = allDerivations.keys();
 		while (jsonIterator.hasNext()) {
 			String derivation = jsonIterator.next();
@@ -58,10 +59,10 @@ public class DerivationsQuery {
 		return relevantDerivations;
 	}
 
-	public static HashMap<String, Set<String>> getDerivationsFromFlags(
+	public static Map<String, Set<String>> getDerivationsFromFlags(
 			String entry) {
 
-		HashMap<String, Set<String>> derivationsHash = null;
+		Map<String, Set<String>> derivationsHash = null;
 
 		try {
 			JSONObject jsonResult = WebServiceProxy.getInstance().tryRequest(entry)
@@ -76,10 +77,10 @@ public class DerivationsQuery {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static HashMap<String, Set<String>>
+	private static Map<String, Set<String>>
 			fillHashMapDerivations(	JSONObject allDerivations) {
 		
-		HashMap<String, Set<String>> derivations = new HashMap<String, Set<String>>();
+		Map<String, Set<String>> derivations = new HashMap<String, Set<String>>();
 		Iterator<String> jsonIterator = allDerivations.keys();
 		while (jsonIterator.hasNext()) {
 			String derivation = jsonIterator.next();
