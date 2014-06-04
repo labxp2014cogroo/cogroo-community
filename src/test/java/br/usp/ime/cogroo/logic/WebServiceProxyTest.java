@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.springframework.test.AssertThrows;
 
 import utils.LabXP2014;
 
@@ -49,7 +48,7 @@ public class WebServiceProxyTest {
 	
 	@Test
 	public void testCommit () throws FileNotFoundException, JSONException, IOException {
-		boolean result = WebServiceProxy.getInstance().commit(REPO, "commit test");
+		boolean result = WebServiceProxy.getInstance().commit(REPO, "commit test", "message");
 		assertEquals(true, result); 		
 	}
 }

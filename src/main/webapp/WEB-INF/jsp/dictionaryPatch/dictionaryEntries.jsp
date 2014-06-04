@@ -71,7 +71,7 @@ function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
 						html += '</table>';
 						var disapproval_url = '<c:url value="/patchDisapproval"/>';
 						if (patchState == "OPEN") {
-							html += '<div><input style="float: right" value="Desaprovar" type="submit" onclick="form.action='+disapproval_url+'">';
+							html += '<div style="margin-bottom: 30px;"><input style="float: right; margin-left: 20px;" value="Desaprovar" type="submit" onclick="form.action='+disapproval_url+'">';
 							html += '<input style="float: right;" value="Aprovar" type="submit"></div>';
 						}
 						html += '</form>';
