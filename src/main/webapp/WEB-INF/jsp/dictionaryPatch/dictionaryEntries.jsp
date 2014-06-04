@@ -33,7 +33,7 @@ function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
 						html = '<form action="<c:url value="/patchApproval"/>" method="post">';
 						html += '<table class="display"><tr><td><h4>Derivações:</h4></td><td align="center">';
 						if (patchState == "OPEN" && isAdmin) {
- 							html += '<input id="checkAllFlags'+ idPatch +'" type="checkbox" onchange="isChecked = $(this).attr(\'checked\');';
+ 							html += '<input id="checkAllFlags'+ idPatch +'" type="checkbox" checked="checked" onchange="isChecked = $(this).attr(\'checked\');';
  	 						html += '$(\'.flagscheckbox'+ idPatch +'\').attr(\'checked\', isChecked);">';
 						}
 						html += '</td></tr>';
@@ -50,7 +50,7 @@ function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
 	 						html += '</td><td align="center">'
 							if (patchState == "OPEN" && isAdmin) {
 								if (flag.length == 1) {
-	 								html += '<input name="flags[]" value="' + flag + '" class="flagscheckbox'+idPatch+'" type="checkbox"';
+	 								html += '<input name="flags[]" value="' + flag + '" class="flagscheckbox'+idPatch+'" checked="checked" type="checkbox"';
 		 							html += 'onchange="$(\'#checkAllFlags'+idPatch+'\').attr(\'checked\', false);">';
 								}
 								else {
