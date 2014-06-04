@@ -97,7 +97,7 @@ public class DictionaryPatchController {
 		}
 
 		try {
-			String message = "Alteração aprovada por "
+			String message = newEntry + " aprovada por "
 					+ loggedUser.getUser().getName();
 
 			WebServiceProxy webService = WebServiceProxy.getInstance();

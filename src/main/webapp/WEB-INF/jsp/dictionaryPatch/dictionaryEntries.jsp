@@ -16,7 +16,7 @@ colors[1] = '#CFCFCF';
 colors[0] = '#B9B9B9';
 
 
-function displayPatchDetails (nTr, idPatch, isAdmin) {
+function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
 	datum = {'idPatch':idPatch};
 	$.ajax({
 		timeout: 10000, // ten seconds
@@ -32,7 +32,7 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 					if (json.status == json.ok){
 						html = '<form action="<c:url value="/patchApproval"/>" method="post">';
 						html += '<table class="display"><tr><td><h4>Derivações:</h4></td><td align="center">';
-						if (isAdmin) {
+						if (patchState == "OPEN" && isAdmin) {
  							html += '<input id="checkAllFlags'+ idPatch +'" type="checkbox" onchange="isChecked = $(this).attr(\'checked\');';
  	 						html += '$(\'.flagscheckbox'+ idPatch +'\').attr(\'checked\', isChecked);">';
 						}
@@ -48,7 +48,7 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 	 							html += derivations[flag][l] + ', ';	
 	 						}
 	 						html += '</td><td align="center">'
-							if (isAdmin) {
+							if (patchState == "OPEN" && isAdmin) {
 								if (flag.length == 1) {
 	 								html += '<input name="flags[]" value="' + flag + '" class="flagscheckbox'+idPatch+'" type="checkbox"';
 		 							html += 'onchange="$(\'#checkAllFlags'+idPatch+'\').attr(\'checked\', false);">';
@@ -70,8 +70,10 @@ function displayPatchDetails (nTr, idPatch, isAdmin) {
 						}
 						html += '</table>';
 						var disapproval_url = '<c:url value="/patchDisapproval"/>';
-						html += '<div> <input style="float: right" value="Desaprovar" type="submit" onclick="form.action='+disapproval_url+'">';
-						html += '<input style="float: right;" value="Aprovar" type="submit"></div>';
+						if (patchState == "OPEN") {
+							html += '<div><input style="float: right" value="Desaprovar" type="submit" onclick="form.action='+disapproval_url+'">';
+							html += '<input style="float: right;" value="Aprovar" type="submit"></div>';
+						}
 						html += '</form>';
 						
 					}else {
@@ -146,7 +148,7 @@ $(document).ready(function() {
 				/* Open this row */
 				this.src = "./images/details_close.png";
 				//oTable.fnOpen( nTr, fnFormatDetails(nTr), 'details' );
-				displayPatchDetails (nTr, $(this).attr('idPatch'), ${loggedUser.admin});
+				displayPatchDetails (nTr, $(this).attr('idPatch'), ${loggedUser.admin}, $(this).attr('patchState'));
 			}
 		} );
 	} );
@@ -188,7 +190,7 @@ Lista de palavras
 				<c:if test="${not patch.isNew}">
 					<tr id="tr_dictionaryPatch_${ i.count }" title="<c:url value="/dictionaryEntries/${patch.id}"/>">
 				</c:if>
-					<td valign="middle"><img src="./images/details_open.png" idPatch=${patch.id} ></td>		<!-- 0 -->
+					<td valign="middle"><img src="./images/details_open.png" idPatch=${patch.id} patchState=${patch.state}></td>		<!-- 0 -->
 					<td><a href="<c:url value="/dictionaryEntries/${patch.id}"/>">${patch.id}</a></td>		<!-- 1 -->
 					<td><fmt:message key="${patch.state}" /></td>					<!-- 2 -->
 					<td>${patch.previousEntry}</td>			<!-- 3 -->
