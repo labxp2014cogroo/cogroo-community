@@ -16,7 +16,12 @@ colors[1] = '#CFCFCF';
 colors[0] = '#B9B9B9';
 
 
+function submitForm () {
+	$("#formAp").attr("action",'<c:url value="/patchDisapproval"/>');
+}
+
 function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
+
 	datum = {'idPatch':idPatch};
 	$.ajax({
 		timeout: 10000, // ten seconds
@@ -30,7 +35,7 @@ function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
 					var k = 0;
 					json = JSON.parse(response);
 					if (json.status == json.ok){
-						html = '<form action="<c:url value="/patchApproval"/>" method="post">';
+						html = '<form action="<c:url value="/patchApproval"/>" method="post" id="formAp">';
 						html += '<table class="display"><tr><td><h4>Derivações:</h4></td><td align="center">';
 						if (patchState == "OPEN" && isAdmin) {
  							html += '<input id="checkAllFlags'+ idPatch +'" type="checkbox" checked="checked" onchange="isChecked = $(this).attr(\'checked\');';
@@ -71,7 +76,8 @@ function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
 						html += '</table>';
 						var disapproval_url = '<c:url value="/patchDisapproval"/>';
 						if (patchState == "OPEN") {
-							html += '<div style="margin-bottom: 30px;"><input style="float: right; margin-left: 20px;" value="Desaprovar" type="submit" onclick="form.action='+disapproval_url+'">';
+							
+							html += '<div style="margin-bottom: 30px;"><input style="float: right; margin-left: 20px;" value="Desaprovar" type="submit" onclick="submitForm()">';
 							html += '<input style="float: right;" value="Aprovar" type="submit"></div>';
 						}
 						html += '</form>';
