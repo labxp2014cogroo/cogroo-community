@@ -7,22 +7,20 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import br.usp.ime.cogroo.controller.RuleController;
+
 public class DerivationsQuery {
 	static final String FLAGS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
+	private static final Logger LOG = Logger.getLogger(RuleController.class);
+	
 	private DerivationsQuery() {
 		return;
 	}
-
-	/**
-	 * 
-	 * @param text
-	 *            é um paramêtro do formato radical/classificação/
-	 * @return um HashMap que associa uma flag à palavra gerada
-	 */
 
 	public static Map<String, String> queryDerivations(String text) {
 		Map<String, String> derivationsHash = null;
@@ -30,9 +28,9 @@ public class DerivationsQuery {
 			JSONObject jsonResult = WebServiceProxy.getInstance().tryRequest(text + FLAGS).getJSONObject("derivadas");
 			derivationsHash = getRelevantDerivations(jsonResult);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error("Não foi possivel completar o pedido", e);
 		} catch (JSONException e) {
-			e.printStackTrace();
+			Log.error("Erro na codificação do JSON", e);
 		}
 		return derivationsHash;
 	}
@@ -52,7 +50,7 @@ public class DerivationsQuery {
 						relevantDerivations.put(flag, derivation);
 				}
 			} catch (JSONException e) {
-				e.printStackTrace();
+				Log.error("Erro na codificação do JSON", e);
 			}
 		}
 
@@ -69,9 +67,9 @@ public class DerivationsQuery {
 									.getJSONObject("derivadas");
 			derivationsHash = fillHashMapDerivations(jsonResult);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error("Não foi possivel completar o pedido", e);
 		} catch (JSONException e) {
-			e.printStackTrace();
+			Log.error("Erro na codificação do JSON", e);
 		}
 		return derivationsHash;
 	}
@@ -93,7 +91,7 @@ public class DerivationsQuery {
 					derivations.get(flag).add(derivation);
 				}
 			} catch (JSONException e) {
-				e.printStackTrace();
+				Log.error("Erro na codificação do JSON", e);
 			}
 		}
 

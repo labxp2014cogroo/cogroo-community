@@ -13,8 +13,12 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import br.usp.ime.cogroo.controller.RuleController;
 
 public class WebServiceProxy {
 	private static WebServiceProxy singleton = null;
@@ -22,6 +26,7 @@ public class WebServiceProxy {
 	private Properties webServiceProperties;
 	private static String propertiesFileName = "src/main/resources/webservice.properties";
 	private static final String REPO_NAME = "repoCogrooCommunity";
+	private static final Logger LOG = Logger.getLogger(RuleController.class);
 
 	public String getBaseURL() {
 		return baseURL;
@@ -65,9 +70,9 @@ public class WebServiceProxy {
 			jsonResult = new JSONObject(scanner.nextLine());
 			scanner.close();
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
+			LOG.error("Erro na comunicação com o servidor", e);
 		} catch (JSONException e) {
-			e.printStackTrace();
+			LOG.error("Erro na codificação do JSON", e);
 		}
 		return jsonResult;
 	}
