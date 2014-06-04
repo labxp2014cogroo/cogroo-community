@@ -1,5 +1,7 @@
 package br.usp.ime.cogroo.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,20 +18,20 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.usp.ime.cogroo.dao.DictionaryPatchDAO;
 import br.usp.ime.cogroo.logic.DerivationsQuery;
+import br.usp.ime.cogroo.logic.WebServiceProxy;
 import br.usp.ime.cogroo.model.DictionaryPatch;
 import br.usp.ime.cogroo.model.LoggedUser;
 import br.usp.ime.cogroo.model.errorreport.State;
 
 @Resource
 public class DictionaryPatchController {
-	
+
 	private Result result;
 	private DictionaryPatchDAO dictionaryPatchDAO;
 	private LoggedUser loggedUser;
-	
+
 	public DictionaryPatchController(Result result,
-			DictionaryPatchDAO dictionaryPatchDAO,
-			LoggedUser loggedUser) {
+			DictionaryPatchDAO dictionaryPatchDAO, LoggedUser loggedUser) {
 		this.result = result;
 		this.dictionaryPatchDAO = dictionaryPatchDAO;
 		this.loggedUser = loggedUser;
@@ -37,76 +39,97 @@ public class DictionaryPatchController {
 
 	@Get
 	@Path("/getPatch")
-	public void getPatchDetails(Long idPatch) throws JSONException{
+	public void getPatchDetails(Long idPatch) throws JSONException {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 		JSONObject response = new JSONObject();
-		try{
+		try {
 			response.put("ok", 0);
-			if (dictionaryPatch == null){
+			if (dictionaryPatch == null) {
 				response.put("status", 1);
 				response.put("msg", "Erro: o id passado não existe no banco");
 				result.use(Results.http()).body(response.toString());
-			}else {
+			} else {
 				response.put("status", 0);
 				response.put("msg", "OK");
-				Map<String, Set<String>> derivationsHash = DerivationsQuery.getDerivationsFromFlags(dictionaryPatch.getNewEntry());
-				JSONObject jsonDerivations = new JSONObject(derivationsHash); 
-				
+				Map<String, Set<String>> derivationsHash = DerivationsQuery
+						.getDerivationsFromFlags(dictionaryPatch.getNewEntry());
+				JSONObject jsonDerivations = new JSONObject(derivationsHash);
+
 				response.put("derivations", jsonDerivations);
-				response.put("tipo","inserção");
+				response.put("tipo", "inserção");
 			}
-		}catch(JSONException e){
+		} catch (JSONException e) {
 			response.put("status", 2);
-			response.put("msg", "Erro: houve algum problema ao tentar pegar as derivações (Webservice ?)");
+			response.put("msg",
+					"Erro: houve algum problema ao tentar pegar as derivações (Webservice ?)");
 		}
 		result.use(Results.http()).body(response.toString());
 	}
-	
+
 	@Get
 	@Path("/dictionaryEntries")
 	public void dictionaryEntries() {
 		List<DictionaryPatch> dictionaryPatchList = new ArrayList<DictionaryPatch>();
-		
+
 		if (loggedUser.getUser().getRole().getRoleName().equals("user")) {
-			dictionaryPatchList = dictionaryPatchDAO.retriveFromUser(loggedUser.getUser().getId());
-		}
-		else {
+			dictionaryPatchList = dictionaryPatchDAO.retriveFromUser(loggedUser
+					.getUser().getId());
+		} else {
 			dictionaryPatchList = dictionaryPatchDAO.retrieveAll();
 		}
 		result.include("dictionaryPatchList", dictionaryPatchList);
 	}
-	
+
 	@Post
 	@Path("/patchApproval")
-	public void patchApproval(String[] flags, long idPatch){
+	public void patchApproval(String[] flags, long idPatch) {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
-		
+
 		dictionaryPatch.setState(State.RESOLVED);
-		
-		String newEntry = dictionaryPatch.getNewEntry().substring(0, dictionaryPatch.getNewEntry().lastIndexOf("/")+1);
-		
+
+		String newEntry = dictionaryPatch.getNewEntry().substring(0,
+				dictionaryPatch.getNewEntry().lastIndexOf("/") + 1);
+
 		if (flags != null) {
 			for (String flag : flags) {
 				newEntry += flag;
 			}
 		}
-		
-		// TODO jogar a newEntry no WebService 
-		System.out.println(newEntry);
-		
+
+		try {
+			String message = "Alteração aprovada por "
+					+ loggedUser.getUser().getName();
+
+			WebServiceProxy webService = WebServiceProxy.getInstance();
+
+			webService.insertEntry(newEntry, message);
+
+			// TODO tratar exceções e quando insertEntry devolve false
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		result.redirectTo(getClass()).dictionaryEntries();
 	}
-	
+
 	@Post
 	@Path("/patchDisapproval")
-	public void patchDisapproval(String[] flags, long idPatch){
+	public void patchDisapproval(String[] flags, long idPatch) {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
-		
+
 		dictionaryPatch.setState(State.REJECTED);
-		
+
 		result.redirectTo(getClass()).dictionaryEntries();
 	}
-	
+
 	@Get
 	@Path("/dictionaryEntries/{patch.id}")
 	public void entriesDetails(DictionaryPatch dictionaryPatch) {
@@ -114,7 +137,7 @@ public class DictionaryPatchController {
 			result.redirectTo(getClass()).dictionaryEntries();
 			return;
 		}
-		
-		result.include("dictionaryPatch", dictionaryPatch);	
+
+		result.include("dictionaryPatch", dictionaryPatch);
 	}
 }

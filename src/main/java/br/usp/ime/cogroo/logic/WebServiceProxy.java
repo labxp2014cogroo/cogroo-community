@@ -16,95 +16,102 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.api.client.json.Json;
-
 public class WebServiceProxy {
 	private static WebServiceProxy singleton = null;
 	private String baseURL;
-	private Properties webServiceProperties; 
-	private static String propertiesFileName = "src/main/resources/webservice.properties"; 
-	private static final String REPO_NAME = "repoCogrooCommunity";  
-	
+	private Properties webServiceProperties;
+	private static String propertiesFileName = "src/main/resources/webservice.properties";
+	private static final String REPO_NAME = "repoCogrooCommunity";
+
 	public String getBaseURL() {
 		return baseURL;
 	}
 
 	private WebServiceProxy() throws FileNotFoundException, IOException {
 		this.webServiceProperties = new Properties();
-		this.webServiceProperties.load(new FileInputStream(new File(WebServiceProxy.propertiesFileName)));
-		this.baseURL = this.webServiceProperties.getProperty("baseURL").trim(); 
+		this.webServiceProperties.load(new FileInputStream(new File(
+				WebServiceProxy.propertiesFileName)));
+		this.baseURL = this.webServiceProperties.getProperty("baseURL").trim();
 	}
-	
-	public static WebServiceProxy getInstance() throws FileNotFoundException, IOException{
-		if (WebServiceProxy.singleton == null){
+
+	public static WebServiceProxy getInstance() throws FileNotFoundException,
+			IOException {
+		if (WebServiceProxy.singleton == null) {
 			WebServiceProxy.singleton = new WebServiceProxy();
 		}
 		return WebServiceProxy.singleton;
 	}
-	
-	public JSONObject tryRequest (String text) throws IOException {
-		return this.getJSONFromWebService(this.webServiceProperties.getProperty("try") + URLEncoder.encode(text, "ISO-8859-1")); 
+
+	public JSONObject tryRequest(String text) throws IOException {
+		return this.getJSONFromWebService(this.webServiceProperties
+				.getProperty("try") + URLEncoder.encode(text, "ISO-8859-1"));
 	}
-	
-	public JSONObject analysisRequest (String text) throws IOException {
-		return this.getJSONFromWebService(this.webServiceProperties.getProperty("analysis") + text); 
+
+	public JSONObject analysisRequest(String text) throws IOException {
+		return this.getJSONFromWebService(this.webServiceProperties
+				.getProperty("analysis") + text);
 	}
-	
-	private JSONObject getJSONFromWebService(String suffix) throws IOException
-	{
+
+	private JSONObject getJSONFromWebService(String suffix) throws IOException {
 		String requestURL = this.baseURL + suffix;
-        HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet(requestURL);
-        HttpResponse response;
-        Scanner scanner;
-        JSONObject jsonResult = null;
+		HttpClient client = new DefaultHttpClient();
+		HttpGet request = new HttpGet(requestURL);
+		HttpResponse response;
+		Scanner scanner;
+		JSONObject jsonResult = null;
 		try {
 			response = client.execute(request);
 			scanner = new Scanner(response.getEntity().getContent());
 			jsonResult = new JSONObject(scanner.nextLine());
 			scanner.close();
-		}
-		catch (ClientProtocolException e) {
+		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}		
-		return jsonResult; 
+		}
+		return jsonResult;
 	}
-	
-	public boolean insertEntry (String entry) throws IOException, JSONException {
+
+	public boolean insertEntry(String entry, String message)
+			throws IOException, JSONException {
 		if (this.load(REPO_NAME)) {
 			if (this.create(REPO_NAME, entry)) {
-				if (this.commit(REPO_NAME, entry)) {
-					if(this.push()) 
-						return this.load("default"); 
+				if (this.commit(REPO_NAME, entry, message)) {
+					if (this.push(REPO_NAME))
+						return this.load("default");
 				}
 			}
-		} 
-		return false; 
+		}
+		return false;
 	}
-	
-	public boolean push () {
-		return true; 
+
+	public boolean push(String repo) throws IOException, JSONException {
+		JSONObject result = getJSONFromWebService(this.webServiceProperties
+				.getProperty("push") + "id=" + repo);
+		return result.get("status").equals("OK");
 	}
-		
-	
-	public boolean create (String repo, String entry) throws JSONException, IOException {
-		JSONObject result = getJSONFromWebService(this.webServiceProperties.getProperty("create") + "id=" + repo + "&category=geral&entry=" + entry); 
-		return result.get("status").equals("OK"); 
+
+	public boolean create(String repo, String entry) throws JSONException,
+			IOException {
+		JSONObject result = getJSONFromWebService(this.webServiceProperties
+				.getProperty("create")
+				+ "id="
+				+ repo
+				+ "&category=geral&entry=" + entry);
+		return result.get("status").equals("OK");
 	}
-	
-	public boolean commit (String repo, String entry) throws JSONException {
-		//Hardcoded to pass TDD test
-		JSONObject result = new JSONObject(); 
-		result.put("status", "OK"); 
-		return result.get("status").equals("OK"); 
+
+	public boolean commit(String repo, String entry, String message)
+			throws JSONException, IOException {
+		message = URLEncoder.encode(message, "UTF-8");
+		JSONObject result = getJSONFromWebService(this.webServiceProperties
+				.getProperty("commit") + "id=" + repo + "&message=" + message);
+		return result.get("status").equals("OK");
 	}
-	
-	public boolean load (String repo) throws IOException, JSONException {
-		JSONObject result = getJSONFromWebService(this.webServiceProperties.getProperty("manager") + "id=" + repo); 
-		System.out.println(result);
-		return result.get("status").equals("OK"); 
+
+	public boolean load(String repo) throws IOException, JSONException {
+		JSONObject result = getJSONFromWebService(this.webServiceProperties
+				.getProperty("load") + "id=" + repo);
+		return result.get("status").equals("OK");
 	}
 }
-
