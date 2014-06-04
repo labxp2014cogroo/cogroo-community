@@ -42,7 +42,7 @@ public class WebServiceProxyTest {
 		result = WebServiceProxy.getInstance().create(REPO, "orkut/#nm//"); 
 		assertEquals(true, result);
 		
-		result = WebServiceProxy.getInstance().create(REPO, "Lalalar/CAT=v,T=inf,TR=t/EPa");
+		result = WebServiceProxy.getInstance().create(REPO, "Lalaler/CAT=v,T=inf,TR=t/EPa");
 		assertEquals(true, result);
 	}
 	
