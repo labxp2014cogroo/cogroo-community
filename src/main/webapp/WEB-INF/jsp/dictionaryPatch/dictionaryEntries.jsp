@@ -167,12 +167,7 @@ Lista de palavras
 </h2>
 
 <div id="helpErrorList" style="display: none;" class="help">
-	<c:if test="${loggedUser.admin }">
-		<p>Exibe todas as palavras sugeridas pelos usuários.</p>
-	</c:if>
-	<c:if test="${not loggedUser.admin }">
-		<p>Exibe todas as palavras que você sugeriu.</p>
-	</c:if>
+	<p>Exibe todas as palavras sugeridas pelos usuários.</p>
 </div>
 
 <table class="display" id="entriesList">

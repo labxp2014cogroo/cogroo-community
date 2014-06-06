@@ -71,12 +71,8 @@ public class DictionaryPatchController {
 	public void dictionaryEntries() {
 		List<DictionaryPatch> dictionaryPatchList = new ArrayList<DictionaryPatch>();
 
-		if (loggedUser.getUser().getRole().getRoleName().equals("user")) {
-			dictionaryPatchList = dictionaryPatchDAO.retriveFromUser(loggedUser
-					.getUser().getId());
-		} else {
-			dictionaryPatchList = dictionaryPatchDAO.retrieveAll();
-		}
+		dictionaryPatchList = dictionaryPatchDAO.retrieveAll();
+			
 		result.include("dictionaryPatchList", dictionaryPatchList);
 	}
 

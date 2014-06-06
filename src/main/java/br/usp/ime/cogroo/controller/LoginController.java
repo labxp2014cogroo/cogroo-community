@@ -35,14 +35,13 @@ public class LoginController {
 	private LoggedUser loggedUser;
 	private Validator validator;
 	private static final Logger LOG = Logger.getLogger(LoginController.class);
-	
+
 	private HttpServletRequest request;
 	private ApplicationData appData;
 	private TextSanitizer sanitizer;
-	
+
 	private static final String HEADER_TITLE = "Login";
 	private static final String HEADER_DESCRIPTION = "Efetue login no CoGrOO Comunidade! É rápido e gratuito!";
-
 
 	public LoginController(Result result, UserDAO userDAO,
 			LoggedUser loggedUser, Validator validator,
@@ -62,7 +61,7 @@ public class LoginController {
 	public void login() {
 		if (loggedUser.isLogged()) {
 			String lastURL = loggedUser.getLastURLVisited();
-			if(lastURL != null && lastURL.length() > 0) {
+			if (lastURL != null && lastURL.length() > 0) {
 				result.redirectTo(loggedUser.getLastURLVisited());
 			} else {
 				result.redirectTo(IndexController.class).index();
@@ -81,12 +80,13 @@ public class LoginController {
 		}
 
 		if (login.trim().isEmpty() || password.trim().isEmpty()) {
-			validator.add(new ValidationMessage(ExceptionMessages.USER_CANNOT_BE_EMPTY,
+			validator.add(new ValidationMessage(
+					ExceptionMessages.USER_CANNOT_BE_EMPTY,
 					ExceptionMessages.ERROR));
 			validator.onErrorUse(Results.page()).of(LoginController.class)
 					.login();
 		}
-		
+
 		if (!login.trim().isEmpty()) {
 			if (login.trim().startsWith("oauth")) {
 				validator.add(new ValidationMessage(
@@ -96,13 +96,16 @@ public class LoginController {
 						.login();
 			}
 		}
-		
+
 		if (!userDAO.existLogin("cogroo", login)) {
 			LOG.info("User unknown[" + login
 					+ "]. Redirecting to register page.");
-			validator.add(new ValidationMessage(ExceptionMessages.USER_DONT_EXISTS,
-					ExceptionMessages.ERROR));
-			validator.onErrorUse(Results.page()).of(LoginController.class).login();
+			validator
+					.add(new ValidationMessage(
+							ExceptionMessages.USER_DONT_EXISTS,
+							ExceptionMessages.ERROR));
+			validator.onErrorUse(Results.page()).of(LoginController.class)
+					.login();
 		}
 		User userFromDB = userDAO.retrieveByLogin("cogroo", login);
 
@@ -110,9 +113,10 @@ public class LoginController {
 		String passFromDB = userFromDB.getPassword();
 
 		if (!passCripto.equalsIgnoreCase(passFromDB)) {
-			LOG.info("Password Failed[" + login
-					+ "|" + userFromDB.getEmail() + "]. Redirecting to login page.");
-			validator.add(new ValidationMessage(ExceptionMessages.USER_PASSWORD_FAILED,
+			LOG.info("Password Failed[" + login + "|" + userFromDB.getEmail()
+					+ "]. Redirecting to login page.");
+			validator.add(new ValidationMessage(
+					ExceptionMessages.USER_PASSWORD_FAILED,
 					ExceptionMessages.ERROR));
 			validator.onErrorUse(Results.page()).of(LoginController.class)
 					.login();
@@ -124,11 +128,11 @@ public class LoginController {
 		userFromDB.setLastLogin(System.currentTimeMillis());
 		userDAO.update(userFromDB);
 		loggedUser.login(userFromDB);
-		
+
 		result.include("gaEventUserLogged", true).include("provider", "cogroo");
-		
+
 		String lastURL = loggedUser.getLastURLVisited();
-		if(lastURL != null && lastURL.length() > 0) {
+		if (lastURL != null && lastURL.length() > 0) {
 			result.redirectTo(loggedUser.getLastURLVisited());
 		} else {
 			result.redirectTo(IndexController.class).index();
@@ -140,7 +144,7 @@ public class LoginController {
 	public void oauthLogin(String service) {
 		if (loggedUser.isLogged()) {
 			String lastURL = loggedUser.getLastURLVisited();
-			if(lastURL != null && lastURL.length() > 0) {
+			if (lastURL != null && lastURL.length() > 0) {
 				result.redirectTo(loggedUser.getLastURLVisited());
 			} else {
 				result.redirectTo(IndexController.class).index();
@@ -159,16 +163,17 @@ public class LoginController {
 			validator.onErrorUse(Results.page()).of(LoginController.class)
 					.login();
 		}
-		  
+
 		try {
 			SocialAuthConfig config = SocialAuthConfig.getDefault();
 			config.load();
-			
+
 			SocialAuthManager manager = new SocialAuthManager();
 			manager.setSocialAuthConfig(config);
 
 			String returnToUrl = BuildUtil.BASE_URL + "login/oauth";
-			String redirectUrl = manager.getAuthenticationUrl(service, returnToUrl);
+			String redirectUrl = manager.getAuthenticationUrl(service,
+					returnToUrl);
 
 			request.getSession().setAttribute("authManager", manager);
 			result.redirectTo(redirectUrl);
@@ -188,7 +193,7 @@ public class LoginController {
 	public void oauthLogin() {
 		if (loggedUser.isLogged()) {
 			String lastURL = loggedUser.getLastURLVisited();
-			if(lastURL != null && lastURL.length() > 0) {
+			if (lastURL != null && lastURL.length() > 0) {
 				result.redirectTo(loggedUser.getLastURLVisited());
 			} else {
 				result.redirectTo(IndexController.class).index();
@@ -219,7 +224,7 @@ public class LoginController {
 					.login();
 		}
 
-		if (LOG.isDebugEnabled()) {	
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("OAuth profile for service " + service);
 			LOG.debug(p);
 		}
@@ -350,7 +355,7 @@ public class LoginController {
 		}
 
 		User userFromDB = userDAO.retrieveByLogin(service, login);
-		
+
 		userFromDB.setLastLogin(System.currentTimeMillis());
 		userDAO.update(userFromDB);
 		loggedUser.login(userFromDB);
