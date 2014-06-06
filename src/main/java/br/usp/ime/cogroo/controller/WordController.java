@@ -165,8 +165,13 @@ public class WordController {
 		dictionarypatchdao.add(dictionarypatch);
 
 		System.out.println(entry);
-
-		result.redirectTo(getClass()).dictionaryEntrySearch();
+		
+		validator.add(new ValidationMessage(
+				ExceptionMessages.NO_CATEGORY_SELECTED,
+				ExceptionMessages.ERROR));
+		
+		result.include("okMessage", "Palavra cadastrada com sucesso!");
+		result.redirectTo(DictionaryPatchController.class).dictionaryEntries();
 	}
 
 	@Post
