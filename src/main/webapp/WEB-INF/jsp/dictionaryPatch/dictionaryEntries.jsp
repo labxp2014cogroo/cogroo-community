@@ -178,7 +178,7 @@ Lista de palavras
 			  <th title="Indica a situação (aberta, em andamento, resolvida, aguardando resposta, fechada ou rejeitada) do problema.">Situação</th>				<!-- 2 -->
 			  <th title="Exibe a entrada anterior.">Entrada anterior</th>     <!-- 3 -->
 			  <th title="Exibe a nova entrada.">Entrada modificada</th>		<!-- 4 -->
-			  <th title="Exibe o usuário que enviou a sugestão.">Usuário</th>  <!-- 5 -->
+			  <th title="Exibe o usuário que enviou a sugestão.">Enviado por</th>  <!-- 5 -->
 			  <th title="Exibe a data da última alteração realizada no problema.">Data</th>	<!-- 6 -->
 			  <th title="Exibe o número de comentários feitos sobre o problema.">Comentários</th>	<!-- 7 -->
 			</tr>
@@ -196,7 +196,7 @@ Lista de palavras
 					<td><fmt:message key="${patch.state}" /></td>					<!-- 2 -->
 					<td>${patch.previousEntry}</td>			<!-- 3 -->
 					<td>${patch.newEntry}</td>			<!-- 4 -->
-	  			  	<td>Enviado por: <a href="<c:url value="/users/${patch.user.service}/${patch.user.login}"/>">${patch.user.name}</a></td><!-- 5 -->
+	  			  	<td><a href="<c:url value="/users/${patch.user.service}/${patch.user.login}"/>">${patch.user.name}</a></td><!-- 5 -->
 					<td><span title="${patch.modified}"></span><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${patch.modified}" /></td>		<!-- 6 -->
 					<td>${patch.commentCount}</td>									<!-- 7 -->
 			</c:forEach>
