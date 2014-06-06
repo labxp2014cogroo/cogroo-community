@@ -17,21 +17,25 @@
 	<c:choose>
 		<c:when test="${status == 404}">
 			${mensagem_erro}.
-			Clique <a href="/newEntry/loggedUser?word=${typed_word}">aqui </a>
-			para incluir <b>${typed_word}</b>.
+			N&atilde;o encontramos a palavra ${typed_word}.
+			<br/>
+			Deseja suger&iacute;-la?<br/>
+			<a href="/newEntry/loggedUser?word=${typed_word}" >
+				<input type="button" value="Sugerir" class="a_button" />
+			</a>
 		</c:when>
 		<c:when test="${status == 501}">
 			${mensagem_erro}
 		</c:when>	
 		<c:when test="${status == 0}">
-			<h3>Classificações da Palavra: ${typed_word}</h3>
+			<h3>ClassificaÃ§Ãµes da Palavra: ${typed_word}</h3>
 			<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
 				<thead>
 					<tr>
-					  <th>Nº.</th>
+					  <th>NÂº.</th>
 					  <th>Lemas</th>
 					  <th>Classe</th>
-					  <th>Flexão</th>
+					  <th>FlexÃ£o</th>
 					</tr>
 				</thead>
 				<tbody>
