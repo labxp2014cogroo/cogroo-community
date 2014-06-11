@@ -2,8 +2,7 @@ package br.usp.ime.cogroo.model;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.LinkedList;
-import java.util.List;
+import javax.sound.midi.Patch;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -12,6 +11,8 @@ import utils.LabXP2014;
 
 @Category(LabXP2014.class)
 public class VocableTest {
+	
+	private Vocable vocable = new Vocable();  
 
 	@Test
 	public void testVocable() {
@@ -38,7 +39,43 @@ public class VocableTest {
 		v.addProperty(key, value);
 		System.out.println(v.getPropertiesAsString());
 		
-		assertEquals(value + ", ", "value, ");
-		
+		assertEquals(value + ", ", "value, ");	
+	}
+	
+	@Test
+	public void setAndGetWordTest() {
+		String word = "WordTest"; 
+		vocable.setWord(word);
+		assertEquals(vocable.getWord(), word);
+	}
+
+	@Test 
+	public void setAndGetRadical() {
+		String radical = "RadicalTest"; 
+		vocable.setRadical(radical);
+		assertEquals(vocable.getRadical(), radical);
+	}
+	
+	@Test
+	public void setAndGetCategory() {
+		vocable.setCategory("v");
+		assertEquals(vocable.getCategory(), "verbo");
+		vocable.setCategory("nc");
+		assertEquals(vocable.getCategory(), "substantivo comum");
+	}
+	
+	@Test
+	public void addInvalidPropertyTest() {
+		String old = vocable.getPropertiesAsString(); 
+		vocable.addProperty("ThisIsNotAKey", "ThisIsNotAValue");
+		String actual = vocable.getPropertiesAsString(); 
+		assertEquals(old, actual);
+	}
+
+	@Test
+	public void addValidPropertyTest() { 
+		vocable.addProperty("T", "p");
+		String actual = vocable.getPropertiesAsString(); 
+		assertEquals("presente", actual);
 	}
 }

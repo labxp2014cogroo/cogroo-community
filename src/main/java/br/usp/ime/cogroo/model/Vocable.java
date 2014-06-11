@@ -23,6 +23,7 @@ public class Vocable {
 	public Vocable() {
 		try {
 			parser = ParserYaml.getInstance();
+			this.properties = new LinkedList<String>();
 		} catch (FileNotFoundException e) {
 			LOG.error("File not found: " + ParserYaml.YAML_FILE);
 		} catch (UnsupportedEncodingException e) {
@@ -35,7 +36,6 @@ public class Vocable {
 		this();
 		this.word = word;
 		this.radical = radical;
-		this.properties = new LinkedList<String>();
 		this.category = parser.getValue("CAT", category);
 	}
 
