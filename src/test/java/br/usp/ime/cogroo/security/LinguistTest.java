@@ -27,5 +27,10 @@ public class LinguistTest {
 	public void getCanEditErrorReportTest() {
 		assertTrue(linguist.getCanEditErrorReport());
 	}
+	
+	@Test
+	public void getCanApproveDictionaryEditionsTest () {
+		assertTrue(linguist.getCanApproveDictionaryEditions());
+	}
 
 }
