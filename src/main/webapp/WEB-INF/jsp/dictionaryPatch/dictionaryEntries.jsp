@@ -36,7 +36,7 @@ function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 					json = JSON.parse(response);
 					if (json.status == json.ok){
 						html = '<form action="<c:url value="/patchApproval"/>" method="post" id="formAp">';
-						html += '<table class="display"><tr><td><h4>Derivações:</h4></td><td align="center">';
+						html += '<table class="display"><tr align="center"><td><h3>Flags</h3></td><td><h3>Derivações</h3></td><td>';
 						if (patchState == "OPEN" && canApprove) {
  							html += '<input id="checkAllFlags'+ idPatch +'" type="checkbox" checked="checked" onchange="isChecked = $(this).attr(\'checked\');';
  	 						html += '$(\'.flagscheckbox'+ idPatch +'\').attr(\'checked\', isChecked);">';
@@ -47,8 +47,8 @@ function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 						var obs = false;
 						
 						for (var flag in derivations){
-							html += '<tr style="background-color:' + colors[k++ % colors.length] + '"><td>';
-							html += 'Para a flag ' + flag + ':<br/>';
+							html += '<tr style="background-color:' + colors[k++ % colors.length] + '"><td align="center">';
+							html += flag + '</td><td>';
 							if (derivations[flag].length > 0){
 								html += derivations[flag][0];
 		 						for(var l = 1; l < derivations[flag].length; l++){
