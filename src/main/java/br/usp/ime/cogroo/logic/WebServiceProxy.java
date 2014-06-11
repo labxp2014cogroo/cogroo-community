@@ -89,13 +89,13 @@ public class WebServiceProxy {
 		return false;
 	}
 
-	public boolean push(String repo) throws IOException, JSONException {
+	protected boolean push(String repo) throws IOException, JSONException {
 		JSONObject result = getJSONFromWebService(this.webServiceProperties
 				.getProperty("push") + "id=" + repo);
 		return result.get("status").equals("OK");
 	}
 
-	public boolean create(String repo, String entry) throws JSONException,
+	protected boolean create(String repo, String entry) throws JSONException,
 			IOException {
 		JSONObject result = getJSONFromWebService(this.webServiceProperties
 				.getProperty("create")
@@ -105,7 +105,7 @@ public class WebServiceProxy {
 		return result.get("status").equals("OK");
 	}
 
-	public boolean commit(String repo, String entry, String message)
+	protected boolean commit(String repo, String entry, String message)
 			throws JSONException, IOException {
 		message = URLEncoder.encode(message, "UTF-8");
 		JSONObject result = getJSONFromWebService(this.webServiceProperties
@@ -113,7 +113,7 @@ public class WebServiceProxy {
 		return result.get("status").equals("OK");
 	}
 
-	public boolean load(String repo) throws IOException, JSONException {
+	protected boolean load(String repo) throws IOException, JSONException {
 		JSONObject result = getJSONFromWebService(this.webServiceProperties
 				.getProperty("load") + "id=" + repo);
 		return result.get("status").equals("OK");
