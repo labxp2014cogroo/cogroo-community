@@ -23,8 +23,8 @@ public class LoggedUser implements Serializable {
 		return (this.user != null);
 	}
 	
-	public boolean isAdmin(){
-		return (this.user.getRole().getRoleName().equals("admin"));
+	public boolean isApprovedUser(){
+		return (this.user.getRole().getCanApproveDictionaryEditions()); 
 	}
 
 	public void login(User user) {
