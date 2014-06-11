@@ -1,9 +1,12 @@
 package br.usp.ime.cogroo.model;
 
+import static org.junit.Assert.*;
+
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
-import junit.framework.Assert;
+import junit.framework.Assert.*;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -14,33 +17,56 @@ import utils.LabXP2014;
 public class ParserYamlTest {
 
 	@Test
-	public void testeHashNivel1() throws FileNotFoundException, UnsupportedEncodingException {
+	public void testeHashNivel1() throws FileNotFoundException,
+			UnsupportedEncodingException {
 		ParserYaml p = ParserYaml.getInstance();
-		Assert.assertEquals("Categoria", p.getValue("CAT"));
-		Assert.assertEquals("Semântica", p.getValue("SEM"));
-		Assert.assertEquals("Número", p.getValue("N"));
-		Assert.assertEquals("Abreviatura", p.getValue("ABR"));
-		Assert.assertEquals("Origem brasileira", p.getValue("BRAS"));
-		Assert.assertEquals("Apontador para a palavra pré Acordo Ortográfico de 1990", p.getValue("PREAO90"));
+		assertEquals("Categoria", p.getValue("CAT"));
+		assertEquals("Semântica", p.getValue("SEM"));
+		assertEquals("Número", p.getValue("N"));
+		assertEquals("Abreviatura", p.getValue("ABR"));
+		assertEquals("Origem brasileira", p.getValue("BRAS"));
+		assertEquals("Apontador para a palavra pré Acordo Ortográfico de 1990",
+				p.getValue("PREAO90"));
 	}
-	
+
 	@Test
-	public void testeHashNivel2() throws FileNotFoundException, UnsupportedEncodingException {
+	public void testeHashNivel2() throws FileNotFoundException,
+			UnsupportedEncodingException {
 		ParserYaml p = ParserYaml.getInstance();
-		Assert.assertEquals("obra literária", p.getValue("SEM", "livro"));
-		Assert.assertEquals("interjeição", p.getValue("CAT", "in"));
-		Assert.assertEquals("pronome pessoal", p.getValue("CAT", "ppes"));
-		Assert.assertEquals("onde", p.getValue("Adv", "onde"));
-		Assert.assertEquals("advérbio de lugar", p.getValue("SUBCAT", "lug"));
-		Assert.assertEquals("abertura de parênteses", p.getValue("CAT", "punct2e"));
-		Assert.assertEquals("pouco frequente", p.getValue("F", "0"));
-		Assert.assertEquals("-idade", p.getValue("FSEM", "dd"));
-		Assert.assertEquals("transitivo/intransitivo", p.getValue("TR", "_"));
-		Assert.assertEquals("primeira", p.getValue("P", "1"));
-		Assert.assertEquals("primeira/terceira", p.getValue("P", "1_3"));
-		Assert.assertEquals("re-", p.getValue("PFSEM", "outra"));
+		assertEquals("obra literária", p.getValue("SEM", "livro"));
+		assertEquals("interjeição", p.getValue("CAT", "in"));
+		assertEquals("pronome pessoal", p.getValue("CAT", "ppes"));
+		assertEquals("onde", p.getValue("Adv", "onde"));
+		assertEquals("advérbio de lugar", p.getValue("SUBCAT", "lug"));
+		assertEquals("abertura de parênteses", p.getValue("CAT", "punct2e"));
+		assertEquals("pouco frequente", p.getValue("F", "0"));
+		assertEquals("-idade", p.getValue("FSEM", "dd"));
+		assertEquals("transitivo/intransitivo", p.getValue("TR", "_"));
+		assertEquals("primeira", p.getValue("P", "1"));
+		assertEquals("primeira/terceira", p.getValue("P", "1_3"));
+		assertEquals("re-", p.getValue("PFSEM", "outra"));
 	}
-	
- 
-	
+
+	@Test
+	public void getValueTestShouldBeNull() throws FileNotFoundException,
+			UnsupportedEncodingException {
+		assertEquals(ParserYaml.getInstance().getValue("ThisIsNotAKey"), null);
+	}
+
+	@Test
+	public void getValueCategoryShouldBeNull() throws FileNotFoundException,
+			UnsupportedEncodingException {
+		assertEquals(
+				ParserYaml.getInstance().getValue("ThisIsNotACategory",
+						"ThisIsNotAProperty"), null);
+	}
+
+	@Test
+	public void getValuePropertyShouldBeNull() throws FileNotFoundException,
+			UnsupportedEncodingException {
+		assertEquals(
+				ParserYaml.getInstance().getValue("N", "ThisIsNotAProperty"),
+				null);
+	}
+
 }

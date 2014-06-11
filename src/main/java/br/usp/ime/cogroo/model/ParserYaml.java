@@ -76,12 +76,6 @@ public class ParserYaml {
 		this.generateSecondLevel(scan, hash);
 	}
 
-	/**
-	 * Returns the value associated with the key or null, if the key does not exit
-	 * @param key
-	 * @return CAT --> categoria
-	 *             G --> Gênero
-	 */
 	public  String getValue(String key){
 		if (this.hash.containsKey(key)){
 			return this.hash.get(key).getA();
