@@ -34,6 +34,12 @@ public class WebServiceProxyTest {
 		assertEquals( ((JSONObject) result.get("derivadas")).getJSONObject("casas").get("G"), "f");
 	}
 	
+	@Test
+	public void testAnalisisRequestWordsWithPREAO90() throws FileNotFoundException, IOException, JSONException {
+		JSONObject result = WebServiceProxy.getInstance().analysisRequest("ativar");
+		assertEquals( ((JSONArray) result.getJSONArray("analise")).getJSONObject(0).get("PREAO90"), "activar");
+	}
+	
 	@Test 
 	public void testCreateEntry () throws FileNotFoundException, JSONException, IOException {
 		boolean result = WebServiceProxy.getInstance().load(REPO); 

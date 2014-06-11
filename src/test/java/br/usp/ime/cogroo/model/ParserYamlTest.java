@@ -21,6 +21,7 @@ public class ParserYamlTest {
 		Assert.assertEquals("Número", p.getValue("N"));
 		Assert.assertEquals("Abreviatura", p.getValue("ABR"));
 		Assert.assertEquals("Origem brasileira", p.getValue("BRAS"));
+		Assert.assertEquals("Apontador para a palavra pré Acordo Ortográfico de 1990", p.getValue("PREAO90"));
 	}
 	
 	@Test

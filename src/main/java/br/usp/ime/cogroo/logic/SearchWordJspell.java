@@ -3,6 +3,7 @@ package br.usp.ime.cogroo.logic;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.json.JSONArray;
@@ -15,8 +16,8 @@ public class SearchWordJspell {
 	
 	static final String baseAnalyseURL = "http://interno.cogroo.org:4040/jspell/analyse.json?id=default&lexeme="; 
 	
-	public static LinkedList<Vocable> searchWord(String text) throws IOException{
-		LinkedList<Vocable> vocables = new LinkedList<Vocable>();
+	public static List<Vocable> searchWord(String text) throws IOException{
+		List<Vocable> vocables = new LinkedList<Vocable>();
 		try {
 			JSONArray analisis = WebServiceProxy.getInstance().analysisRequest(text).getJSONArray("analise");
 
@@ -27,7 +28,7 @@ public class SearchWordJspell {
 				Iterator<String> jsonIterator = json.keys();
 				while(jsonIterator.hasNext()){
 					String key = jsonIterator.next();
-					if (!(key.equals("CAT") || key.equals("rad"))){
+					if (!(key.equals("CAT") || key.equals("rad") || key.equals("PREAO90"))){
 						v.addProperty(key, json.getString(key));
 					}
 				}
@@ -39,9 +40,9 @@ public class SearchWordJspell {
 		return vocables;
 	}
 	
-	public static LinkedList<String> searchUnknownWords (String text) throws IOException {
+	public static List<String> searchUnknownWords (String text) throws IOException {
 		
-		LinkedList<String> unknownWords = new LinkedList<String>(); 
+		List<String> unknownWords = new LinkedList<String>(); 
 		StringTokenizer tokens = new StringTokenizer(text, " ,.!?();:");
 		String token;
 		
