@@ -22,4 +22,8 @@ public class Linguist extends User {
 		return true;
 	}
 
+	@Override
+	public boolean getCanApproveDictionaryEditions() {
+		return true; 
+	}	
 }

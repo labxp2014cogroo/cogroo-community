@@ -20,7 +20,7 @@ function submitForm () {
 	$("#formAp").attr("action",'<c:url value="/patchDisapproval"/>');
 }
 
-function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
+function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 
 	datum = {'idPatch':idPatch};
 	$.ajax({
@@ -37,7 +37,7 @@ function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
 					if (json.status == json.ok){
 						html = '<form action="<c:url value="/patchApproval"/>" method="post" id="formAp">';
 						html += '<table class="display"><tr><td><h4>Derivações:</h4></td><td align="center">';
-						if (patchState == "OPEN" && isAdmin) {
+						if (patchState == "OPEN" && canApprove) {
  							html += '<input id="checkAllFlags'+ idPatch +'" type="checkbox" checked="checked" onchange="isChecked = $(this).attr(\'checked\');';
  	 						html += '$(\'.flagscheckbox'+ idPatch +'\').attr(\'checked\', isChecked);">';
 						}
@@ -56,7 +56,7 @@ function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
 		 						}
 	 						}
 	 						html += '</td><td align="center">'
-							if (patchState == "OPEN" && isAdmin) {
+							if (patchState == "OPEN" && canApprove) {
 								if (flag.length == 1) {
 	 								html += '<input name="flags[]" value="' + flag + '" class="flagscheckbox'+idPatch+'" checked="checked" type="checkbox"';
 		 							html += 'onchange="$(\'#checkAllFlags'+idPatch+'\').attr(\'checked\', false);">';
@@ -68,7 +68,7 @@ function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
 							}
 	 						html += '</td></tr>';
 						}
-						if (isAdmin) {
+						if (canApprove) {
 							html += '<tr><td>';
 							if (obs == true) {
 								html += '*fc = flags combinadas (são aprovadas se ambas isoladamente também forem)';
@@ -157,7 +157,7 @@ $(document).ready(function() {
 				/* Open this row */
 				this.src = "./images/details_close.png";
 				//oTable.fnOpen( nTr, fnFormatDetails(nTr), 'details' );
-				displayPatchDetails (nTr, $(this).attr('idPatch'), ${loggedUser.admin}, $(this).attr('patchState'));
+				displayPatchDetails (nTr, $(this).attr('idPatch'), ${loggedUser.approvedUser}, $(this).attr('patchState'));
 			}
 		} );
 	} );

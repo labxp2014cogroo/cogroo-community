@@ -52,6 +52,10 @@ public abstract class Role {
 	  return false;
 	}
 	
+	public boolean getCanApproveDictionaryEditions() {
+		return false; 
+	}	
+	
 	@Override
 	public String toString() {
 		return getRoleName();
