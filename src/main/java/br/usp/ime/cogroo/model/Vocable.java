@@ -6,6 +6,8 @@ import java.util.LinkedList;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.base.Joiner;
+
 import br.usp.ime.cogroo.model.errorreport.ErrorEntry;
 
 public class Vocable {
@@ -16,6 +18,7 @@ public class Vocable {
 	private String category;
 	private LinkedList<String> properties;
 	private ParserYaml parser;
+	private static final Joiner COMMA_JOINER = Joiner.on(", ");
 
 	public Vocable() {
 		try {
@@ -53,14 +56,7 @@ public class Vocable {
 	}
 
 	public String getPropertiesAsString() {
-
-		StringBuilder description = new StringBuilder();
-
-		for (String property : this.properties) {
-			description.append(property).append(", ");
-		}
-
-		return description.toString();
+		return COMMA_JOINER.join(this.properties.iterator()); 
 	}
 
 	public void addProperty(String key, String value) {

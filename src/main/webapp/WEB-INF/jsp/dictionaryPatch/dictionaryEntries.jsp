@@ -49,8 +49,11 @@ function displayPatchDetails (nTr, idPatch, isAdmin, patchState) {
 						for (var flag in derivations){
 							html += '<tr style="background-color:' + colors[k++ % colors.length] + '"><td>';
 							html += 'Para a flag ' + flag + ':<br/>';
-	 						for(var l = 0; l < derivations[flag].length; l++){
-	 							html += derivations[flag][l] + ', ';	
+							if (derivations[flag].length > 0){
+								html += derivations[flag][0];
+		 						for(var l = 1; l < derivations[flag].length; l++){
+		 							html += ', ' + derivations[flag][l];	
+		 						}
 	 						}
 	 						html += '</td><td align="center">'
 							if (patchState == "OPEN" && isAdmin) {
