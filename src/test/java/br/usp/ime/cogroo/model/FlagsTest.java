@@ -19,6 +19,7 @@ public class FlagsTest {
 			System.out.println(flags.getTextFromFlag("a"));
 			Assert.assertEquals("O plural é da forma mão -> mãos", flags.getTextFromFlag("a"));
 			Assert.assertEquals("Aceita o prefixo \"anti-\"", flags.getTextFromFlag("A"));
+			Flags.getInstance(); 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
