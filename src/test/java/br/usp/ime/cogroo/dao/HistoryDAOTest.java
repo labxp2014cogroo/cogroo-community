@@ -111,14 +111,14 @@ private void populate() {
 		HistoryEntry h = new HistoryEntry(wesley, new Date(), l, errorReportDAO.listAll().get(0));
 		
 		HistoryEntryField he0 = new HistoryEntryField(h, "fieldName0", "before0", "after0", true);
-		HistoryEntryField he1 = new HistoryEntryField(h, "fieldName1", "before1", "after1", false);
+//		HistoryEntryField he1 = new HistoryEntryField(h, "fieldName1", "before1", "after1", false);
 		
 		l.add(he0);
-		l.add(he1);
+//		l.add(he1);
 		
 		em.getTransaction().begin();
 		historyEntryDAO.add(he0);
-		historyEntryDAO.add(he1);
+//		historyEntryDAO.add(he1);
 		historyDAO.add(h);
 		em.getTransaction().commit();
 		
