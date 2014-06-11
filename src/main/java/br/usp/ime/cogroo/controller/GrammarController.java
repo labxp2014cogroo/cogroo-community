@@ -2,6 +2,7 @@ package br.usp.ime.cogroo.controller;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -90,7 +91,7 @@ public class GrammarController {
 						messages.getString("GRAMMAR_DESCRIPTION"));
 		
 		try {
-			LinkedList<String> unknownWords = SearchWordJspell.searchUnknownWords(text);
+			List<String> unknownWords = SearchWordJspell.searchUnknownWords(text);
 			result.include("unknownWordsList", unknownWords);
 		} catch (IOException e) {
 			Log.error("Falhou ao consultar as palavras existentes.", e);
