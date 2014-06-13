@@ -15,13 +15,20 @@ var colors = Array();
 colors[1] = '#CFCFCF';
 colors[0] = '#B9B9B9';
 
+bufferDetails = Array();
+
 
 function submitForm () {
 	$("#formAp").attr("action",'<c:url value="/patchDisapproval"/>');
 }
 
 function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
-
+	
+	if (!(bufferDetails[idPatch] === undefined || bufferDetails[idPatch] === null)){
+		oTable.fnOpen( nTr, bufferDetails[idPatch], 'details' );
+		return;
+	}
+	
 	datum = {'idPatch':idPatch};
 	$.ajax({
 		timeout: 10000, // ten seconds
@@ -84,10 +91,11 @@ function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 							html += '<input style="float: right;" value="Aprovar" type="submit"></div>';
 						}
 						html += '</form>';
-						
+						bufferDetails[idPatch] = html;
 					}else {
 						html = json.msg;
 					}
+					
 					oTable.fnOpen( nTr, html, 'details' );
 			},
 		error: function(response){
