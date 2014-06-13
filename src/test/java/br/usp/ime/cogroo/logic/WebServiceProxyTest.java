@@ -1,6 +1,6 @@
 package br.usp.ime.cogroo.logic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,9 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.springframework.test.AssertThrows;
-
-import com.mchange.util.AssertException;
 
 import utils.LabXP2014;
 
