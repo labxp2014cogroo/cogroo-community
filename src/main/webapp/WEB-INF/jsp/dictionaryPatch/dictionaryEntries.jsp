@@ -43,7 +43,7 @@ function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 					json = JSON.parse(response);
 					if (json.status == json.ok){
 						html = '<form action="<c:url value="/patchApproval"/>" method="post" id="formAp">';
-						html += '<table class="display"><tr align="center"><td><h3>Flags</h3></td><td><h3>Derivações</h3></td><td>';
+						html += '<table class="display"><tr align="center"><td width="8%"><h3>Flags</h3></td><td><h3>Derivações</h3></td><td width="8%">';
 						if (patchState == "OPEN" && canApprove) {
  							html += '<input id="checkAllFlags'+ idPatch +'" type="checkbox" checked="checked" onchange="isChecked = $(this).attr(\'checked\');';
  	 						html += '$(\'.flagscheckbox'+ idPatch +'\').attr(\'checked\', isChecked);">';
