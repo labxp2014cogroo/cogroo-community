@@ -1,12 +1,9 @@
 package br.usp.ime.cogroo.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-
-import junit.framework.Assert.*;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

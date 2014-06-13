@@ -6,9 +6,9 @@ import java.util.LinkedList;
 
 import org.apache.log4j.Logger;
 
-import com.google.common.base.Joiner;
-
 import br.usp.ime.cogroo.model.errorreport.ErrorEntry;
+
+import com.google.common.base.Joiner;
 
 public class Vocable {
 	private static final Logger LOG = Logger.getLogger(ErrorEntry.class);

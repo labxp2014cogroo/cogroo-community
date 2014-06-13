@@ -2,8 +2,6 @@ package br.usp.ime.cogroo.model;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.sound.midi.Patch;
-
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
