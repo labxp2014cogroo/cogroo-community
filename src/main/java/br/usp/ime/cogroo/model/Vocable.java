@@ -56,7 +56,7 @@ public class Vocable {
 	}
 
 	public String getPropertiesAsString() {
-		return COMMA_JOINER.join(this.properties.iterator()); 
+		return COMMA_JOINER.join(this.properties.iterator());
 	}
 
 	public void addProperty(String key, String value) {

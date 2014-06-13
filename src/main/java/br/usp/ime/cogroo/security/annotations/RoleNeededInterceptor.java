@@ -58,8 +58,7 @@ public class RoleNeededInterceptor implements Interceptor {
 			stack.next(method, resourceInstance);
 		} else {
 			if (LOG.isDebugEnabled())
-				LOG
-						.debug("Access Denied, redirect to index page with error message.");
+				LOG.debug("Access Denied, redirect to index page with error message.");
 
 			result.include("errors", Arrays.asList(new ValidationMessage(
 					ExceptionMessages.ONLY_LOGGED_USER_CAN_DO_THIS,

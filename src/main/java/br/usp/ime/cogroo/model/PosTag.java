@@ -11,10 +11,10 @@ public class PosTag {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@Column(unique=true)
+
+	@Column(unique = true)
 	private String posTag;
-	
+
 	public PosTag() {
 	}
 
@@ -37,7 +37,6 @@ public class PosTag {
 	public Long getId() {
 		return id;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -64,7 +63,7 @@ public class PosTag {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return posTag;

@@ -6,16 +6,16 @@ import javax.persistence.Id;
 
 @Entity
 public class GrammarCheckerVersion {
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private String version;
-	
+
 	public GrammarCheckerVersion() {
 	}
-	
+
 	public GrammarCheckerVersion(String version) {
 		super();
 		this.version = version;
@@ -36,10 +36,10 @@ public class GrammarCheckerVersion {
 	public void setVersion(String version) {
 		this.version = version;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "version: " + getVersion();
 	}
-	
+
 }

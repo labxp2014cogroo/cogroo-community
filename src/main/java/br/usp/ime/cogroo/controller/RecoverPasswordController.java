@@ -23,18 +23,19 @@ import br.usp.ime.cogroo.util.CriptoUtils;
 
 @Resource
 public class RecoverPasswordController {
-	
+
 	private static final Logger LOG = Logger
 			.getLogger(RecoverPasswordController.class);
-	
+
 	private final Result result;
 	private UserDAO userDAO;
 	private Validator validator;
 	private Notificator notificator;
 	private final HttpServletRequest request;
-	
+
 	public RecoverPasswordController(Result result, UserDAO userDAO,
-			Validator validator, Notificator notificator, HttpServletRequest request) {
+			Validator validator, Notificator notificator,
+			HttpServletRequest request) {
 		this.result = result;
 		this.userDAO = userDAO;
 		this.validator = validator;
@@ -53,7 +54,7 @@ public class RecoverPasswordController {
 	@Get
 	@Path("/recover/{user.id}/{codeRecover}")
 	public void verifyCodeRecover(User user, String codeRecover) {
-		if(LOG.isDebugEnabled()) {
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("verifyCodeRecover for user.id>>>: " + user.getId());
 		}
 		User userFromDB = getUserIfValidate(user, codeRecover);
@@ -66,8 +67,8 @@ public class RecoverPasswordController {
 		 */
 		result.include("codeRecover", codeRecover);
 		result.include("user", userFromDB);
-		
-		if(LOG.isDebugEnabled()) {
+
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("<<< verifyCodeRecover");
 		}
 	}
@@ -84,8 +85,8 @@ public class RecoverPasswordController {
 		}
 
 		validator.onErrorUse(Results.page())
-				.of(RecoverPasswordController.class).verifyCodeRecover(user,
-						codeRecover);
+				.of(RecoverPasswordController.class)
+				.verifyCodeRecover(user, codeRecover);
 
 		/*
 		 * If all is ok, then... redirect to form COMPLETED
@@ -95,20 +96,21 @@ public class RecoverPasswordController {
 		userFromDB.setRecoverCode("");
 		userFromDB.setDateRecoverCode(null);
 		userDAO.update(userFromDB);
-		
-		result.include("gaEventPasswordRecovered", true).include("provider", userFromDB.getService());
+
+		result.include("gaEventPasswordRecovered", true).include("provider",
+				userFromDB.getService());
 
 	}
 
 	@Post
 	@Path("/recover")
 	public void sendMailRecover(String email) {
-	  
-	 if (LOG.isDebugEnabled()) {
-	   LOG.debug("Preparing to send mail recovery");
-	 }
-	  
-		User userFromDB = getUserIfValid(email); 
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Preparing to send mail recovery");
+		}
+
+		User userFromDB = getUserIfValid(email);
 		/*
 		 * Validators
 		 */
@@ -121,14 +123,15 @@ public class RecoverPasswordController {
 						ExceptionMessages.INVALID_EMAIL,
 						ExceptionMessages.ERROR));
 			}
-			
+
 			else {
-			  if (lessThanMinimumTime(userFromDB)) {
-			    LOG.warn("Another password recovery request in less than five minutes: " + userFromDB.toString());
-			      validator.add(new ValidationMessage(
-			            ExceptionMessages.MINIMUM_TIME_RECOVERY_CODE, 
-			            ExceptionMessages.ERROR));
-			  }
+				if (lessThanMinimumTime(userFromDB)) {
+					LOG.warn("Another password recovery request in less than five minutes: "
+							+ userFromDB.toString());
+					validator.add(new ValidationMessage(
+							ExceptionMessages.MINIMUM_TIME_RECOVERY_CODE,
+							ExceptionMessages.ERROR));
+				}
 			}
 		}
 
@@ -144,7 +147,7 @@ public class RecoverPasswordController {
 		userFromDB.setDateRecoverCode(new Date());
 		userFromDB.setRecoverCode(codeRecover);
 		userDAO.update(userFromDB);
-		
+
 		result.include("email", userFromDB.getEmail());
 		result.include("codeRecover", codeRecover);
 		/*
@@ -158,14 +161,15 @@ public class RecoverPasswordController {
 		body.append("Olá, " + userFromDB.getName() + "!<br><br>");
 		body.append("De acordo com sua solicitação no portal CoGrOO Comunidade, enviamos um link para redefinir sua senha:<br>");
 		body.append("<a href=\"" + url + "\">" + url + "</a><br><br>");
-		body.append("Lembrando que seu login é \"" + userFromDB.getLogin() + "\".<br><br>");
-		
+		body.append("Lembrando que seu login é \"" + userFromDB.getLogin()
+				+ "\".<br><br>");
+
 		String subject = "Redefinição de senha";
-		
+
 		if (LOG.isDebugEnabled()) {
-	       LOG.debug("Will send mail now");
-	     }
-		
+			LOG.debug("Will send mail now");
+		}
+
 		notificator.sendEmail(body.toString(), subject, userFromDB);
 	}
 
@@ -183,30 +187,31 @@ public class RecoverPasswordController {
 				if (!userFromDB.getRecoverCode().equals(codeRecover)) {
 					LOG.warn("Bad recovery code for user: " + user.toString());
 					validator.add(new ValidationMessage(
-							ExceptionMessages.BAD_RECOVERY_CODE, 
+							ExceptionMessages.BAD_RECOVERY_CODE,
 							ExceptionMessages.ERROR));
 				} else {
 					Date date = userFromDB.getDateRecoverCode();
-					
+
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(date);
 					calendar.add(Calendar.HOUR_OF_DAY, 48);
-					
-				    Date expireDate = calendar.getTime();
-				    
-				    if (LOG.isDebugEnabled()) {
-                      LOG.debug("Recovery code was generated in " + date.toString());
-                      LOG.debug("Expires in " + expireDate.toString());
-				    }
 
-				    if (expireDate.before(new Date())) {
-				      LOG.warn("Date has already expired: " + user.toString());
-				      validator.add(new ValidationMessage(
-                            ExceptionMessages.EXPIRED_RECOVERY_CODE, 
-                            ExceptionMessages.ERROR));
-				    }
-				  
-				  /*
+					Date expireDate = calendar.getTime();
+
+					if (LOG.isDebugEnabled()) {
+						LOG.debug("Recovery code was generated in "
+								+ date.toString());
+						LOG.debug("Expires in " + expireDate.toString());
+					}
+
+					if (expireDate.before(new Date())) {
+						LOG.warn("Date has already expired: " + user.toString());
+						validator.add(new ValidationMessage(
+								ExceptionMessages.EXPIRED_RECOVERY_CODE,
+								ExceptionMessages.ERROR));
+					}
+
+					/*
 					 * Código Hash igual, tem q testar a diferenca de tempo pelo
 					 * getDateRecoveryCode()
 					 */
@@ -220,7 +225,7 @@ public class RecoverPasswordController {
 		}
 		return userFromDB;
 	}
-	
+
 	private User getUserIfValid(String email) {
 		User userFromDB = new User();
 		email = email.trim();
@@ -242,23 +247,23 @@ public class RecoverPasswordController {
 		return userFromDB;
 	}
 
-  private boolean lessThanMinimumTime(User user) {
-    Date date = user.getDateRecoverCode();
-    
-    if (date != null) {
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTime(date);
-      calendar.add(Calendar.MINUTE, 5);
-      
-      Date expirableDate = calendar.getTime();
-      Date now = new Date(); 
-      
-      if (now.before(expirableDate)) {
-        return true;
-      }
-    }
-    
-    return false;
-  }
-  
+	private boolean lessThanMinimumTime(User user) {
+		Date date = user.getDateRecoverCode();
+
+		if (date != null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			calendar.add(Calendar.MINUTE, 5);
+
+			Date expirableDate = calendar.getTime();
+			Date now = new Date();
+
+			if (now.before(expirableDate)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

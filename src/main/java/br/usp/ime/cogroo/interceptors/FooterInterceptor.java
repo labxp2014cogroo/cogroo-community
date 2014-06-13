@@ -38,8 +38,8 @@ public class FooterInterceptor implements Interceptor {
 			throws InterceptionException {
 
 		AtomicInteger counter = (AtomicInteger) request.getSession()
-				.getServletContext().getAttribute(
-						SessionListener.SESSION_COUNTER);
+				.getServletContext()
+				.getAttribute(SessionListener.SESSION_COUNTER);
 		if (counter == null)
 			counter = new AtomicInteger();
 		appData.setOnlineUsers(counter.get());

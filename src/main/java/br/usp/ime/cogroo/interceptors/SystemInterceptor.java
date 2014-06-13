@@ -13,12 +13,12 @@ import br.usp.ime.cogroo.model.ApplicationData;
 public class SystemInterceptor implements Interceptor {
 
 	private final ApplicationData appData;
-	//private final Result result;
+	// private final Result result;
 
 	private final ErrorEntryDAO errorEntryDAO;
 	private final UserDAO userDAO;
 
-	//private final HttpServletRequest request;
+	// private final HttpServletRequest request;
 
 	// private final ServletContext context;
 

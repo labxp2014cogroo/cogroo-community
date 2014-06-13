@@ -9,30 +9,31 @@ import com.google.common.base.Strings;
 
 @Entity
 public class GrammarCheckerBadIntervention implements Cloneable {
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private BadInterventionClassification classification;
-	
+
 	private int rule;
-	
+
 	private String ruleID;
-	
+
 	@OneToOne
 	private ErrorEntry errorEntry;
-	
-	public GrammarCheckerBadIntervention(){
-		
+
+	public GrammarCheckerBadIntervention() {
+
 	}
-	
+
 	public GrammarCheckerBadIntervention(
-        BadInterventionClassification classification, String ruleID, ErrorEntry errorEntry) {
-    this.classification = classification;
-    this.ruleID = ruleID;
-    this.errorEntry = errorEntry;
-}
+			BadInterventionClassification classification, String ruleID,
+			ErrorEntry errorEntry) {
+		this.classification = classification;
+		this.ruleID = ruleID;
+		this.errorEntry = errorEntry;
+	}
 
 	public Long getId() {
 		return id;
@@ -51,11 +52,11 @@ public class GrammarCheckerBadIntervention implements Cloneable {
 	}
 
 	public String getRule() {
-	  
-	  if (Strings.isNullOrEmpty(ruleID)) {
-	    this.ruleID = "xml:" + rule;
-	  }
-	  
+
+		if (Strings.isNullOrEmpty(ruleID)) {
+			this.ruleID = "xml:" + rule;
+		}
+
 		return ruleID;
 	}
 
@@ -79,7 +80,7 @@ public class GrammarCheckerBadIntervention implements Cloneable {
 		sb.append("rule: " + rule + "\n");
 		return sb.toString();
 	}
-	
+
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

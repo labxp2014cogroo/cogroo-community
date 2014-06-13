@@ -16,47 +16,52 @@ import br.usp.ime.cogroo.notifiers.Notificator;
 
 @Resource
 public class RssFeedController {
-	
+
 	private final Result result;
 	private Validator validator;
 	private Notificator notificator;
 	private LoggedUser loggedUser;
-	
-	public RssFeedController(LoggedUser loggedUser, Result result, Validator validator, Notificator feed) {
+
+	public RssFeedController(LoggedUser loggedUser, Result result,
+			Validator validator, Notificator feed) {
 		this.result = result;
 		this.validator = validator;
 		this.notificator = feed;
 		this.loggedUser = loggedUser;
 	}
-    
+
 	@Get
 	@Path("/rss.xml")
 	public File rss() {
-        return this.notificator.getRssFeed();
-    }
-	
+		return this.notificator.getRssFeed();
+	}
+
 	@Get
 	@Path("/rssManager")
 	public void rssManager() {
-		if(!loggedUser.isLogged() || !loggedUser.getUser().getRole().getCanManageRSS()) {
+		if (!loggedUser.isLogged()
+				|| !loggedUser.getUser().getRole().getCanManageRSS()) {
 			validator.add(new ValidationMessage(
-					ExceptionMessages.USER_UNAUTHORIZED, ExceptionMessages.ERROR));
-			validator.onErrorUse(Results.logic()).redirectTo(IndexController.class)
-				.index();
+					ExceptionMessages.USER_UNAUTHORIZED,
+					ExceptionMessages.ERROR));
+			validator.onErrorUse(Results.logic())
+					.redirectTo(IndexController.class).index();
 		}
-    }
-	
+	}
+
 	@Post
 	@Path("/rss/delete")
 	public void rssDelete() {
-		if(loggedUser.isLogged() && loggedUser.getUser().getRole().getCanManageRSS()) {
+		if (loggedUser.isLogged()
+				&& loggedUser.getUser().getRole().getCanManageRSS()) {
 			this.notificator.cleanRssFeed();
 			result.redirectTo(getClass()).rssManager();
 		} else {
 			validator.add(new ValidationMessage(
-					ExceptionMessages.USER_UNAUTHORIZED, ExceptionMessages.ERROR));
-			validator.onErrorUse(Results.logic()).redirectTo(IndexController.class)
-				.index();
+					ExceptionMessages.USER_UNAUTHORIZED,
+					ExceptionMessages.ERROR));
+			validator.onErrorUse(Results.logic())
+					.redirectTo(IndexController.class).index();
 		}
-    }
+	}
 }

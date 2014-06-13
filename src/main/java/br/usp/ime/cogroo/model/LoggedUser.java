@@ -19,12 +19,12 @@ public class LoggedUser implements Serializable {
 		this.appData = appData;
 	}
 
-	public boolean isLogged(){
+	public boolean isLogged() {
 		return (this.user != null);
 	}
-	
-	public boolean isApprovedUser(){
-		return (this.user.getRole().getCanApproveDictionaryEditions()); 
+
+	public boolean isApprovedUser() {
+		return (this.user.getRole().getCanApproveDictionaryEditions());
 	}
 
 	public void login(User user) {
@@ -44,7 +44,7 @@ public class LoggedUser implements Serializable {
 		return user;
 	}
 
-	public void logout(){
+	public void logout() {
 		appData.removeLoggedUser(user);
 		user = null;
 	}

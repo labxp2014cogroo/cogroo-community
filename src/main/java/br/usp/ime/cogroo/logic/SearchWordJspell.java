@@ -13,51 +13,55 @@ import org.json.JSONObject;
 import br.usp.ime.cogroo.model.Vocable;
 
 public class SearchWordJspell {
-	
-	static final String baseAnalyseURL = "http://interno.cogroo.org:4040/jspell/analyse.json?id=default&lexeme="; 
-	
-	public static List<Vocable> searchWord(String text) throws IOException{
+
+	static final String baseAnalyseURL = "http://interno.cogroo.org:4040/jspell/analyse.json?id=default&lexeme=";
+
+	public static List<Vocable> searchWord(String text) throws IOException {
 		List<Vocable> vocables = new LinkedList<Vocable>();
 		try {
-			JSONArray analisis = WebServiceProxy.getInstance().analysisRequest(text).getJSONArray("analise");
+			JSONArray analisis = WebServiceProxy.getInstance()
+					.analysisRequest(text).getJSONArray("analise");
 
-			for (int i = 0; i < analisis.length(); i++){
+			for (int i = 0; i < analisis.length(); i++) {
 				JSONObject json = analisis.getJSONObject(i);
-				Vocable v = new Vocable(json.getString("CAT"), text, json.getString("rad"));
+				Vocable v = new Vocable(json.getString("CAT"), text,
+						json.getString("rad"));
 
 				Iterator<String> jsonIterator = json.keys();
-				while(jsonIterator.hasNext()){
+				while (jsonIterator.hasNext()) {
 					String key = jsonIterator.next();
-					if (!(key.equals("CAT") || key.equals("rad") || key.equals("PREAO90"))){
+					if (!(key.equals("CAT") || key.equals("rad") || key
+							.equals("PREAO90"))) {
 						v.addProperty(key, json.getString(key));
 					}
 				}
 				vocables.add(v);
 			}
-		}  catch (JSONException e) {
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return vocables;
 	}
-	
-	public static List<String> searchUnknownWords (String text) throws IOException {
-		
-		List<String> unknownWords = new LinkedList<String>(); 
+
+	public static List<String> searchUnknownWords(String text)
+			throws IOException {
+
+		List<String> unknownWords = new LinkedList<String>();
 		StringTokenizer tokens = new StringTokenizer(text, " ,.!?();:");
 		String token;
-		
+
 		while (tokens.hasMoreTokens()) {
 			token = tokens.nextToken();
-			if (!existsInJspell(token)){
+			if (!existsInJspell(token)) {
 				unknownWords.add(token);
 			}
 		}
-		
-		return unknownWords; 
+
+		return unknownWords;
 	}
-	
-	public static boolean existsInJspell (String word) throws IOException {
-		return (!SearchWordJspell.searchWord(word).isEmpty()); 
+
+	public static boolean existsInJspell(String word) throws IOException {
+		return (!SearchWordJspell.searchWord(word).isEmpty());
 	}
 
 }

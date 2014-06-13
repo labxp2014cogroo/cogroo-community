@@ -18,44 +18,44 @@ import br.usp.ime.cogroo.model.User;
 
 @Entity
 public class Comment {
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	//@ManyToOne(fetch = FetchType.EAGER)
-	//@JoinColumn(nullable = false, insertable = false, updatable = false)
+
+	// @ManyToOne(fetch = FetchType.EAGER)
+	// @JoinColumn(nullable = false, insertable = false, updatable = false)
 	@ManyToOne
 	private User user;
-	
+
 	private Date date;
-	
-	@Column(length=700)
+
+	@Column(length = 700)
 	private String comment;
-	
+
 	@ManyToOne
-	private DictionaryPatch dictionaryPatch; 
-	
-	//@ManyToOne(fetch = FetchType.EAGER)
-	//@JoinColumn(nullable = false, insertable = false, updatable = false)
+	private DictionaryPatch dictionaryPatch;
+
+	// @ManyToOne(fetch = FetchType.EAGER)
+	// @JoinColumn(nullable = false, insertable = false, updatable = false)
 	@ManyToOne
 	private ErrorEntry errorEntry;
-	
+
 	@ManyToOne
 	private Comment question;
 
-	
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 	private List<Comment> answers = new ArrayList<Comment>();
-	
+
 	@Transient
 	private boolean isNew = false;
-	
+
 	public Comment() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public Comment(User user, Date date, String comment, ErrorEntry errorEntry, List<Comment> answers) {
+
+	public Comment(User user, Date date, String comment, ErrorEntry errorEntry,
+			List<Comment> answers) {
 		super();
 		this.user = user;
 		this.date = date;
@@ -63,8 +63,9 @@ public class Comment {
 		this.errorEntry = errorEntry;
 		this.answers = answers;
 	}
-	
-	public Comment(User user, Date date, String comment, Comment question, List<Comment> answers) {
+
+	public Comment(User user, Date date, String comment, Comment question,
+			List<Comment> answers) {
 		super();
 		this.user = user;
 		this.date = date;
@@ -105,16 +106,16 @@ public class Comment {
 	public ErrorEntry getErrorEntry() {
 		return errorEntry;
 	}
-	
+
 	public String getComment() {
 		return comment;
 	}
-	
+
 	@Transient
 	public String getProcessedComment() {
 		return commentProcessor(comment);
 	}
-	
+
 	private String commentProcessor(String originalComment) {
 		return originalComment.replaceAll("\\n", "<br>");
 	}
@@ -130,12 +131,12 @@ public class Comment {
 	public void setAnswers(List<Comment> answers) {
 		this.answers = answers;
 	}
-	
+
 	@Transient
 	public boolean isNew() {
 		return isNew;
 	}
-	
+
 	@Transient
 	public void setIsNew(boolean value) {
 		isNew = value;
@@ -143,9 +144,10 @@ public class Comment {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("user: " + getUser() + " date: " + getDate() + " comment: " + getComment());
-		
-		if(getAnswers() != null && getAnswers().size() > 0 ) {
+		StringBuilder sb = new StringBuilder("user: " + getUser() + " date: "
+				+ getDate() + " comment: " + getComment());
+
+		if (getAnswers() != null && getAnswers().size() > 0) {
 			for (Comment answer : getAnswers()) {
 				sb.append("\n\tAnswer: " + answer);
 			}
@@ -160,7 +162,7 @@ public class Comment {
 	public Comment getQuestion() {
 		return question;
 	}
-	
+
 	public int getCount() {
 		int count = 1;
 		for (Comment comment : getAnswers()) {
@@ -168,7 +170,7 @@ public class Comment {
 		}
 		return count;
 	}
-	
+
 	public DictionaryPatch getDictionaryPatch() {
 		return dictionaryPatch;
 	}
@@ -176,5 +178,5 @@ public class Comment {
 	public void setDictionaryPatch(DictionaryPatch dictionaryPatch) {
 		this.dictionaryPatch = dictionaryPatch;
 	}
-	
+
 }

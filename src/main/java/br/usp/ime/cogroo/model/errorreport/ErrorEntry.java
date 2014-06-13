@@ -19,7 +19,7 @@ import br.usp.ime.cogroo.model.User;
 
 @Entity
 public class ErrorEntry implements Cloneable {
-	
+
 	private static final Logger LOG = Logger.getLogger(ErrorEntry.class);
 
 	@Id
@@ -27,39 +27,39 @@ public class ErrorEntry implements Cloneable {
 	private Long id;
 
 	private String text;
-	
+
 	private int spanStart;
-	
+
 	private int spanEnd;
-	
+
 	private String statusFlag;
 
 	@OneToMany(mappedBy = "errorEntry", cascade = CascadeType.ALL)
 	private List<Comment> comments;
-	
+
 	@OneToMany(mappedBy = "errorEntry", cascade = CascadeType.ALL)
 	private List<HistoryEntry> historyEntries;
 
 	@ManyToOne
 	private GrammarCheckerVersion version;
-	
+
 	@ManyToOne
 	private User submitter;
 
 	private Date creation;
 
 	private Date modified;
-	
+
 	@OneToOne(mappedBy = "errorEntry", cascade = CascadeType.ALL)
 	private GrammarCheckerBadIntervention badIntervention;
-	
+
 	@OneToOne(mappedBy = "errorEntry", cascade = CascadeType.ALL)
 	private GrammarCheckerOmission omission;
-	
+
 	private State state;
-	
+
 	private Priority priority;
-	
+
 	@Transient
 	private boolean isNew = false;
 
@@ -139,7 +139,7 @@ public class ErrorEntry implements Cloneable {
 	public void setModified(Date modified) {
 		this.modified = modified;
 	}
-	
+
 	public GrammarCheckerBadIntervention getBadIntervention() {
 		return badIntervention;
 	}
@@ -183,9 +183,9 @@ public class ErrorEntry implements Cloneable {
 	public void setOmission(GrammarCheckerOmission omission) {
 		this.omission = omission;
 	}
-	
+
 	public State getState() {
-		if(state == null) {
+		if (state == null) {
 			this.state = State.OPEN;
 		}
 		return state;
@@ -196,7 +196,7 @@ public class ErrorEntry implements Cloneable {
 	}
 
 	public Priority getPriority() {
-		if(priority == null) {
+		if (priority == null) {
 			this.priority = Priority.NORMAL;
 		}
 		return priority;
@@ -205,52 +205,56 @@ public class ErrorEntry implements Cloneable {
 	public void setPriority(Priority priority) {
 		this.priority = priority;
 	}
-	
+
 	public String getMarkedText() {
 		StringBuilder sb = new StringBuilder(this.getText());
 		try {
 			sb.insert(this.getSpanEnd(), "</span>");
 			String type;
-			if(getOmission() != null) {
+			if (getOmission() != null) {
 				type = "omission";
 			} else {
 				type = "badint";
 			}
 			sb.insert(this.getSpanStart(), "<span class=\"" + type + "\">");
-		} catch(StringIndexOutOfBoundsException e) {
-			LOG.error("Wrong index: text[" + this.getText() + "]" + " start[" + this.getSpanStart() + "] end[" + this.getSpanEnd() + "]");
+		} catch (StringIndexOutOfBoundsException e) {
+			LOG.error("Wrong index: text[" + this.getText() + "]" + " start["
+					+ this.getSpanStart() + "] end[" + this.getSpanEnd() + "]");
 		}
 		return sb.toString();
 	}
-	
+
 	public String getMarkedTextNoCSS() {
 		StringBuilder sb = new StringBuilder(this.getText());
 		try {
 			sb.insert(this.getSpanEnd(), "</span>");
 			String color;
-			if(getOmission() != null) {
+			if (getOmission() != null) {
 				color = "#FA8072";
 			} else {
 				color = "#ADFF2F";
 			}
-			sb.insert(this.getSpanStart(), "<span style='background-color: "+ color +"'\">");
-		} catch(StringIndexOutOfBoundsException e) {
-			LOG.error("Wrong index: text[" + this.getText() + "]" + " start[" + this.getSpanStart() + "] end[" + this.getSpanEnd() + "]");
+			sb.insert(this.getSpanStart(), "<span style='background-color: "
+					+ color + "'\">");
+		} catch (StringIndexOutOfBoundsException e) {
+			LOG.error("Wrong index: text[" + this.getText() + "]" + " start["
+					+ this.getSpanStart() + "] end[" + this.getSpanEnd() + "]");
 		}
 		return sb.toString();
 	}
-	
+
 	public String getMarkedTextNoHTML() {
 		StringBuilder sb = new StringBuilder(this.getText());
 		try {
 			sb.insert(this.getSpanEnd(), "]");
 			sb.insert(this.getSpanStart(), "[");
-		} catch(StringIndexOutOfBoundsException e) {
-			LOG.error("Wrong index: text[" + this.getText() + "]" + " start[" + this.getSpanStart() + "] end[" + this.getSpanEnd() + "]");
+		} catch (StringIndexOutOfBoundsException e) {
+			LOG.error("Wrong index: text[" + this.getText() + "]" + " start["
+					+ this.getSpanStart() + "] end[" + this.getSpanEnd() + "]");
 		}
 		return sb.toString();
 	}
-	
+
 	public int getCommentCount() {
 		int count = 0;
 		for (Comment comment : getComments()) {
@@ -258,17 +262,17 @@ public class ErrorEntry implements Cloneable {
 		}
 		return count;
 	}
-	
+
 	@Transient
 	public boolean getIsNew() {
 		return isNew;
 	}
-	
+
 	@Transient
 	public void setIsNew(boolean value) {
 		isNew = value;
 	}
-	
+
 	public List<HistoryEntry> getHistoryEntries() {
 		return historyEntries;
 	}
@@ -287,47 +291,48 @@ public class ErrorEntry implements Cloneable {
 		sb.append("-version: " + version + "\n");
 		sb.append("-creation: " + creation + "\n");
 		sb.append("-modified: " + modified + "\n");
-		
-		if(this.getBadIntervention() != null) {
+
+		if (this.getBadIntervention() != null) {
 			sb.append("* BadInt * \n");
 			sb.append(this.getBadIntervention());
 		}
-		if(this.getOmission() != null) {
+		if (this.getOmission() != null) {
 			sb.append("* Omission * \n");
 			sb.append(this.getOmission());
 		}
 		sb.append("-comments: " + "\n");
-		if(comments != null) {
+		if (comments != null) {
 			for (Comment comment : comments) {
 				sb.append("\t" + comment + "\n");
 			}
 		}
 		sb.append("-history: " + "\n");
-		if(getHistoryEntries() != null) {
+		if (getHistoryEntries() != null) {
 			for (HistoryEntry he : getHistoryEntries()) {
 				sb.append("\t" + he + "\n");
 			}
 		}
 		return sb.toString();
 	}
-	
+
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		ErrorEntry clone = (ErrorEntry)super.clone();
-		if(getBadIntervention() != null) {
-			clone.setBadIntervention((GrammarCheckerBadIntervention) getBadIntervention().clone());
+		ErrorEntry clone = (ErrorEntry) super.clone();
+		if (getBadIntervention() != null) {
+			clone.setBadIntervention((GrammarCheckerBadIntervention) getBadIntervention()
+					.clone());
 		}
-		if(getOmission() != null) {
+		if (getOmission() != null) {
 			clone.setOmission((GrammarCheckerOmission) getOmission().clone());
 		}
 		return clone;
 	}
 
-  public String getStatusFlag() {
-    return statusFlag;
-  }
+	public String getStatusFlag() {
+		return statusFlag;
+	}
 
-  public void setStatusFlag(String statusFlag) {
-    this.statusFlag = statusFlag;
-  }
+	public void setStatusFlag(String statusFlag) {
+		this.statusFlag = statusFlag;
+	}
 }

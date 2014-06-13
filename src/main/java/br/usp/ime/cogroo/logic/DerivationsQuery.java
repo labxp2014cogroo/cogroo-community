@@ -17,7 +17,7 @@ import br.usp.ime.cogroo.controller.RuleController;
 public class DerivationsQuery {
 	static final String FLAGS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	private static final Logger LOG = Logger.getLogger(RuleController.class);
-	
+
 	private DerivationsQuery() {
 		return;
 	}
@@ -25,7 +25,8 @@ public class DerivationsQuery {
 	public static Map<String, String> queryDerivations(String text) {
 		Map<String, String> derivationsHash = null;
 		try {
-			JSONObject jsonResult = WebServiceProxy.getInstance().tryRequest(text + FLAGS).getJSONObject("derivadas");
+			JSONObject jsonResult = WebServiceProxy.getInstance()
+					.tryRequest(text + FLAGS).getJSONObject("derivadas");
 			derivationsHash = getRelevantDerivations(jsonResult);
 		} catch (IOException e) {
 			Log.error("Não foi possivel completar o pedido", e);
@@ -57,14 +58,13 @@ public class DerivationsQuery {
 		return relevantDerivations;
 	}
 
-	public static Map<String, Set<String>> getDerivationsFromFlags(
-			String entry) {
+	public static Map<String, Set<String>> getDerivationsFromFlags(String entry) {
 
 		Map<String, Set<String>> derivationsHash = null;
 
 		try {
-			JSONObject jsonResult = WebServiceProxy.getInstance().tryRequest(entry)
-									.getJSONObject("derivadas");
+			JSONObject jsonResult = WebServiceProxy.getInstance()
+					.tryRequest(entry).getJSONObject("derivadas");
 			derivationsHash = fillHashMapDerivations(jsonResult);
 		} catch (IOException e) {
 			Log.error("Não foi possivel completar o pedido", e);
@@ -75,18 +75,19 @@ public class DerivationsQuery {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static Map<String, Set<String>>
-			fillHashMapDerivations(	JSONObject allDerivations) {
-		
+	private static Map<String, Set<String>> fillHashMapDerivations(
+			JSONObject allDerivations) {
+
 		Map<String, Set<String>> derivations = new HashMap<String, Set<String>>();
 		Iterator<String> jsonIterator = allDerivations.keys();
 		while (jsonIterator.hasNext()) {
 			String derivation = jsonIterator.next();
 			try {
 				if (allDerivations.getJSONObject(derivation).has("flags")) {
-					String flag = allDerivations.getJSONObject(derivation).getString("flags");
-					if (derivations.get(flag) == null){
-						derivations.put(flag, new HashSet<String>());	
+					String flag = allDerivations.getJSONObject(derivation)
+							.getString("flags");
+					if (derivations.get(flag) == null) {
+						derivations.put(flag, new HashSet<String>());
 					}
 					derivations.get(flag).add(derivation);
 				}

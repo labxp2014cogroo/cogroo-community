@@ -1,29 +1,26 @@
 package br.usp.ime.cogroo.model.errorreport;
 
 public enum Priority {
-	LOW("low"), 
-	NORMAL("normal"), 
-	HIGH("high"), 
-	URGENT("urgent"), 
-	IMMEDIATE("immediate");
-	
-    private final String value;
+	LOW("low"), NORMAL("normal"), HIGH("high"), URGENT("urgent"), IMMEDIATE(
+			"immediate");
 
-    Priority(String v) {
-        value = v;
-    }
+	private final String value;
 
-    public String value() {
-        return value;
-    }
+	Priority(String v) {
+		value = v;
+	}
 
-    public static Priority fromValue(String v) {
-        for (Priority c: Priority.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
-    }
+	public String value() {
+		return value;
+	}
+
+	public static Priority fromValue(String v) {
+		for (Priority c : Priority.values()) {
+			if (c.value.equals(v)) {
+				return c;
+			}
+		}
+		throw new IllegalArgumentException(v);
+	}
 
 }

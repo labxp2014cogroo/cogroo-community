@@ -16,7 +16,7 @@ public final class CriptoUtils {
 	private static final String hexDigits = "0123456789abcdef";
 	private static final Random random = new Random(System.currentTimeMillis());
 
-	public static String digestMD5(String login, String pass){
+	public static String digestMD5(String login, String pass) {
 		String input = login + pass;
 		try {
 			input = byteArrayToHexString(digest(input.getBytes(), "MD5"));
@@ -25,8 +25,8 @@ public final class CriptoUtils {
 		}
 		return input;
 	}
-	
-	public static String digestMD5(String input){
+
+	public static String digestMD5(String input) {
 		try {
 			input = byteArrayToHexString(digest(input.getBytes(), "MD5"));
 		} catch (NoSuchAlgorithmException e) {
@@ -34,7 +34,7 @@ public final class CriptoUtils {
 		}
 		return input;
 	}
-	
+
 	public static String digestSHA1(String login, String pass)
 			throws NoSuchAlgorithmException {
 		String input = login + pass;
@@ -103,26 +103,26 @@ public final class CriptoUtils {
 		}
 		return b;
 	}
-	
+
 	private static String getRandomField(User userFromDB) {
-      String value = "";
-      Integer cmp = random.nextInt(100);
-      if (cmp >= 0 && cmp <= 33) {
-          value = userFromDB.getName();
-      } else if (cmp > 33 && cmp <= 66) {
-          value = userFromDB.getEmail();
-      } else if (cmp > 66) {
-          value = userFromDB.getLogin();
-      }
-      return value;
-  }
-	
+		String value = "";
+		Integer cmp = random.nextInt(100);
+		if (cmp >= 0 && cmp <= 33) {
+			value = userFromDB.getName();
+		} else if (cmp > 33 && cmp <= 66) {
+			value = userFromDB.getEmail();
+		} else if (cmp > 66) {
+			value = userFromDB.getLogin();
+		}
+		return value;
+	}
+
 	public static String generateHash(User user) {
-	  String codeRecover = String.valueOf(System.currentTimeMillis())
-      + getRandomField(user);
-	  
-	  codeRecover = CriptoUtils.digestMD5(codeRecover);
-	  
-	  return codeRecover;
+		String codeRecover = String.valueOf(System.currentTimeMillis())
+				+ getRandomField(user);
+
+		codeRecover = CriptoUtils.digestMD5(codeRecover);
+
+		return codeRecover;
 	}
 }

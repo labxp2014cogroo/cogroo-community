@@ -12,14 +12,16 @@ import br.usp.ime.cogroo.model.errorreport.GrammarCheckerBadIntervention;
 public class GrammarCheckerBadInterventionDAO {
 
 	private EntityManager em;
-	public static final String BAD_INT_ENTITY = GrammarCheckerBadIntervention.class.getName();
+	public static final String BAD_INT_ENTITY = GrammarCheckerBadIntervention.class
+			.getName();
 
 	public GrammarCheckerBadInterventionDAO(EntityManager e) {
 		em = e;
 	}
 
 	public GrammarCheckerBadIntervention retrieve(Long id) {
-		GrammarCheckerBadIntervention error = em.find(GrammarCheckerBadIntervention.class, id);
+		GrammarCheckerBadIntervention error = em.find(
+				GrammarCheckerBadIntervention.class, id);
 		return error;
 	}
 
@@ -42,6 +44,6 @@ public class GrammarCheckerBadInterventionDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<GrammarCheckerBadIntervention> listAll() {
-		return em.createQuery("from "+BAD_INT_ENTITY).getResultList();
+		return em.createQuery("from " + BAD_INT_ENTITY).getResultList();
 	}
 }

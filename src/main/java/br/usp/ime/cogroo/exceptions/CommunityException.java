@@ -2,7 +2,6 @@ package br.usp.ime.cogroo.exceptions;
 
 import org.cogroo.exceptions.InternationalizedException;
 
-
 public class CommunityException extends InternationalizedException {
 
 	private static final long serialVersionUID = 3580195184638793206L;

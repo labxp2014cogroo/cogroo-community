@@ -14,11 +14,10 @@ public class ShortUrl {
 
 	@Column(length = 80)
 	private String url;
-	
+
 	@Column(length = 80)
 	private String shortURL;
-	
-	
+
 	public ShortUrl() {
 	}
 

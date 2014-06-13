@@ -31,7 +31,9 @@ public class ShortUrlDAO {
 	public ShortUrl retrieve(String toBeFound) {
 		ShortUrl shortURL = null;
 		try {
-			shortURL = (ShortUrl) em.createQuery("from "+SHORTURL_ENTITY+" w where w.url=?").setParameter(1, toBeFound).getSingleResult();
+			shortURL = (ShortUrl) em
+					.createQuery("from " + SHORTURL_ENTITY + " w where w.url=?")
+					.setParameter(1, toBeFound).getSingleResult();
 		} catch (NoResultException e) {
 			shortURL = null;
 		} catch (RuntimeException e) {

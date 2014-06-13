@@ -42,15 +42,19 @@ public class ErrorEntryDAO {
 	}
 
 	public long count() {
-		return (Long) em.createQuery("SELECT count(*) from " + ERROR_ENTITY).getSingleResult();
+		return (Long) em.createQuery("SELECT count(*) from " + ERROR_ENTITY)
+				.getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<ErrorEntry> listAll() {
-		return em.createQuery("from "+ERROR_ENTITY).getResultList();
+		return em.createQuery("from " + ERROR_ENTITY).getResultList();
 	}
 
-  public long count(User submitter) {
-    return (Long) em.createQuery("SELECT count(*) from " + ERROR_ENTITY + " e where e.submitter = " + submitter.getId()).getSingleResult();
-  }
+	public long count(User submitter) {
+		return (Long) em.createQuery(
+				"SELECT count(*) from " + ERROR_ENTITY
+						+ " e where e.submitter = " + submitter.getId())
+				.getSingleResult();
+	}
 }

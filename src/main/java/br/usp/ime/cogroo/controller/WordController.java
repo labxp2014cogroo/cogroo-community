@@ -163,7 +163,7 @@ public class WordController {
 		dictionarypatch.setNewEntry(entry);
 		dictionarypatch.setUser(loggedUser.getUser());
 		dictionarypatchdao.add(dictionarypatch);
-		
+
 		result.include("okMessage", "Palavra cadastrada com sucesso!");
 		result.redirectTo(DictionaryPatchController.class).dictionaryEntries();
 	}

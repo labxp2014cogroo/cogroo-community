@@ -23,171 +23,172 @@ import br.usp.ime.cogroo.util.BuildUtil;
 import br.usp.ime.cogroo.util.CriptoUtils;
 
 @Component
-//@ApplicationScoped
+// @ApplicationScoped
 class EmailSender {
 
-  private static final Logger LOG = Logger.getLogger(EmailSender.class);
+	private static final Logger LOG = Logger.getLogger(EmailSender.class);
 
-  public static final String FOOTER = "<br>"
-      + "_______________________________________________<br>"
-      + "CoGrOO Comunidade &lt;<a href=\""
-      + BuildUtil.BASE_URL
-      + "\">"
-      + BuildUtil.BASE_URL
-      + "</a>&gt;<br>"
-      + "CoGrOO é o Corretor Gramatical para o Apache Open|LibreOffice. Você é parte dessa comunidade!<br>"
-      + "Curta o CoGrOO no <a href='http://www.facebook.com/pages/CoGrOO/191205774239878'>Facebook</a>, "
-      + "acompanhe a movimentação da Comunidade <br>no <a href='http://twitter.com/cogrcom'>@CoGrCom</a> "
-      + "e siga o <a href='http://twitter.com/cogroo'>@CoGrOO</a> para novidades do projeto!<br />";
+	public static final String FOOTER = "<br>"
+			+ "_______________________________________________<br>"
+			+ "CoGrOO Comunidade &lt;<a href=\""
+			+ BuildUtil.BASE_URL
+			+ "\">"
+			+ BuildUtil.BASE_URL
+			+ "</a>&gt;<br>"
+			+ "CoGrOO é o Corretor Gramatical para o Apache Open|LibreOffice. Você é parte dessa comunidade!<br>"
+			+ "Curta o CoGrOO no <a href='http://www.facebook.com/pages/CoGrOO/191205774239878'>Facebook</a>, "
+			+ "acompanhe a movimentação da Comunidade <br>no <a href='http://twitter.com/cogrcom'>@CoGrCom</a> "
+			+ "e siga o <a href='http://twitter.com/cogroo'>@CoGrOO</a> para novidades do projeto!<br />";
 
-  private final static String FROM_NAME = "CoGrOO Comunidade";
-  private final static String SUBJECT_PREFFIX = "[CoGrOO Comunidade] ";
-  private final static String BASE_EMAIL;
-  private final static String NOREPLY_EMAIL;
-  final static String SMTP = "smtp.cogroo.org";
-  private Queue<Email> emailQueue = new ConcurrentLinkedQueue<Email>();
+	private final static String FROM_NAME = "CoGrOO Comunidade";
+	private final static String SUBJECT_PREFFIX = "[CoGrOO Comunidade] ";
+	private final static String BASE_EMAIL;
+	private final static String NOREPLY_EMAIL;
+	final static String SMTP = "smtp.cogroo.org";
+	private Queue<Email> emailQueue = new ConcurrentLinkedQueue<Email>();
 
-  private static final String DKIM_HEADER_TEMPLATE = "v=1; c=simple/simple; s=key1; d=cogroo.org; h=from:to:subject; a=rsa-sha1; bh=; b=;";
-  private static final String DKIM_PRIVATE_KEY = BuildUtil.DKIM_PRIVATE_KEY;
+	private static final String DKIM_HEADER_TEMPLATE = "v=1; c=simple/simple; s=key1; d=cogroo.org; h=from:to:subject; a=rsa-sha1; bh=; b=;";
+	private static final String DKIM_PRIVATE_KEY = BuildUtil.DKIM_PRIVATE_KEY;
 
-  private static List<InternetAddress> REPLYTO;
+	private static List<InternetAddress> REPLYTO;
 
-  private UserDAO userDAO;
-  
-  static {
+	private UserDAO userDAO;
 
-    BASE_EMAIL = BuildUtil.EMAIL_SYSTEM_USR;
-    NOREPLY_EMAIL = BASE_EMAIL.replace("@", "-noreply@");
-    try {
-      REPLYTO = Collections.singletonList(new InternetAddress(NOREPLY_EMAIL));
-    } catch (AddressException e) {
-      LOG.error("Failed to set REPLYTO address: " + NOREPLY_EMAIL, e);
-    }
-  }
+	static {
 
-  public EmailSender(UserDAO userDAO) {
-    this.userDAO = userDAO;
-    
-    int delay = 0;
-    int period = 15000; // repeat every 15 sec (less than 5 email per minute).
-    Timer timer = new Timer();
+		BASE_EMAIL = BuildUtil.EMAIL_SYSTEM_USR;
+		NOREPLY_EMAIL = BASE_EMAIL.replace("@", "-noreply@");
+		try {
+			REPLYTO = Collections.singletonList(new InternetAddress(
+					NOREPLY_EMAIL));
+		} catch (AddressException e) {
+			LOG.error("Failed to set REPLYTO address: " + NOREPLY_EMAIL, e);
+		}
+	}
 
-    timer.scheduleAtFixedRate(new TimerTask() {
-      @Override
-	public void run() {
+	public EmailSender(UserDAO userDAO) {
+		this.userDAO = userDAO;
 
-        if (!emailQueue.isEmpty()) {
-          if (LOG.isDebugEnabled()) {
-            LOG.debug("There are " + emailQueue.size()
-                + " pending emails. Sending one now.");
-          }
-          Email email = emailQueue.poll();
-          if (email != null) {
-            try {
-              String res = email.send();
-              if (LOG.isDebugEnabled()) {
-                LOG.debug("Sent email: " + res);
-              }
-            } catch (EmailException e) {
-              LOG.error("Failed to send email.", e);
-            }
-          }
-        }
+		int delay = 0;
+		int period = 15000; // repeat every 15 sec (less than 5 email per
+							// minute).
+		Timer timer = new Timer();
 
-      }
-    }, delay, period);
-  }
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
 
-  public void sendEmail(String body, String subject, User user) {
-    if (user.getEmail() == null)
-      return;
+				if (!emailQueue.isEmpty()) {
+					if (LOG.isDebugEnabled()) {
+						LOG.debug("There are " + emailQueue.size()
+								+ " pending emails. Sending one now.");
+					}
+					Email email = emailQueue.poll();
+					if (email != null) {
+						try {
+							String res = email.send();
+							if (LOG.isDebugEnabled()) {
+								LOG.debug("Sent email: " + res);
+							}
+						} catch (EmailException e) {
+							LOG.error("Failed to send email.", e);
+						}
+					}
+				}
 
-    try {
-      // toEmail = "check-auth@verifier.port25.com";
-      Email email = createEmail(body, subject, user);
-      // add it to the send queue
-      emailQueue.add(email);
+			}
+		}, delay, period);
+	}
 
-    } catch (EmailException e) {
-      LOG.error("Failed to send email. toEmail: " + user.getEmail(), e);
-    }
-  }
+	public void sendEmail(String body, String subject, User user) {
+		if (user.getEmail() == null)
+			return;
 
-  Email createEmail(String body, String subject, User user)
-      throws EmailException {
-    String userMail = user.getEmail().trim();
-    String link = createUnsubscribeLink(user);
-    String msg = body + createFooter(link);
+		try {
+			// toEmail = "check-auth@verifier.port25.com";
+			Email email = createEmail(body, subject, user);
+			// add it to the send queue
+			emailQueue.add(email);
 
-    DKimSimpleMail email = new DKimSimpleMail();
-    email.setHostName(SMTP);
-    email.setDebug(LOG.isDebugEnabled());
-    email.setSSL(true);
-    email.addTo(userMail);
-    email.setAuthentication(BASE_EMAIL, BuildUtil.EMAIL_SYSTEM_PWD);
-    email.setFrom(BuildUtil.EMAIL_SYSTEM_USR, FROM_NAME);
-    // email.setReplyTo(REPLYTO);
-    email.setReplyTo(REPLYTO);
-    email.setSubject(SUBJECT_PREFFIX + subject);
-    email.setContent(msg, Email.TEXT_HTML);
-    
-    email.addHeader("List-Unsubscribe", "<" + link + ">");
+		} catch (EmailException e) {
+			LOG.error("Failed to send email. toEmail: " + user.getEmail(), e);
+		}
+	}
 
-    if (userMail.endsWith("hotmail.com"))
-      email.setCharset(Email.ISO_8859_1);
-    else
-      email.setCharset("UTF-8");
+	Email createEmail(String body, String subject, User user)
+			throws EmailException {
+		String userMail = user.getEmail().trim();
+		String link = createUnsubscribeLink(user);
+		String msg = body + createFooter(link);
 
-    email.setKDimSigner(DKIM_HEADER_TEMPLATE, DKIM_PRIVATE_KEY);
-    return email;
-  }
+		DKimSimpleMail email = new DKimSimpleMail();
+		email.setHostName(SMTP);
+		email.setDebug(LOG.isDebugEnabled());
+		email.setSSL(true);
+		email.addTo(userMail);
+		email.setAuthentication(BASE_EMAIL, BuildUtil.EMAIL_SYSTEM_PWD);
+		email.setFrom(BuildUtil.EMAIL_SYSTEM_USR, FROM_NAME);
+		// email.setReplyTo(REPLYTO);
+		email.setReplyTo(REPLYTO);
+		email.setSubject(SUBJECT_PREFFIX + subject);
+		email.setContent(msg, Email.TEXT_HTML);
 
-  public void sendEmail(String body, String subject, Set<User> users) {
-    if (LOG.isDebugEnabled()) {
-      LOG.debug("Will send a batch of emails.");
-    }
+		email.addHeader("List-Unsubscribe", "<" + link + ">");
 
-    for (User user : users) {
-      sendEmail(body, subject, user);
-    }
+		if (userMail.endsWith("hotmail.com"))
+			email.setCharset(Email.ISO_8859_1);
+		else
+			email.setCharset("UTF-8");
 
-    if (LOG.isDebugEnabled()) {
-      LOG.debug("ThreadedMailSender started!");
-    }
-  }
+		email.setKDimSigner(DKIM_HEADER_TEMPLATE, DKIM_PRIVATE_KEY);
+		return email;
+	}
 
-  public String createFooter(String link) {
-    StringBuilder sb = new StringBuilder(FOOTER);
+	public void sendEmail(String body, String subject, Set<User> users) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Will send a batch of emails.");
+		}
 
-    sb.append("Caso não queira mais receber estas notificações clique <a href=\"")
-    .append(link)
-    .append("\">aqui</a>");
-        
-    return sb.toString();
+		for (User user : users) {
+			sendEmail(body, subject, user);
+		}
 
-  }
-  
-  private String createUnsubscribeLink(User user) {
-    StringBuilder sb = new StringBuilder();
-    
-    sb.append(BuildUtil.BASE_URL).append("unsubscribe/")
-    .append(user.getId()).append("/")
-    .append(getOrGenerateOptoutCode(user));
-    
-    return sb.toString();
-  }
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("ThreadedMailSender started!");
+		}
+	}
 
-  private String getOrGenerateOptoutCode(User user) {
-    String code = user.getEmailOptOutCode();
-    
-    if (code == null) {
-      code = CriptoUtils.generateHash(user);
-      user.setEmailOptOutCode(code);
-      userDAO.update(user);
-    }
-    
-    return code;
-  }
-  
+	public String createFooter(String link) {
+		StringBuilder sb = new StringBuilder(FOOTER);
+
+		sb.append(
+				"Caso não queira mais receber estas notificações clique <a href=\"")
+				.append(link).append("\">aqui</a>");
+
+		return sb.toString();
+
+	}
+
+	private String createUnsubscribeLink(User user) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(BuildUtil.BASE_URL).append("unsubscribe/")
+				.append(user.getId()).append("/")
+				.append(getOrGenerateOptoutCode(user));
+
+		return sb.toString();
+	}
+
+	private String getOrGenerateOptoutCode(User user) {
+		String code = user.getEmailOptOutCode();
+
+		if (code == null) {
+			code = CriptoUtils.generateHash(user);
+			user.setEmailOptOutCode(code);
+			userDAO.update(user);
+		}
+
+		return code;
+	}
 
 }

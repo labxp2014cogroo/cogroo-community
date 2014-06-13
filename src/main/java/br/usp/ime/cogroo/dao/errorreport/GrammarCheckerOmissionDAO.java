@@ -12,14 +12,16 @@ import br.usp.ime.cogroo.model.errorreport.GrammarCheckerOmission;
 public class GrammarCheckerOmissionDAO {
 
 	private EntityManager em;
-	public static final String OMISSION_ENTITY = GrammarCheckerOmission.class.getName();
+	public static final String OMISSION_ENTITY = GrammarCheckerOmission.class
+			.getName();
 
 	public GrammarCheckerOmissionDAO(EntityManager e) {
 		em = e;
 	}
 
 	public GrammarCheckerOmission retrieve(Long id) {
-		GrammarCheckerOmission error = em.find(GrammarCheckerOmission.class, id);
+		GrammarCheckerOmission error = em
+				.find(GrammarCheckerOmission.class, id);
 		return error;
 	}
 
@@ -42,6 +44,6 @@ public class GrammarCheckerOmissionDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<GrammarCheckerOmission> listAll() {
-		return em.createQuery("from "+OMISSION_ENTITY).getResultList();
+		return em.createQuery("from " + OMISSION_ENTITY).getResultList();
 	}
 }

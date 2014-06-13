@@ -11,8 +11,9 @@ import br.usp.ime.cogroo.model.GrammarCheckerVersion;
 
 @Component
 public class GrammarCheckerVersionDAO {
-	
-	private static final Logger LOG = Logger.getLogger(GrammarCheckerVersionDAO.class);
+
+	private static final Logger LOG = Logger
+			.getLogger(GrammarCheckerVersionDAO.class);
 
 	private EntityManager mEntityManager;
 	public static final String VERSION_ENTITY = GrammarCheckerVersion.class
@@ -21,12 +22,13 @@ public class GrammarCheckerVersionDAO {
 	public GrammarCheckerVersionDAO(EntityManager aEntityManager) {
 		this.mEntityManager = aEntityManager;
 	}
-	
+
 	public GrammarCheckerVersion retrieve(Long id) {
-		GrammarCheckerVersion version = mEntityManager.find(GrammarCheckerVersion.class, id);
+		GrammarCheckerVersion version = mEntityManager.find(
+				GrammarCheckerVersion.class, id);
 		return version;
 	}
-	
+
 	private void add(GrammarCheckerVersion version) {
 		try {
 			mEntityManager.persist(version);
@@ -35,11 +37,14 @@ public class GrammarCheckerVersionDAO {
 			throw e;
 		}
 	}
-	
+
 	public GrammarCheckerVersion retrieve(String toBeFound) {
 		GrammarCheckerVersion version = null;
 		try {
-			version = (GrammarCheckerVersion) mEntityManager.createQuery("from "+VERSION_ENTITY+" w where w.version=?").setParameter(1, toBeFound).getSingleResult();
+			version = (GrammarCheckerVersion) mEntityManager
+					.createQuery(
+							"from " + VERSION_ENTITY + " w where w.version=?")
+					.setParameter(1, toBeFound).getSingleResult();
 		} catch (NoResultException e) {
 			version = new GrammarCheckerVersion(toBeFound);
 			add(version);

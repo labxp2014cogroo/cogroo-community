@@ -6,20 +6,20 @@ public class Developer extends Linguist {
 	public String getRoleName() {
 		return "developer";
 	}
-	
+
 	@Override
 	public boolean getCanDeleteOtherUserCommment() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean getCanDeleteOtherUserErrorReport() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean getCanRefreshStatus() {
-	  return true;
+		return true;
 	}
-	
+
 }
