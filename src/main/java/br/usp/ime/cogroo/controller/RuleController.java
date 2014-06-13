@@ -13,7 +13,6 @@ import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.view.Results;
 import br.usp.ime.cogroo.dao.CogrooFacade;
 import br.usp.ime.cogroo.logic.RulesLogic;
@@ -31,14 +30,12 @@ public class RuleController {
 
 	private LoggedUser loggedUser;
 	private final Result result;
-	private Validator validator;
 	private CogrooFacade cogroo;
 	private RulesLogic rulesLogic;
 
-	public RuleController(Result result, Validator validator,
-			CogrooFacade cogroo, RulesLogic rulesLogic, LoggedUser loggedUser) {
+	public RuleController(Result result, CogrooFacade cogroo,
+			RulesLogic rulesLogic, LoggedUser loggedUser) {
 		this.result = result;
-		this.validator = validator;
 		this.cogroo = cogroo;
 		this.rulesLogic = rulesLogic;
 		this.loggedUser = loggedUser;

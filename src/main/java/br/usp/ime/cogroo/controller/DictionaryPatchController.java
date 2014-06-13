@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,7 +26,10 @@ import br.usp.ime.cogroo.model.errorreport.State;
 
 @Resource
 public class DictionaryPatchController {
-
+	
+	private static final Logger LOG = Logger
+			.getLogger(DictionaryPatchController.class);
+	
 	private Result result;
 	private DictionaryPatchDAO dictionaryPatchDAO;
 	private LoggedUser loggedUser;
@@ -97,20 +101,14 @@ public class DictionaryPatchController {
 					+ loggedUser.getUser().getName();
 
 			WebServiceProxy webService = WebServiceProxy.getInstance();
-
 			webService.insertEntry(newEntry, message);
 
-			// TODO tratar exceções e quando insertEntry devolve false
-
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Could not find WebService properties file", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Communication problem", e);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error while parsing JSON", e);
 		}
 
 		result.redirectTo(getClass()).dictionaryEntries();

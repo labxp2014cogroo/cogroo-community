@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
 import br.com.caelum.vraptor.Get;
@@ -31,7 +30,6 @@ public class GrammarController {
 	private CogrooFacade cogroo;
 	private LoggedUser loggedUser;
 	private TextSanitizer sanitizer;
-	private static final Logger LOG = Logger.getLogger(RuleController.class);
 
 	private static final ResourceBundle messages = ResourceBundle.getBundle(
 			"messages", new Locale("pt_BR"));
