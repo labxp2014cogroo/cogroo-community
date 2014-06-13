@@ -1,4 +1,4 @@
-<form action="<c:url value="/chooseFlags"/>" method="post">
+<form action="<c:url value="/chooseFlags"/>" method="get">
 	<div class="white_box">
 		<h2>Selecione quais derivações da palavra "${word }" se aplicam:</h2>
 		<br>

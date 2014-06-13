@@ -76,11 +76,10 @@ function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 	 						html += '</td></tr>';
 						}
 						if (canApprove) {
-							html += '<tr><td>';
+							html += '<tr><td colspan="3">';
 							if (obs == true) {
 								html += '*fc = flags combinadas (são aprovadas se ambas isoladamente também forem)';
 							}
-							html += '</td><td align="center">';
 							html += '<input name="idPatch" type="hidden" value="' + idPatch + '"></td></tr>';
 						}
 						html += '</table>';

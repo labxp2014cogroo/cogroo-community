@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
 
+import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
@@ -84,12 +85,19 @@ public class WordController {
 					ExceptionMessages.NO_CATEGORY_SELECTED,
 					ExceptionMessages.ERROR));
 		}
-
 		result.include("word", word);
-		result.include("entry", word + "/CAT=" + category + ",");
-		result.include("category", category);
+		String entry = word + "/CAT=" + category;
 		validator.onErrorUsePageOf(getClass()).newEntry(word);
-		result.redirectTo(getClass()).grammarProperties(word);
+
+		if (category.equals("in")) {
+			entry += "//";
+			result.redirectTo(getClass()).chooseFlags(entry, new String[0]);
+		} else {
+			entry += ",";
+			result.include("entry", entry);
+			result.include("category", category);
+			result.redirectTo(getClass()).grammarProperties(word);
+		}
 	}
 
 	@Path("/grammarProperties")
@@ -151,7 +159,7 @@ public class WordController {
 		result.include("word", word);
 	}
 
-	@Post
+	@Get
 	@Path("/chooseFlags")
 	public void chooseFlags(String entry, String[] flag) {
 

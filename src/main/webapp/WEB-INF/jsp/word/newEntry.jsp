@@ -35,6 +35,7 @@
 			<input type="radio" name="category" value="a_nc" />Substantivo simples e adjetivo<br/>
 			<input type="radio" name="category" value="v" />Verbo<br/>
 			<input type="radio" name="category" value="adv" />Advérbio<br/>
+			<input type="radio" name="category" value="in" />Interjeição<br/>
 		</div>
 	<br/>
 	<input style="clear:both;" type="submit" value=" OK &raquo; " id="go" />
