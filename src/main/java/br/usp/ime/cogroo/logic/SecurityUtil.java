@@ -40,46 +40,52 @@ import br.com.caelum.vraptor.ioc.Component;
 import br.usp.ime.cogroo.model.User;
 import br.usp.ime.cogroo.util.CriptoUtils;
 
-
 @Component
 @ApplicationScoped
 public class SecurityUtil {
-	
+
 	private static final String UTF8 = "UTF-8";
-	
-	private Map<String, KeyTime> keyCache = Collections.synchronizedMap( new HashMap<String, KeyTime>() );
-	
-	private static final Logger LOG = Logger
-		.getLogger(SecurityUtil.class);
-	
+
+	private Map<String, KeyTime> keyCache = Collections
+			.synchronizedMap(new HashMap<String, KeyTime>());
+
+	private static final Logger LOG = Logger.getLogger(SecurityUtil.class);
+
 	public SecurityUtil() {
 	}
-	
+
 	/**
 	 * Encrypt data using an key encrypted with a private key.
-	 * @param privateKey the private key to decrypt the secret key
-	 * @param encryptedSecretKey a encrypted secret key
-	 * @param data the data to encrypt
+	 * 
+	 * @param privateKey
+	 *            the private key to decrypt the secret key
+	 * @param encryptedSecretKey
+	 *            a encrypted secret key
+	 * @param data
+	 *            the data to encrypt
 	 * @return the encrypted data
-	 * @throws InvalidKeyException one of the keys is invalid
+	 * @throws InvalidKeyException
+	 *             one of the keys is invalid
 	 */
-	public byte[] encrypt(PrivateKey privateKey, byte[] encryptedSecretKey, String data) throws InvalidKeyException {
+	public byte[] encrypt(PrivateKey privateKey, byte[] encryptedSecretKey,
+			String data) throws InvalidKeyException {
 		byte[] encryptedData = null;
 		try {
 			// Decrypt secret symmetric key with private key
 			Cipher rsacf = Cipher.getInstance("RSA");
 			rsacf.init(Cipher.DECRYPT_MODE, privateKey);
 			byte[] secretKey = rsacf.doFinal(encryptedSecretKey);
-		
+
 			encryptedData = encrypt(secretKey, data);
 		} catch (Exception e) {
 			LOG.error("Exception encrypting data", e);
 		}
-		
+
 		return encryptedData;
 	}
-	
-	public byte[] encrypt(byte[] secretKey, String data) throws InvalidKeyException {
+
+	public byte[] encrypt(byte[] secretKey, String data)
+			throws InvalidKeyException {
 		byte[] encryptedData = null;
 		try {
 			// Encrypt data using the secret key
@@ -102,11 +108,12 @@ public class SecurityUtil {
 			result = rsacf.doFinal(secretKey);
 		} catch (Exception e) {
 			LOG.error("Error", e);
-		} 
+		}
 		return result;
 	}
-	
-	private byte[] decryptSecretKey(PrivateKey privatekey, byte[] encryptedSecretKey) {
+
+	private byte[] decryptSecretKey(PrivateKey privatekey,
+			byte[] encryptedSecretKey) {
 		byte[] result = null;
 		try {
 			Cipher rsacf = Cipher.getInstance("RSA");
@@ -114,11 +121,12 @@ public class SecurityUtil {
 			result = rsacf.doFinal(encryptedSecretKey);
 		} catch (Exception e) {
 			LOG.error("Error", e);
-		} 
+		}
 		return result;
 	}
 
-	public byte[] decrypt(PrivateKey privateKey, byte[] encryptedSecretKey, byte[] encryptedText) {
+	public byte[] decrypt(PrivateKey privateKey, byte[] encryptedSecretKey,
+			byte[] encryptedText) {
 		byte[] text = null;
 		try {
 			byte[] secretKey = decryptSecretKey(privateKey, encryptedSecretKey);
@@ -129,7 +137,7 @@ public class SecurityUtil {
 
 		return text;
 	}
-	
+
 	public byte[] decrypt(byte[] secretKey, byte[] encryptedText) {
 		byte[] text = null;
 		try {
@@ -178,7 +186,7 @@ public class SecurityUtil {
 		}
 		return kpr;
 	}
-	
+
 	public byte[] genSecretKey() {
 		byte[] key = null;
 		try {
@@ -192,11 +200,11 @@ public class SecurityUtil {
 		}
 		return key;
 	}
-	
+
 	public String encode(byte[] key) {
 		return Base64.encodeBase64String(key);
 	}
-	
+
 	public String encodeURLSafe(String data) {
 		String ret = null;
 		try {
@@ -206,7 +214,7 @@ public class SecurityUtil {
 		}
 		return ret;
 	}
-	
+
 	public String encodeURLSafe(byte[] key) {
 		String encKey = null;
 		try {
@@ -217,13 +225,13 @@ public class SecurityUtil {
 		}
 		return encKey;
 	}
-	
+
 	public byte[] decode(String encoded) {
 		byte[] bytes = null;
 		bytes = Base64.decodeBase64(encoded);
 		return bytes;
 	}
-	
+
 	public String decodeString(String encoded) {
 		String ret = null;
 		try {
@@ -233,17 +241,18 @@ public class SecurityUtil {
 		}
 		return ret;
 	}
-	
+
 	public byte[] decodeURLSafe(String encoded) {
 		byte[] bytes = null;
 		try {
-			bytes = Base64.decodeBase64(URLDecoder.decode(encoded, UTF8).getBytes(UTF8));
+			bytes = Base64.decodeBase64(URLDecoder.decode(encoded, UTF8)
+					.getBytes(UTF8));
 		} catch (Exception e) {
 			LOG.error("Error decoding string: " + encoded, e);
 		}
 		return bytes;
 	}
-	
+
 	public String decodeURLSafeString(String encoded) {
 		String ret = null;
 		try {
@@ -253,9 +262,10 @@ public class SecurityUtil {
 		}
 		return ret;
 	}
-	
-	public PublicKey encodedStringToPublicKey(byte[] encKey) throws InvalidKeyException {
-		X509EncodedKeySpec es= new X509EncodedKeySpec(encKey);
+
+	public PublicKey encodedStringToPublicKey(byte[] encKey)
+			throws InvalidKeyException {
+		X509EncodedKeySpec es = new X509EncodedKeySpec(encKey);
 		PublicKey key = null;
 		try {
 			KeyFactory fact = KeyFactory.getInstance("RSA");
@@ -268,19 +278,24 @@ public class SecurityUtil {
 			LOG.fatal("InvalidKeySpecException", e);
 			throw new RuntimeException(e);
 		}
-		
-//		key = new RSAPublicKeyImpl(encKey);
+
+		// key = new RSAPublicKeyImpl(encKey);
 		return key;
 	}
-	
+
 	/**
 	 * Generates a random secret key for the user. The key is saved for a while.
-	 * @param user the user name
-	 * @param pubKey the user public key to encrypt the new key
+	 * 
+	 * @param user
+	 *            the user name
+	 * @param pubKey
+	 *            the user public key to encrypt the new key
 	 * @return the encrypted key
-	 * @throws InvalidKeyException if the received key was invalid
+	 * @throws InvalidKeyException
+	 *             if the received key was invalid
 	 */
-	public String genSecretKeyForUser(User user, byte[] pubKey) throws InvalidKeyException {
+	public String genSecretKeyForUser(User user, byte[] pubKey)
+			throws InvalidKeyException {
 		PublicKey pkey = encodedStringToPublicKey(pubKey);
 		byte[] key = genSecretKey();
 		LOG.info("Saving keys for user: " + user);
@@ -289,41 +304,42 @@ public class SecurityUtil {
 		String encKeyStr = encodeURLSafe(enckey);
 		return encKeyStr;
 	}
-	
+
 	/**
 	 * Encrypt a string using SHA
-	 * @param plaintext the original text
+	 * 
+	 * @param plaintext
+	 *            the original text
 	 * @return resultant hash
 	 */
-	public synchronized String encrypt(String plaintext)
-	  {
-	    MessageDigest md = null;
-	    try
-	    {
-	      md = MessageDigest.getInstance("SHA");
-	      md.update(plaintext.getBytes(UTF8));
-	    }
-	    catch(Exception e)
-	    {
-	      LOG.error("Should not happen!", e);
-	    }
-	    byte raw[] = md.digest();
-	    
-	    return Base64.encodeBase64String(raw);
-	  }
+	public synchronized String encrypt(String plaintext) {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA");
+			md.update(plaintext.getBytes(UTF8));
+		} catch (Exception e) {
+			LOG.error("Should not happen!", e);
+		}
+		byte raw[] = md.digest();
+
+		return Base64.encodeBase64String(raw);
+	}
 
 	public String generateAuthenticationTokenForUser(User user,
 			byte[] encryptedPassword) {
-		
-		String encryptedToken = null; 
-		LOG.debug("Will check if user is valid " + user + " encryptedPassword: " + encryptedPassword);
-		if(isValid(user, encryptedPassword)) {
-			
-			String randomStr = Long.toHexString(Double.doubleToLongBits(Math.random()));
-			// save the hash of the random string, return it encrypted with the user
+
+		String encryptedToken = null;
+		LOG.debug("Will check if user is valid " + user
+				+ " encryptedPassword: " + encryptedPassword);
+		if (isValid(user, encryptedPassword)) {
+
+			String randomStr = Long.toHexString(Double.doubleToLongBits(Math
+					.random()));
+			// save the hash of the random string, return it encrypted with the
+			// user
 			LOG.debug("Generated token " + randomStr);
 			LOG.debug("Generated token hash " + encrypt(randomStr));
-			if(keyCache.containsKey(user.getLogin())) {
+			if (keyCache.containsKey(user.getLogin())) {
 				byte[] secretKey = keyCache.get(user.getLogin()).secretKey;
 				try {
 					encryptedToken = encodeURLSafe(encrypt(secretKey, randomStr));
@@ -332,7 +348,7 @@ public class SecurityUtil {
 					// key should be valid
 					LOG.error("Unexpected error", e);
 				}
-				
+
 				// remove the key and check for expired ones
 				keyCache.remove(user.getLogin());
 				deleteExpiredKeys();
@@ -343,26 +359,26 @@ public class SecurityUtil {
 					LOG.error("   key: " + key);
 				}
 			}
-		}
-		else {
+		} else {
 			LOG.error("Unknown user: " + user);
 		}
-		
+
 		return encryptedToken;
 	}
-	
+
 	private boolean isValid(User user, byte[] encryptedPassword) {
 		LOG.info("check user");
 		boolean isValid = false;
-		if(this.keyCache.containsKey(user.getLogin())) {
+		if (this.keyCache.containsKey(user.getLogin())) {
 			byte[] secretKey = this.keyCache.get(user.getLogin()).secretKey;
 			try {
 				LOG.info("Got encrypted secret key for " + user);
 				byte[] passwdBytes = decrypt(secretKey, encryptedPassword);
 				String passwd = new String(passwdBytes, UTF8);
-				String passCripto = CriptoUtils.digestMD5(user.getLogin(), passwd);
+				String passCripto = CriptoUtils.digestMD5(user.getLogin(),
+						passwd);
 				isValid = passCripto.equalsIgnoreCase(user.getPassword());
-				
+
 			} catch (UnsupportedEncodingException e) {
 				LOG.error("Error", e);
 			}
@@ -382,7 +398,7 @@ public class SecurityUtil {
 		synchronized (keyCache) {
 			for (String user : keyCache.keySet()) {
 				KeyTime kt = keyCache.get(user);
-				if(kt.expired()) {
+				if (kt.expired()) {
 					LOG.info("Key expired for user: " + user);
 					toDelete.add(user);
 				}
@@ -393,19 +409,20 @@ public class SecurityUtil {
 		}
 
 	}
-	
+
 	private class KeyTime {
-		
+
 		public final byte[] secretKey;
 		private final Date expiration;
 		private static final int EXPIRES_IN_MILLISECONDS = 10 * 60 * 1000;
-		
+
 		public KeyTime(byte[] secretKey) {
 			this.secretKey = secretKey;
 			this.expiration = new Date();
-			this.expiration.setTime(this.expiration.getTime() + EXPIRES_IN_MILLISECONDS );
+			this.expiration.setTime(this.expiration.getTime()
+					+ EXPIRES_IN_MILLISECONDS);
 		}
-		
+
 		public boolean expired() {
 			return new Date().after(expiration);
 		}

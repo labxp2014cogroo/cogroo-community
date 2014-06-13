@@ -30,7 +30,7 @@ public class ApplicationData implements Serializable {
 	private boolean initialized = false;
 
 	private AnalyticsManager manager;
-	
+
 	private AtomicInteger events = new AtomicInteger();
 	private AtomicInteger visits = new AtomicInteger();
 	private AtomicInteger pageviews = new AtomicInteger();
@@ -49,7 +49,7 @@ public class ApplicationData implements Serializable {
 	private File csvFolder;
 	private File csvStatsFile;
 	private String temporalData;
-	
+
 	private static final Calendar LAUNCH_DAY = Calendar.getInstance();
 	static {
 		LAUNCH_DAY.clear();
@@ -117,14 +117,14 @@ public class ApplicationData implements Serializable {
 
 		if (feed != null) {
 			String metrics = manager.getDatedMetricsAsString(feed);
-	
+
 			String header = "data,eventos,visitas,impressões"
 					+ System.getProperty("line.separator");
 			String csv = metrics.replaceAll(";",
 					System.getProperty("line.separator"));
-	
+
 			File statsFile = new File(csvFolder, "stats.csv");
-	
+
 			try {
 				FileWriter fw = new FileWriter(statsFile);
 				fw.write(header);
@@ -134,14 +134,17 @@ public class ApplicationData implements Serializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	
+
 			this.lastUpdated = zeroTime(Calendar.getInstance());
 			this.csvStatsFile = statsFile;
 			this.temporalData = metrics;
-			
-			setEvents(feed.getAggregates().getMetrics().get(0).numericValue().intValue());
-			setVisits(feed.getAggregates().getMetrics().get(1).numericValue().intValue());
-			setPageviews(feed.getAggregates().getMetrics().get(2).numericValue().intValue());
+
+			setEvents(feed.getAggregates().getMetrics().get(0).numericValue()
+					.intValue());
+			setVisits(feed.getAggregates().getMetrics().get(1).numericValue()
+					.intValue());
+			setPageviews(feed.getAggregates().getMetrics().get(2)
+					.numericValue().intValue());
 		}
 	}
 

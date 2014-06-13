@@ -34,9 +34,9 @@ import com.google.gdata.util.ServiceException;
 @ApplicationScoped
 public class StableAnalyticsManager implements AnalyticsManager, Serializable {
 
-  private static final long serialVersionUID = -8942593409150938968L;
+	private static final long serialVersionUID = -8942593409150938968L;
 
-  private AnalyticsService analyticsService;
+	private AnalyticsService analyticsService;
 
 	public StableAnalyticsManager() {
 		analyticsService = new AnalyticsService(BuildUtil.APP_NAME);
@@ -243,7 +243,7 @@ public class StableAnalyticsManager implements AnalyticsManager, Serializable {
 			t.start();
 			threads.add(t);
 		}
-		
+
 		DataFeed dataFeed = null;
 		for (Thread t : threads) {
 			t.join();

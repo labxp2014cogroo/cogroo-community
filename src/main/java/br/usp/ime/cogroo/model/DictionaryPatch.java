@@ -25,38 +25,38 @@ public class DictionaryPatch {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	@OneToMany(mappedBy = "errorEntry", cascade = CascadeType.ALL)
 	private List<Comment> comments;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creation;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modified;
 
 	@OneToMany(mappedBy = "errorEntry", cascade = CascadeType.ALL)
 	private List<HistoryEntry> historyEntries;
-	
+
 	private State state;
-	
+
 	private String newEntry;
 	private String previousEntry;
-	
+
 	@Transient
 	private boolean isNew = false;
-	
+
 	public DictionaryPatch() {
 		this.isNew = true;
 		this.state = State.OPEN;
 	}
-	
-	public DictionaryPatch(List<Comment> comments, User user,
-			Date creation, Date modified, State state, String newEntry, String previousEntry) {
+
+	public DictionaryPatch(List<Comment> comments, User user, Date creation,
+			Date modified, State state, String newEntry, String previousEntry) {
 		super();
 		this.comments = comments;
 		this.user = user;
@@ -66,12 +66,12 @@ public class DictionaryPatch {
 		this.newEntry = newEntry;
 		this.previousEntry = previousEntry;
 	}
-	
+
 	@Transient
 	public boolean getIsNew() {
 		return isNew;
 	}
-	
+
 	@Transient
 	public void setIsNew(boolean isNew) {
 		this.isNew = isNew;
@@ -140,7 +140,7 @@ public class DictionaryPatch {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public int getCommentCount() {
 		int count = 0;
 		for (Comment comment : getComments()) {
@@ -148,7 +148,7 @@ public class DictionaryPatch {
 		}
 		return count;
 	}
-	
+
 	@PrePersist
 	protected void onCreate() {
 		creation = modified = new Date();
@@ -158,7 +158,7 @@ public class DictionaryPatch {
 	protected void onUpdate() {
 		modified = new Date();
 	}
-	
+
 	public List<HistoryEntry> getHistoryEntries() {
 		return historyEntries;
 	}

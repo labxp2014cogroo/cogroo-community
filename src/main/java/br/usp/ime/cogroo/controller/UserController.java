@@ -30,12 +30,13 @@ public class UserController {
 	private LoggedUser loggedUser;
 	private Validator validator;
 	private TextSanitizer sanitizer;
-    private CommentDAO commentDAO;
-    private ErrorEntryDAO errorEntryDAO;
+	private CommentDAO commentDAO;
+	private ErrorEntryDAO errorEntryDAO;
 
 	public UserController(Result result, UserDAO userDAO,
 			LoggedUser loggedUser, Validator validator,
-			HttpServletRequest request, TextSanitizer sanitizer, ErrorEntryDAO errorEntryDAO, CommentDAO commentDAO) {
+			HttpServletRequest request, TextSanitizer sanitizer,
+			ErrorEntryDAO errorEntryDAO, CommentDAO commentDAO) {
 		this.result = result;
 		this.userDAO = userDAO;
 		this.loggedUser = loggedUser;
@@ -49,10 +50,10 @@ public class UserController {
 	@Path("/users")
 	@LoggedIn
 	public void userList() {
-	    List<User> users = userDAO.listAll();
-	    for (User user : users) {
-          setCounters(user);
-        }
+		List<User> users = userDAO.listAll();
+		for (User user : users) {
+			setCounters(user);
+		}
 
 		result.include("userList", users);
 
@@ -72,8 +73,8 @@ public class UserController {
 		if (!userDAO.existLogin(user.getService(), user.getLogin())) {
 			validator.add(new ValidationMessage(
 					ExceptionMessages.PAGE_NOT_FOUND, ExceptionMessages.ERROR));
-			validator.onErrorUse(Results.logic()).redirectTo(
-					UserController.class).userList();
+			validator.onErrorUse(Results.logic())
+					.redirectTo(UserController.class).userList();
 		}
 		user = userDAO.retrieveByLogin(user.getService(), user.getLogin());
 
@@ -92,13 +93,13 @@ public class UserController {
 	}
 
 	private void setCounters(User user) {
-	  if(commentDAO != null) {
-	    user.setCommentsCount(commentDAO.count(user));
-	    user.setReportedErrorsCount(errorEntryDAO.count(user));
-	  }
-    }
+		if (commentDAO != null) {
+			user.setCommentsCount(commentDAO.count(user));
+			user.setReportedErrorsCount(errorEntryDAO.count(user));
+		}
+	}
 
-  @Put
+	@Put
 	@Path("/users/{user.service}/{user.login}/role")
 	@LoggedIn
 	public void userRole(User user, String role) {
@@ -114,8 +115,8 @@ public class UserController {
 			validator.add(new ValidationMessage(
 					ExceptionMessages.ONLY_LOGGED_USER_CAN_DO_THIS,
 					ExceptionMessages.ERROR));
-			validator.onErrorUse(Results.logic()).redirectTo(
-					IndexController.class).index();
+			validator.onErrorUse(Results.logic())
+					.redirectTo(IndexController.class).index();
 		}
 	}
 
@@ -138,8 +139,10 @@ public class UserController {
 
 			// validate email
 			if (!email.isEmpty()) {
-				User userFromDB = userDAO.retrieveByEmail(user.getService(), email);
-				if (userDAO.existEmail(user.getService(), email) && user.getId() != userFromDB.getId()) {
+				User userFromDB = userDAO.retrieveByEmail(user.getService(),
+						email);
+				if (userDAO.existEmail(user.getService(), email)
+						&& user.getId() != userFromDB.getId()) {
 					validator.add(new ValidationMessage(
 							ExceptionMessages.EMAIL_ALREADY_EXIST,
 							ExceptionMessages.INVALID_ENTRY));
@@ -159,10 +162,10 @@ public class UserController {
 						ExceptionMessages.USER_CANNOT_BE_EMPTY,
 						ExceptionMessages.INVALID_ENTRY));
 
-			validator.onErrorUse(Results.logic()).redirectTo(
-					UserController.class).user(user);
+			validator.onErrorUse(Results.logic())
+					.redirectTo(UserController.class).user(user);
 
-			if(twitter != null) {
+			if (twitter != null) {
 				twitter = twitter.replace("@", "");
 			}
 
@@ -183,10 +186,11 @@ public class UserController {
 					user.setName(name);
 				}
 
-				if (user.getTwitter() != null && !user.getTwitter().equals(twitter)) {
+				if (user.getTwitter() != null
+						&& !user.getTwitter().equals(twitter)) {
 					changed = true;
 					user.setTwitter(twitter);
-				}  else if(twitter != null && twitter.length() > 0) {
+				} else if (twitter != null && twitter.length() > 0) {
 					user.setTwitter(twitter);
 				}
 
@@ -198,7 +202,7 @@ public class UserController {
 				if (changed) {
 					userDAO.update(user);
 					// update logged user
-					if(loggedUser.getUser().equals(user)) {
+					if (loggedUser.getUser().equals(user)) {
 						loggedUser.setUser(user);
 					}
 				}
@@ -210,8 +214,8 @@ public class UserController {
 			validator.add(new ValidationMessage(
 					ExceptionMessages.USER_UNAUTHORIZED,
 					ExceptionMessages.ERROR));
-			validator.onErrorUse(Results.logic()).redirectTo(
-					IndexController.class).index();
+			validator.onErrorUse(Results.logic())
+					.redirectTo(IndexController.class).index();
 		}
 	}
 

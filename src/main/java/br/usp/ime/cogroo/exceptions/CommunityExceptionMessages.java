@@ -6,14 +6,13 @@
 package br.usp.ime.cogroo.exceptions;
 
 /**
- *
+ * 
  * @author colen
  */
 public class CommunityExceptionMessages {
-    
-    public static final String INTERNAL_ERROR = "internal_error";
 
-    public static final String INVALID_USER = "invalid_user";
-    
-    
+	public static final String INTERNAL_ERROR = "internal_error";
+
+	public static final String INVALID_USER = "invalid_user";
+
 }

@@ -32,11 +32,12 @@ public class GrammarController {
 	private LoggedUser loggedUser;
 	private TextSanitizer sanitizer;
 	private static final Logger LOG = Logger.getLogger(RuleController.class);
-	
-	private static final ResourceBundle messages =
-	      ResourceBundle.getBundle("messages", new Locale("pt_BR"));
-	
-	public GrammarController(Result result, CogrooFacade cogroo, LoggedUser loggedUser, TextSanitizer sanitizer) {
+
+	private static final ResourceBundle messages = ResourceBundle.getBundle(
+			"messages", new Locale("pt_BR"));
+
+	public GrammarController(Result result, CogrooFacade cogroo,
+			LoggedUser loggedUser, TextSanitizer sanitizer) {
 		this.result = result;
 		this.cogroo = cogroo;
 		this.loggedUser = loggedUser;
@@ -55,7 +56,7 @@ public class GrammarController {
 				.include("headerDescription",
 						messages.getString("GRAMMAR_DESCRIPTION"));
 	}
-	
+
 	@Get
 	@Path("/grammar/{text*}")
 	public void grammarGET(String text) {
@@ -71,27 +72,27 @@ public class GrammarController {
 	public void grammar(String text) {
 		text = sanitizer.sanitize(text, false, true);
 		if (text != null && text.length() > 0) {
-			if(text.length() > 255) {
+			if (text.length() > 255) {
 				text = text.substring(0, 255);
 			}
 			result.include("justAnalyzed", true);
 			if (loggedUser.isLogged())
-				result.include("gaEventGrammarAnalyzed", true)
-						.include("provider", loggedUser.getUser().getService());
+				result.include("gaEventGrammarAnalyzed", true).include(
+						"provider", loggedUser.getUser().getService());
 			else
-				result.include("gaEventGrammarAnalyzed", true)
-						.include("provider", "anonymous");
-			
-			
+				result.include("gaEventGrammarAnalyzed", true).include(
+						"provider", "anonymous");
+
 			result.include("processResultList", cogroo.processText(text))
 					.include("text", text);
 		}
 		result.include("headerTitle", messages.getString("GRAMMAR_HEADER"))
 				.include("headerDescription",
 						messages.getString("GRAMMAR_DESCRIPTION"));
-		
+
 		try {
-			List<String> unknownWords = SearchWordJspell.searchUnknownWords(text);
+			List<String> unknownWords = SearchWordJspell
+					.searchUnknownWords(text);
 			result.include("unknownWordsList", unknownWords);
 		} catch (IOException e) {
 			Log.error("Falhou ao consultar as palavras existentes.", e);

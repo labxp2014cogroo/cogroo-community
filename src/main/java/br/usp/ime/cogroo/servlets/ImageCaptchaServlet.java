@@ -28,14 +28,15 @@ import com.octo.captcha.service.image.ImageCaptchaService;
 
 public class ImageCaptchaServlet extends HttpServlet implements Servlet {
 
-	private static final Logger LOG = Logger.getLogger(ImageCaptchaServlet.class);
+	private static final Logger LOG = Logger
+			.getLogger(ImageCaptchaServlet.class);
 
 	private static final long serialVersionUID = 8785599325671940374L;
 
 	// http://jcaptcha.sourceforge.net/jcaptcha/xref/index.html
 	public static ImageCaptchaService service = new DefaultManageableImageCaptchaService(
-			new FastHashMapCaptchaStore(), new ImageEngine(), 180,
-			100000, 75000);
+			new FastHashMapCaptchaStore(), new ImageEngine(), 180, 100000,
+			75000);
 
 	@Override
 	protected void doGet(HttpServletRequest httpServletRequest,
@@ -83,11 +84,11 @@ public class ImageCaptchaServlet extends HttpServlet implements Servlet {
 		// else use service and session id to validate
 		boolean validated = false;
 		try {
-			if(canMock() && "szelpodd".equals(userCaptchaResponse)) {
+			if (canMock() && "szelpodd".equals(userCaptchaResponse)) {
 				validated = true;
 			} else {
 				validated = service.validateResponseForID(request.getSession()
-					.getId(), userCaptchaResponse);
+						.getId(), userCaptchaResponse);
 			}
 		} catch (CaptchaServiceException e) {
 			// do nothing.. false

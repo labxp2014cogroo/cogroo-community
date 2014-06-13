@@ -6,27 +6,27 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class GrammarCheckerOmission implements Cloneable{
-	
+public class GrammarCheckerOmission implements Cloneable {
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private String category;
-	
+
 	private String customCategory;
-	
+
 	private String replaceBy;
-	
+
 	@OneToOne
 	private ErrorEntry errorEntry;
-	
+
 	public GrammarCheckerOmission() {
-		
+
 	}
 
-	public GrammarCheckerOmission(String category,
-			String customCategory, String replaceBy, ErrorEntry errorEntry) {
+	public GrammarCheckerOmission(String category, String customCategory,
+			String replaceBy, ErrorEntry errorEntry) {
 		this.category = category;
 		this.customCategory = customCategory;
 		this.replaceBy = replaceBy;
@@ -64,11 +64,11 @@ public class GrammarCheckerOmission implements Cloneable{
 	public void setReplaceBy(String replaceBy) {
 		this.replaceBy = replaceBy;
 	}
-	
+
 	public void setErrorEntry(ErrorEntry errorEntry) {
 		this.errorEntry = errorEntry;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -78,7 +78,7 @@ public class GrammarCheckerOmission implements Cloneable{
 		sb.append("replaceBy: " + replaceBy + "\n");
 		return sb.toString();
 	}
-	
+
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

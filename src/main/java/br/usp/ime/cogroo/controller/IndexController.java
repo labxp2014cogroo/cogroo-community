@@ -38,35 +38,37 @@ public class IndexController {
 	@Post
 	@Path("/")
 	public void index(String text) {
-		result.include("text", text).
-				redirectTo(GrammarController.class).grammar(text);
+		result.include("text", text).redirectTo(GrammarController.class)
+				.grammar(text);
 	}
-	
+
 	@Get
 	@Path("/about")
 	public void about() {
 		result.include("appData", appData);
-		
+
 		result.include("headerTitle", "Sobre");
 	}
-	
+
 	@Get
 	@Path("/development")
 	public void development() {
 		result.include("appData", appData);
-		
+
 		result.include("headerTitle", "Desenvolvimento")
-				.include("headerDescription",
+				.include(
+						"headerDescription",
 						"Encontre informações sobre como colaborar no desenvolvimento do CoGrOO Comunidade.");
 	}
-	
+
 	@Get
 	@Path("/sitemap")
 	public void sitemap() {
 		result.include("errorEntryList", errorEntryLogic.getAllReports());
 		result.include("ruleList", rulesLogic.getRuleList());
-		
-		result.include("headerTitle", "Mapa do site").include("headerDescription",
+
+		result.include("headerTitle", "Mapa do site")
+				.include("headerDescription",
 						"Acesse o mapa do site para encontrar rapidamente a página que você procura.");
 	}
 

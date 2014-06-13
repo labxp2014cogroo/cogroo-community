@@ -12,9 +12,8 @@ import org.cogroo.entities.Mistake;
 import org.cogroo.text.Sentence;
 import org.cogroo.text.Token;
 
-
 public class ProcessResult {
-	
+
 	private String textAnnotatedWithErrors;
 	private String syntaxTree;
 	private Sentence sentence;
@@ -39,30 +38,30 @@ public class ProcessResult {
 	public Sentence getSentence() {
 		return sentence;
 	}
-	
-	public String[][] getSentenceAsTable() {
-	  
-	  String[][] table = new String[sentence.getTokens().size()][6];
 
-      for (int i = 0; i < sentence.getTokens().size(); i++) {
-        Token token = sentence.getTokens().get(i);
-        table[i][0] = token.getLexeme();
-        table[i][1] = comma(token.getLemmas());
-        table[i][2] = getPOS(token.getPOSTag(), token.getLexeme());
-        table[i][3] = getFeatures(token.getFeatures());
-        
-        String nextChunk = null;
-        String nextClause = null;
-        if(i+1<sentence.getTokens().size()) {
-          Token nextToken = sentence.getTokens().get(i+1);
-          nextChunk = nextToken.getChunkTag();
-          nextClause = nextToken.getSyntacticTag();
-        }
-        table[i][4] = getChunk(token.getChunkTag(), nextChunk);
-        table[i][5] = getClause(token.getSyntacticTag(), nextClause);
-      }
-      
-      return table;
+	public String[][] getSentenceAsTable() {
+
+		String[][] table = new String[sentence.getTokens().size()][6];
+
+		for (int i = 0; i < sentence.getTokens().size(); i++) {
+			Token token = sentence.getTokens().get(i);
+			table[i][0] = token.getLexeme();
+			table[i][1] = comma(token.getLemmas());
+			table[i][2] = getPOS(token.getPOSTag(), token.getLexeme());
+			table[i][3] = getFeatures(token.getFeatures());
+
+			String nextChunk = null;
+			String nextClause = null;
+			if (i + 1 < sentence.getTokens().size()) {
+				Token nextToken = sentence.getTokens().get(i + 1);
+				nextChunk = nextToken.getChunkTag();
+				nextClause = nextToken.getSyntacticTag();
+			}
+			table[i][4] = getChunk(token.getChunkTag(), nextChunk);
+			table[i][5] = getClause(token.getSyntacticTag(), nextClause);
+		}
+
+		return table;
 	}
 
 	public void setSentence(Sentence sentence) {
@@ -76,5 +75,5 @@ public class ProcessResult {
 	public void setMistakes(List<Mistake> mistakes) {
 		this.mistakes = mistakes;
 	}
-	
+
 }

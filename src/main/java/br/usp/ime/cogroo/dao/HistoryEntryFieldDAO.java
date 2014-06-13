@@ -10,7 +10,8 @@ import br.usp.ime.cogroo.model.errorreport.HistoryEntryField;
 public class HistoryEntryFieldDAO {
 
 	private EntityManager em;
-	public static final String COMMENT_ENTITY = HistoryEntryField.class.getName();
+	public static final String COMMENT_ENTITY = HistoryEntryField.class
+			.getName();
 
 	public HistoryEntryFieldDAO(EntityManager e) {
 		em = e;

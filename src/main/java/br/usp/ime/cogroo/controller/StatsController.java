@@ -21,7 +21,7 @@ import br.usp.ime.cogroo.model.ApplicationData;
  */
 @Resource
 public class StatsController {
-	
+
 	private static final Logger LOG = Logger.getLogger(StatsController.class);
 
 	private static final int N = 10;
@@ -47,22 +47,24 @@ public class StatsController {
 		try {
 			Calendar monthAgo = Calendar.getInstance();
 			monthAgo.add(Calendar.MONTH, -1);
-	
+
 			appData.setIdleUsers(userDAO.retrieveIdleUsers(
 					monthAgo.getTimeInMillis(), N));
 			appData.setTopUsers(userDAO.retrieveTopUsers(
 					monthAgo.getTimeInMillis(), N));
-	
+
 			result.include("appData", appData);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			LOG.error(ExceptionMessages.ERROR_LOADING_STATS, e);
-			validator.add(new ValidationMessage(ExceptionMessages.ERROR_LOADING_STATS,
+			validator.add(new ValidationMessage(
+					ExceptionMessages.ERROR_LOADING_STATS,
 					ExceptionMessages.ERROR));
 			validator.onErrorUse(Results.page()).of(IndexController.class)
 					.index();
 		}
 		result.include("headerTitle", "Estatísticas").include(
-				"headerDescription", "Exibe estatísticas de acesso ao CoGrOO Comunidade.");
+				"headerDescription",
+				"Exibe estatísticas de acesso ao CoGrOO Comunidade.");
 	}
 
 	@Get

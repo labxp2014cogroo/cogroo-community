@@ -72,7 +72,7 @@ public class DictionaryPatchController {
 		List<DictionaryPatch> dictionaryPatchList = new ArrayList<DictionaryPatch>();
 
 		dictionaryPatchList = dictionaryPatchDAO.retrieveAll();
-			
+
 		result.include("dictionaryPatchList", dictionaryPatchList);
 	}
 

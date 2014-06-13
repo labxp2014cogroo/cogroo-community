@@ -2,12 +2,11 @@ package br.usp.ime.cogroo.model;
 
 import org.cogroo.entities.Mistake;
 
-
 public class SingleGrammarError {
-	
+
 	private String annotatedText;
 	private Mistake mistake;
-	
+
 	public SingleGrammarError(String annotatedText, Mistake mistake) {
 		this.annotatedText = annotatedText;
 		this.mistake = mistake;
@@ -29,5 +28,4 @@ public class SingleGrammarError {
 		this.mistake = mistake;
 	}
 
-	
 }

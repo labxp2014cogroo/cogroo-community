@@ -15,29 +15,30 @@ import br.usp.ime.cogroo.model.User;
 
 @Entity
 public class HistoryEntry {
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private Date creation;
-	
+
 	@ManyToOne
 	private User user;
-	
+
 	@OneToMany(mappedBy = "historyEntry", cascade = CascadeType.ALL)
 	private List<HistoryEntryField> historyEntryField;
-	
+
 	@ManyToOne
-	private DictionaryPatch dictionaryPatch; 
+	private DictionaryPatch dictionaryPatch;
 
 	@ManyToOne
 	private ErrorEntry errorEntry;
-	
+
 	public HistoryEntry() {
 	}
 
-	public HistoryEntry(User user, Date creation, List<HistoryEntryField> historyEntryField, ErrorEntry errorEntry) {
+	public HistoryEntry(User user, Date creation,
+			List<HistoryEntryField> historyEntryField, ErrorEntry errorEntry) {
 		this.creation = creation;
 		this.historyEntryField = historyEntryField;
 		this.errorEntry = errorEntry;
@@ -83,21 +84,21 @@ public class HistoryEntry {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("User " + getUser() + "\n");
 		sb.append("Creation " + getCreation() + "\n");
 		sb.append("ErrorEntryID " + getErrorEntry().getId() + "\n");
-		
+
 		for (HistoryEntryField entry : getHistoryEntryField()) {
 			sb.append("\t - " + entry + "\n");
 		}
 		return sb.toString();
 	}
-	
+
 	public DictionaryPatch getDictionaryPatch() {
 		return dictionaryPatch;
 	}

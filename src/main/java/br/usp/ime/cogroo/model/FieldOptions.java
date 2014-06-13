@@ -5,7 +5,7 @@ import java.util.List;
 public class FieldOptions {
 	private String field;
 	private List<String> options;
-	
+
 	public FieldOptions(String aField, List<String> options) {
 		this.field = aField;
 		this.options = options;

@@ -26,23 +26,23 @@ import com.sun.syndication.io.SyndFeedOutput;
 @Component
 @ApplicationScoped
 class RssFeed {
-	
+
 	private static final String RSS_TITLE = "CoGrOO Comunidade";
 	private static final String RSS_LINK = "http://ccsl.ime.usp.br/cogroo/comunidade/";
 	private static final String RSS_DESCRIPTION = "O que há de novo no CoGrOO Comunidade.";
 	private static final int LIMIT = 50;
-	
+
 	private static final Logger LOG = Logger.getLogger(RssFeed.class);
 	private static final String feedType = "rss_2.0";
 	public static final String FEED_FILENAME = "feed.xml";
 
 	private SyndFeed feedRSS;
-	
+
 	public File getFeedFile() {
 		this.feedRSS = init(FEED_FILENAME, feedRSS);
 		return getFile(FEED_FILENAME);
 	}
-	
+
 	private SyndFeed init(String file, SyndFeed feed) {
 
 		File f = new File(file);
@@ -75,29 +75,30 @@ class RssFeed {
 		this.feedRSS = init(FEED_FILENAME, this.feedRSS);
 		addEntry(title, link, value, FEED_FILENAME, this.feedRSS);
 	}
-	
+
 	public void clean() {
 		clean(FEED_FILENAME, this.feedRSS);
 	}
-	
+
 	private void clean(String file, SyndFeed feed) {
 		synchronized (this) {
 			File f = new File(file);
 			boolean couldDelete = f.delete();
-			if(!couldDelete) {
-				LOG.error("Couldn't delete RSS " + f.getAbsolutePath()) ;
+			if (!couldDelete) {
+				LOG.error("Couldn't delete RSS " + f.getAbsolutePath());
 			} else {
 				feed = null;
 			}
 		}
 		init(file, feed);
 	}
-	
+
 	@SuppressWarnings("unchecked")
- 	private void addEntry(String title, String link, String value, String file, SyndFeed feed) {
+	private void addEntry(String title, String link, String value, String file,
+			SyndFeed feed) {
 		synchronized (this) {
 			List<SyndEntry> entries = new ArrayList<SyndEntry>();
-			
+
 			SyndEntry entry;
 			SyndContent description;
 
@@ -110,9 +111,9 @@ class RssFeed {
 			description.setValue(value);
 			entry.setDescription(description);
 			entries.add(entry);
-			
+
 			entries.addAll(feed.getEntries());
-			
+
 			Collections.sort(entries, new Comparator<SyndEntry>() {
 
 				@Override
@@ -123,13 +124,13 @@ class RssFeed {
 					return d2.compareTo(d1);
 				}
 			});
-			
-			while(entries.size() > LIMIT ) {
+
+			while (entries.size() > LIMIT) {
 				entries.remove(entries.size() - 1);
 			}
-			
+
 			feed.setEntries(entries);
-			
+
 			write(file, feed);
 		}
 	}
@@ -145,8 +146,7 @@ class RssFeed {
 			LOG.error("Could not create RSS Feed", e);
 		}
 	}
-	
-	
+
 	private File getFile(String file) {
 		return new File(file);
 	}

@@ -10,10 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-
 @Entity
 public class WordUser {
-	
+
 	@EmbeddedId
 	private IdFK id = new IdFK();
 
@@ -26,11 +25,11 @@ public class WordUser {
 	private User user;
 
 	private boolean deleted = false;
-	
+
 	public WordUser() {
-		
+
 	}
-	
+
 	public WordUser(Word word, User user) {
 		setWord(word);
 		setUser(user);
@@ -57,7 +56,7 @@ public class WordUser {
 	public User getUser() {
 		return user;
 	}
-	
+
 	public void setId(IdFK id) {
 		this.id = id;
 	}
@@ -77,9 +76,9 @@ public class WordUser {
 	@Embeddable
 	public static class IdFK implements Serializable {
 		private static final long serialVersionUID = 1L;
-		@Column(name = "word_id", nullable=false)
+		@Column(name = "word_id", nullable = false)
 		private Long wordId;
-		@Column(name = "user_id", nullable=false)
+		@Column(name = "user_id", nullable = false)
 		private Long userId;
 
 		public IdFK() {

@@ -26,24 +26,26 @@ import br.usp.ime.cogroo.util.CriptoUtils;
 public class RegisterController {
 
 	private static final String LOGIN_REGEX = "[A-Z0-9.@_%+-]+";
-	public static final Pattern LOGIN_PATTERN = Pattern.compile(LOGIN_REGEX, Pattern.CASE_INSENSITIVE);
+	public static final Pattern LOGIN_PATTERN = Pattern.compile(LOGIN_REGEX,
+			Pattern.CASE_INSENSITIVE);
 	private static final String EMAIL_REGEX = "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}";
-	public static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
+	public static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX,
+			Pattern.CASE_INSENSITIVE);
 
 	private final Result result;
 	private UserDAO userDAO;
 	private Validator validator;
 	private ApplicationData appData;
 	private TextSanitizer sanitizer;
-  private HttpServletRequest mRequest;
+	private HttpServletRequest mRequest;
 	private static final Logger LOG = Logger
 			.getLogger(RegisterController.class);
 
 	private static final String HEADER_TITLE = "Cadastro";
 	private static final String HEADER_DESCRIPTION = "Cadastre-se no CoGrOO Comunidade! É rápido e gratuito!";
 
-	public RegisterController(Result result, HttpServletRequest aRequest, UserDAO userDAO,
-			Validator validator, ApplicationData appData,
+	public RegisterController(Result result, HttpServletRequest aRequest,
+			UserDAO userDAO, Validator validator, ApplicationData appData,
 			TextSanitizer sanitizer) {
 		this.result = result;
 		this.userDAO = userDAO;
@@ -62,14 +64,15 @@ public class RegisterController {
 
 	@Post
 	@Path("/sendNewPass")
-	public void register(String email){
+	public void register(String email) {
 
 	}
 
 	@Post
 	@Path("/register")
 	public void register(String login, String password, String passwordRepeat,
-			String email, String name, String twitter, String captcha, boolean iAgree) {
+			String email, String name, String twitter, String captcha,
+			boolean iAgree) {
 		login = sanitizer.sanitize(login, false);
 		email = sanitizer.sanitize(email, false);
 		name = sanitizer.sanitize(name, false);
@@ -78,42 +81,49 @@ public class RegisterController {
 
 		email = email.trim();
 
-		if (captcha == null
-		    || captcha.isEmpty()
-		    || !ImageCaptchaServlet.validateResponse(mRequest, captcha)) {
-		  validator.add(new ValidationMessage(ExceptionMessages.INVALID_CAPTCHA,
-              ExceptionMessages.INVALID_ENTRY));
-        }
+		if (captcha == null || captcha.isEmpty()
+				|| !ImageCaptchaServlet.validateResponse(mRequest, captcha)) {
+			validator.add(new ValidationMessage(
+					ExceptionMessages.INVALID_CAPTCHA,
+					ExceptionMessages.INVALID_ENTRY));
+		}
 
 		if (name.trim().isEmpty())
-			validator.add(new ValidationMessage(ExceptionMessages.USER_CANNOT_BE_EMPTY,
+			validator.add(new ValidationMessage(
+					ExceptionMessages.USER_CANNOT_BE_EMPTY,
 					ExceptionMessages.INVALID_ENTRY));
 
 		if (login.trim().isEmpty() || !LOGIN_PATTERN.matcher(login).matches())
-			validator.add(new ValidationMessage(ExceptionMessages.FORBIDDEN_LOGIN,
+			validator.add(new ValidationMessage(
+					ExceptionMessages.FORBIDDEN_LOGIN,
 					ExceptionMessages.INVALID_ENTRY));
 
 		if (email.isEmpty() || !EMAIL_PATTERN.matcher(email).matches())
-			validator.add(new ValidationMessage(ExceptionMessages.INVALID_EMAIL,
+			validator.add(new ValidationMessage(
+					ExceptionMessages.INVALID_EMAIL,
 					ExceptionMessages.INVALID_ENTRY));
 
 		if (password.trim().isEmpty())
-			validator.add(new ValidationMessage(ExceptionMessages.PASSWORD_CANNOT_BE_EMPTY,
+			validator.add(new ValidationMessage(
+					ExceptionMessages.PASSWORD_CANNOT_BE_EMPTY,
 					ExceptionMessages.INVALID_ENTRY));
 
 		if (!password.equals(passwordRepeat)) {
-			validator.add(new ValidationMessage(ExceptionMessages.USER_REPEAT_PASSWORD_WRONG,
+			validator.add(new ValidationMessage(
+					ExceptionMessages.USER_REPEAT_PASSWORD_WRONG,
 					ExceptionMessages.INVALID_ENTRY));
 		}
 
 		if (!iAgree) {
 			validator.add(new ValidationMessage(
-					ExceptionMessages.USER_MUST_BE_AGREE_TERMS, ExceptionMessages.INVALID_ENTRY));
+					ExceptionMessages.USER_MUST_BE_AGREE_TERMS,
+					ExceptionMessages.INVALID_ENTRY));
 		}
 
 		if (!login.trim().isEmpty()) {
 			if (login.trim().startsWith("oauth")) {
-				validator.add(new ValidationMessage(ExceptionMessages.FORBIDDEN_LOGIN,
+				validator.add(new ValidationMessage(
+						ExceptionMessages.FORBIDDEN_LOGIN,
 						ExceptionMessages.INVALID_ENTRY));
 			}
 			if (userDAO.existLogin("cogroo", login)) {
@@ -126,11 +136,12 @@ public class RegisterController {
 		if (!email.isEmpty()) {
 			if (userDAO.existEmail("cogroo", email)) {
 				validator.add(new ValidationMessage(
-						ExceptionMessages.EMAIL_ALREADY_EXIST, ExceptionMessages.INVALID_ENTRY));
+						ExceptionMessages.EMAIL_ALREADY_EXIST,
+						ExceptionMessages.INVALID_ENTRY));
 			}
 		}
 
-		if(twitter != null) {
+		if (twitter != null) {
 			twitter = twitter.replace("@", "");
 		}
 
@@ -146,11 +157,12 @@ public class RegisterController {
 		appData.incRegisteredMembers();
 
 		result.include("okMessage", "Cadastro realizado com sucesso!");
-		result.include("gaEventUserRegistered", true).include("provider", "cogroo");
+		result.include("gaEventUserRegistered", true).include("provider",
+				"cogroo");
 
 		result.forwardTo(LoginController.class).login(login, password);
 
-		//result.redirectTo(this).welcome();
+		// result.redirectTo(this).welcome();
 	}
 
 }

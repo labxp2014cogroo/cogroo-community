@@ -24,13 +24,14 @@ class TwitterUtil {
 	private static final Logger LOG = Logger.getLogger(TwitterUtil.class);
 
 	private Twitter twitter;
-	private static Provider bitly = as(BuildUtil.BITLY_USR, BuildUtil.BITLY_APIKEY);
+	private static Provider bitly = as(BuildUtil.BITLY_USR,
+			BuildUtil.BITLY_APIKEY);
 	private boolean isAvaiable = false;
 	private ShortUrlDAO shortUrlDAO;
 
 	public TwitterUtil(ShortUrlDAO shortUrlDAO) {
 		this.shortUrlDAO = shortUrlDAO;
-		
+
 		this.twitter = new TwitterFactory().getInstance();
 		if (!twitter.getAuthorization().isEnabled()) {
 			LOG.error("OAuth consumer key/secret is not set.");
@@ -41,7 +42,7 @@ class TwitterUtil {
 
 	public void tweet(String text, String link) {
 		if (isAvaiable) {
-		    String str = merge(text, shortURL(link));
+			String str = merge(text, shortURL(link));
 			try {
 				Status status = twitter.updateStatus(str);
 				if (LOG.isDebugEnabled()) {
@@ -63,37 +64,37 @@ class TwitterUtil {
 		} else {
 			t = text.length();
 		}
-		if(t + l > 140) {
+		if (t + l > 140) {
 			return text.substring(0, t - l) + " ... " + link;
 		}
 		return text + " " + link;
-		
+
 	}
 
 	private String shortURL(String ori) {
 		String res;
 		ShortUrl shortURL = this.shortUrlDAO.retrieve(ori);
-		if(shortURL == null) {
+		if (shortURL == null) {
 			try {
-				if(LOG.isDebugEnabled()) {
+				if (LOG.isDebugEnabled()) {
 					LOG.debug("Will create new bit.ly for url: " + ori);
 				}
 				Url url = bitly.call(shorten(ori));
 				res = url.getShortUrl();
-				
+
 				this.shortUrlDAO.add(new ShortUrl(ori, res));
 			} catch (BitlyException e) {
 				LOG.error("Error generating bit.ly", e);
 				res = ori;
 			}
 		} else {
-			if(LOG.isDebugEnabled()) {
+			if (LOG.isDebugEnabled()) {
 				LOG.debug("Could get URL from cache.");
 			}
 			res = shortURL.getShortURL();
 		}
-		
+
 		return res;
 	}
-	
+
 }

@@ -8,35 +8,36 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class HistoryEntryField {
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@Column(length=128)
+
+	@Column(length = 128)
 	private String fieldName;
-	
-	@Column(length=700)
+
+	@Column(length = 700)
 	private String valueBefore;
-	
-	@Column(length=700)
+
+	@Column(length = 700)
 	private String valueAfter;
-	
-  	 @Column(length=700)
-  	 private String longValueBefore;
-  	    
-  	 @Column(length=700)
-     private String longValueAfter;
-	
+
+	@Column(length = 700)
+	private String longValueBefore;
+
+	@Column(length = 700)
+	private String longValueAfter;
+
 	@ManyToOne
 	private HistoryEntry historyEntry;
-	
+
 	private boolean isFormatted;
-	
+
 	public HistoryEntryField() {
 	}
-	
-	public HistoryEntryField(HistoryEntry historyEntry, String fieldName, String before, String after, boolean isFormatted) {
+
+	public HistoryEntryField(HistoryEntry historyEntry, String fieldName,
+			String before, String after, boolean isFormatted) {
 		this.historyEntry = historyEntry;
 		this.fieldName = fieldName;
 		this.longValueBefore = before;
@@ -61,10 +62,10 @@ public class HistoryEntryField {
 	}
 
 	public String getBefore() {
-	  if(longValueBefore == null) {
-	    longValueBefore = valueBefore;
-	  }
-	  return longValueBefore;
+		if (longValueBefore == null) {
+			longValueBefore = valueBefore;
+		}
+		return longValueBefore;
 	}
 
 	public void setBefore(String before) {
@@ -72,10 +73,10 @@ public class HistoryEntryField {
 	}
 
 	public String getAfter() {
-      if(longValueAfter == null) {
-        longValueAfter = valueAfter;
-      }
-      return longValueAfter;
+		if (longValueAfter == null) {
+			longValueAfter = valueAfter;
+		}
+		return longValueAfter;
 	}
 
 	public void setAfter(String after) {
@@ -97,9 +98,11 @@ public class HistoryEntryField {
 	public void setFormatted(boolean isFormatted) {
 		this.isFormatted = isFormatted;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Field : [ " + getFieldName() + "] before: [" + getBefore() + "] after: [" + getAfter() + "] formatted: " + getIsFormatted();
+		return "Field : [ " + getFieldName() + "] before: [" + getBefore()
+				+ "] after: [" + getAfter() + "] formatted: "
+				+ getIsFormatted();
 	}
 }

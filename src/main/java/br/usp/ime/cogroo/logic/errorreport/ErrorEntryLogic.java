@@ -98,43 +98,48 @@ public class ErrorEntryLogic {
 	static {
 		Map<String, String> lc = new HashMap<String, String>();
 		lc.put("emprego do mim e ti", "pro"); // , cop|pro,
-	    lc.put("uso do verbo haver", "sem");
-	    lc.put("regência verbal", "reg");
-	    lc.put("verbo preferir", "ali"); // "cov"
-	    lc.put("emprego de vírgulas", "ptn");
-	    lc.put("gerundismo", "ger");
-	    lc.put("concordância determinante-substantivo", "con");
-	    lc.put("em anexo", "ali"); // ali
-	    lc.put("concordância artigo-substantivo", "con");
-	    lc.put("erros mecânicos", "esp");
-	    lc.put("concordância do sujeito com o adjetivo predicativo", "con"); // con/cov
-	    lc.put("verbo haver", "aha");
-	    lc.put("à medida em que/à medida que", "det"); // det
-	    lc.put("crase", "cra");
-	    lc.put("concordância sujeito-verbo", "cov"); // ver
-	    lc.put("se eu ver", "cmt");
-	    lc.put("emprego de eu e mim", "ren");
-	    lc.put("colocação pronominal", "cop"); // pro
-	    lc.put("emprego de mau e mal", "mal");
-	    lc.put("regência nominal", "ren");
-	    lc.put("verbo fazer", "cov");//cov|reg|ver
-	    lc.put("concordância adjetivo-substantivo", "con"); //adv
-	    lc.put("concordância numeral-substantivo", "con");
-	    lc.put("concordância do sujeito com o predicativo", "con"); //cov
-	    lc.put("uso de meio", "adv"); // con
-	    lc.put("concordância do sujeito com o verbo do predicado", "ver");
-	    lc.put("expressões redundantes", "sem");
-	    lc.put("uso de mas/mais", "lex");
-	    lc.put("uso de advérbios", "adv");
-	    lc.put("concordância de modos e tempos verbais", "ver");
-	    lc.put("uso de porque e variantes", "ort");
-	    CATEGORIES = Collections.unmodifiableMap(lc);
+		lc.put("uso do verbo haver", "sem");
+		lc.put("regência verbal", "reg");
+		lc.put("verbo preferir", "ali"); // "cov"
+		lc.put("emprego de vírgulas", "ptn");
+		lc.put("gerundismo", "ger");
+		lc.put("concordância determinante-substantivo", "con");
+		lc.put("em anexo", "ali"); // ali
+		lc.put("concordância artigo-substantivo", "con");
+		lc.put("erros mecânicos", "esp");
+		lc.put("concordância do sujeito com o adjetivo predicativo", "con"); // con/cov
+		lc.put("verbo haver", "aha");
+		lc.put("à medida em que/à medida que", "det"); // det
+		lc.put("crase", "cra");
+		lc.put("concordância sujeito-verbo", "cov"); // ver
+		lc.put("se eu ver", "cmt");
+		lc.put("emprego de eu e mim", "ren");
+		lc.put("colocação pronominal", "cop"); // pro
+		lc.put("emprego de mau e mal", "mal");
+		lc.put("regência nominal", "ren");
+		lc.put("verbo fazer", "cov");// cov|reg|ver
+		lc.put("concordância adjetivo-substantivo", "con"); // adv
+		lc.put("concordância numeral-substantivo", "con");
+		lc.put("concordância do sujeito com o predicativo", "con"); // cov
+		lc.put("uso de meio", "adv"); // con
+		lc.put("concordância do sujeito com o verbo do predicado", "ver");
+		lc.put("expressões redundantes", "sem");
+		lc.put("uso de mas/mais", "lex");
+		lc.put("uso de advérbios", "adv");
+		lc.put("concordância de modos e tempos verbais", "ver");
+		lc.put("uso de porque e variantes", "ort");
+		CATEGORIES = Collections.unmodifiableMap(lc);
 	}
 
 	public ErrorEntryLogic(LoggedUser loggedUser, ErrorEntryDAO errorEntryDAO,
 			UserDAO userDAO, CommentDAO commentDAO, CogrooFacade cogrooFacade,
-			GrammarCheckerVersionDAO versionDAO, GrammarCheckerOmissionDAO omissionDAO,
-			GrammarCheckerBadInterventionDAO badInterventionDAO, HistoryEntryDAO historyEntryDAO, HistoryEntryFieldDAO historyEntryFieldDAO, ApplicationData appData, Notificator notificator, StringTemplateUtil templateUtil, TextSanitizer sanitizer, RulesLogic rulesLogic) {
+			GrammarCheckerVersionDAO versionDAO,
+			GrammarCheckerOmissionDAO omissionDAO,
+			GrammarCheckerBadInterventionDAO badInterventionDAO,
+			HistoryEntryDAO historyEntryDAO,
+			HistoryEntryFieldDAO historyEntryFieldDAO, ApplicationData appData,
+			Notificator notificator, StringTemplateUtil templateUtil,
+			TextSanitizer sanitizer, RulesLogic rulesLogic) {
 		this.userDAO = userDAO;
 		this.commentDAO = commentDAO;
 		this.errorEntryDAO = errorEntryDAO;
@@ -161,39 +166,49 @@ public class ErrorEntryLogic {
 
 		for (ErrorEntry errorEntry : errors) {
 
-			if(this.user == null && oneWeekAgo.before(errorEntry.getModified()) ) {
+			if (this.user == null
+					&& oneWeekAgo.before(errorEntry.getModified())) {
 
 				errorEntry.setIsNew(true);
-			} else if(this.user != null && this.user.getPreviousLogin().before(errorEntry.getModified())) {
+			} else if (this.user != null
+					&& this.user.getPreviousLogin().before(
+							errorEntry.getModified())) {
 				// if comments is empty, check only the submitter
-				if(errorEntry.getComments().size() == 0) {
-					if(!errorEntry.getSubmitter().getLogin().equals(this.user.getLogin()) ||
-							!errorEntry.getSubmitter().getService().equals(this.user.getService())) {
+				if (errorEntry.getComments().size() == 0) {
+					if (!errorEntry.getSubmitter().getLogin()
+							.equals(this.user.getLogin())
+							|| !errorEntry.getSubmitter().getService()
+									.equals(this.user.getService())) {
 						errorEntry.setIsNew(true);
 					}
 				}
 
 				else {
-					// we check the comments. we skip if the newest is of this user
+					// we check the comments. we skip if the newest is of this
+					// user
 					Date newest = this.user.getPreviousLogin();
 					boolean isNew = false;
 					for (Comment comment : errorEntry.getComments()) {
 
-						for(Comment answer : comment.getAnswers()) {
-							if(answer.getDate().after(newest)) {
+						for (Comment answer : comment.getAnswers()) {
+							if (answer.getDate().after(newest)) {
 								newest = answer.getDate();
-								if(!answer.getUser().getLogin().equals(this.user.getLogin()) ||
-										!answer.getUser().getService().equals(this.user.getService())) {
+								if (!answer.getUser().getLogin()
+										.equals(this.user.getLogin())
+										|| !answer.getUser().getService()
+												.equals(this.user.getService())) {
 									isNew = true;
 								} else {
 									isNew = false;
 								}
 							}
 						}
-						if(comment.getDate().after(newest)) {
+						if (comment.getDate().after(newest)) {
 							newest = comment.getDate();
-							if(!comment.getUser().getLogin().equals(this.user.getLogin()) ||
-									!comment.getUser().getService().equals(this.user.getService())) {
+							if (!comment.getUser().getLogin()
+									.equals(this.user.getLogin())
+									|| !comment.getUser().getService()
+											.equals(this.user.getService())) {
 								isNew = true;
 							} else {
 								isNew = false;
@@ -201,7 +216,7 @@ public class ErrorEntryLogic {
 						}
 
 					}
-					if(isNew) {
+					if (isNew) {
 						errorEntry.setIsNew(true);
 					}
 				}
@@ -212,8 +227,8 @@ public class ErrorEntryLogic {
 	}
 
 	public SortedSet<String> getErrorCategoriesForUser(String userName) {
-		 // TODO implement for user
-		 return getErrorCategoriesForUser();
+		// TODO implement for user
+		return getErrorCategoriesForUser();
 	}
 
 	public SortedSet<String> getErrorCategoriesForUser() {
@@ -229,11 +244,10 @@ public class ErrorEntryLogic {
 		}
 
 		uniqueRules.add("Uso de pontuação");
-        uniqueRules.add("Uso de mas/mais");
-        uniqueRules.add("Uso de advérbios");
-        uniqueRules.add("Concordância de modos e tempos verbais");
-        uniqueRules.add("Uso de porque e variantes");
-
+		uniqueRules.add("Uso de mas/mais");
+		uniqueRules.add("Uso de advérbios");
+		uniqueRules.add("Concordância de modos e tempos verbais");
+		uniqueRules.add("Uso de porque e variantes");
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Finished getting error categories for user.");
@@ -261,7 +275,7 @@ public class ErrorEntryLogic {
 	private String getFormattedText(ErrorEntry e) {
 		StringBuilder t = new StringBuilder();
 
-		if ( isAddToCorpus(e) ) {
+		if (isAddToCorpus(e)) {
 			t.append("<ext id=\"");
 			t.append(e.getId());
 			t.append("\" url=\"comunidade.org");
@@ -275,26 +289,27 @@ public class ErrorEntryLogic {
 				GrammarCheckerOmission checker = e.getOmission();
 				String cat;
 				t.append(" c=");
-				if(checker.getCategory() == null) {
-				  cat = "NULL";
-				} else if(CATEGORIES.containsKey(checker.getCategory().toLowerCase())) {
-				  cat = CATEGORIES.get(checker.getCategory().toLowerCase());
+				if (checker.getCategory() == null) {
+					cat = "NULL";
+				} else if (CATEGORIES.containsKey(checker.getCategory()
+						.toLowerCase())) {
+					cat = CATEGORIES.get(checker.getCategory().toLowerCase());
 				} else {
-				  cat = "*** " + checker.getCategory() + " ***";
+					cat = "*** " + checker.getCategory() + " ***";
 				}
 
 				t.append(cat);
 
 				t.append(" err=\"");
-				t.append(e.getText().substring(e.getSpanStart(), e.getSpanEnd()));
+				t.append(e.getText()
+						.substring(e.getSpanStart(), e.getSpanEnd()));
 				t.append("\" rep=\"");
 
 				t.append(StringEscapeUtils.unescapeHtml(checker.getReplaceBy()));
 				t.append("\"");
 
-				//catId = "_" + cat + "_";
+				// catId = "_" + cat + "_";
 			}
-
 
 			t.append("\nCM").append(catId).append(e.getId()).append("-1 ");
 			t.append(e.getText());
@@ -305,29 +320,30 @@ public class ErrorEntryLogic {
 	}
 
 	private boolean isAddToCorpus(ErrorEntry e) {
-      if (e.getState() == State.REJECTED || e.getState() == State.OPEN
-          || e.getState() == State.FEEDBACK) {
+		if (e.getState() == State.REJECTED || e.getState() == State.OPEN
+				|| e.getState() == State.FEEDBACK) {
 
-        return false;
-      }
-      if (e.getBadIntervention() != null
-          && e.getBadIntervention().getClassification() != BadInterventionClassification.FALSE_ERROR) {
-        return false;
-      }
+			return false;
+		}
+		if (e.getBadIntervention() != null
+				&& e.getBadIntervention().getClassification() != BadInterventionClassification.FALSE_ERROR) {
+			return false;
+		}
 
-	  return true;
-    }
+		return true;
+	}
 
-  /**
+	/**
 	 * Add a new error entry via OpenOffice plugin.
+	 * 
 	 * @param service
 	 * @param username
 	 * @param error
 	 * @return
 	 * @throws CommunityException
 	 */
-	public List<ErrorEntry> addErrorEntry(String service, String username, String error)
-			throws CommunityException {
+	public List<ErrorEntry> addErrorEntry(String service, String username,
+			String error) throws CommunityException {
 		List<ErrorEntry> list = new ArrayList<ErrorEntry>();
 
 		// try to get user, or create it
@@ -340,7 +356,7 @@ public class ErrorEntryLogic {
 					CommunityExceptionMessages.INVALID_USER,
 					new Object[] { username });
 		}
-		if(LOG.isDebugEnabled()) {
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("Got user:" + cogrooUser);
 		}
 		ErrorReport er = cogrooFacade.getErrorReportAccess().getErrorReport(
@@ -351,35 +367,32 @@ public class ErrorEntryLogic {
 
 		// we split the report in several new entries...
 		// sanitizer.sanitize(username, false)
-		if(er.getOmissions() != null) {
+		if (er.getOmissions() != null) {
 			List<Omission> omissions = er.getOmissions().getOmission();
-			if(omissions != null) {
+			if (omissions != null) {
 				for (Omission omission : omissions) {
-					ErrorEntry errorEntry = new ErrorEntry(
-							sanitizer.sanitize(er.getText(), false, true),
-							omission.getSpan().getStart(),
-							omission.getSpan().getEnd(),
-							new ArrayList<Comment>(),
-							version,
-							cogrooUser,
-							time,
-							time,
-							null,
-							null,
-							State.OPEN,
-							Priority.NORMAL);
+					ErrorEntry errorEntry = new ErrorEntry(sanitizer.sanitize(
+							er.getText(), false, true), omission.getSpan()
+							.getStart(), omission.getSpan().getEnd(),
+							new ArrayList<Comment>(), version, cogrooUser,
+							time, time, null, null, State.OPEN, Priority.NORMAL);
 
-					if(omission.getComment() != null && omission.getComment().length() > 0) {
+					if (omission.getComment() != null
+							&& omission.getComment().length() > 0) {
 						List<Comment> comments = new ArrayList<Comment>();
-						Comment c = new Comment(cogrooUser, time, sanitizer.sanitize(omission.getComment(), false), errorEntry, null);
+						Comment c = new Comment(
+								cogrooUser,
+								time,
+								sanitizer.sanitize(omission.getComment(), false),
+								errorEntry, null);
 						commentDAO.add(c);
 						comments.add(c);
 						errorEntry.setComments(comments);
 					}
 
 					GrammarCheckerOmission gcOmission = new GrammarCheckerOmission(
-							omission.getCategory(),
-							sanitizer.sanitize(omission.getCustomCategory(), false),
+							omission.getCategory(), sanitizer.sanitize(
+									omission.getCustomCategory(), false),
 							sanitizer.sanitize(omission.getReplaceBy(), false),
 							errorEntry);
 					omissionDAO.add(gcOmission);
@@ -393,28 +406,25 @@ public class ErrorEntryLogic {
 			}
 		}
 
-		if(er.getBadInterventions() != null) {
-			List<BadIntervention> badInterventions = er.getBadInterventions().getBadIntervention();
-			if(badInterventions != null) {
+		if (er.getBadInterventions() != null) {
+			List<BadIntervention> badInterventions = er.getBadInterventions()
+					.getBadIntervention();
+			if (badInterventions != null) {
 				for (BadIntervention badIntervention : badInterventions) {
 
-					ErrorEntry errorEntry = new ErrorEntry(
-							sanitizer.sanitize(er.getText(), false, true),
-							badIntervention.getSpan().getStart(),
-							badIntervention.getSpan().getEnd(),
-							null,
-							version,
-							cogrooUser,
-							time,
-							time,
-							null,
-							null,
-							State.OPEN,
-							Priority.NORMAL);
+					ErrorEntry errorEntry = new ErrorEntry(sanitizer.sanitize(
+							er.getText(), false, true), badIntervention
+							.getSpan().getStart(), badIntervention.getSpan()
+							.getEnd(), null, version, cogrooUser, time, time,
+							null, null, State.OPEN, Priority.NORMAL);
 
-					if(badIntervention.getComment() != null && badIntervention.getComment().length() > 0) {
+					if (badIntervention.getComment() != null
+							&& badIntervention.getComment().length() > 0) {
 						List<Comment> comments = new ArrayList<Comment>();
-						Comment c = new Comment(cogrooUser, time, sanitizer.sanitize(badIntervention.getComment(), false), errorEntry, null);
+						Comment c = new Comment(cogrooUser, time,
+								sanitizer.sanitize(
+										badIntervention.getComment(), false),
+								errorEntry, null);
 						commentDAO.add(c);
 						comments.add(c);
 						errorEntry.setComments(comments);
@@ -422,24 +432,27 @@ public class ErrorEntryLogic {
 
 					BadInterventionClassification classification = null;
 					switch (badIntervention.getClassification()) {
-						case FALSE_ERROR:
-							classification = BadInterventionClassification.FALSE_ERROR;
-							break;
-						case INAPPROPRIATE_DESCRIPTION:
-							classification = BadInterventionClassification.INAPPROPRIATE_DESCRIPTION;
-							break;
-						case INAPPROPRIATE_SUGGESTION:
-							classification = BadInterventionClassification.INAPPROPRIATE_SUGGESTION;
-							break;
-						default:
-							break;
+					case FALSE_ERROR:
+						classification = BadInterventionClassification.FALSE_ERROR;
+						break;
+					case INAPPROPRIATE_DESCRIPTION:
+						classification = BadInterventionClassification.INAPPROPRIATE_DESCRIPTION;
+						break;
+					case INAPPROPRIATE_SUGGESTION:
+						classification = BadInterventionClassification.INAPPROPRIATE_SUGGESTION;
+						break;
+					default:
+						break;
 					}
 					GrammarCheckerBadIntervention gcBadIntervention = new GrammarCheckerBadIntervention(
 							classification,
-							// we had to do it here because the rule might be without prefix if coming from a old version of cogroo
-							// it was not handled before because it was inside the XML.
-							CogrooFacade.addPrefixIfMissing(badIntervention.getRule()),
-							errorEntry);
+							// we had to do it here because the rule might be
+							// without prefix if coming from a old version of
+							// cogroo
+							// it was not handled before because it was inside
+							// the XML.
+							CogrooFacade.addPrefixIfMissing(badIntervention
+									.getRule()), errorEntry);
 
 					badInterventionDAO.add(gcBadIntervention);
 					errorEntry.setBadIntervention(gcBadIntervention);
@@ -456,111 +469,90 @@ public class ErrorEntryLogic {
 		return list;
 	}
 
-  public void addErrorEntry(
-			User cogrooUser,
-			String text,
-			List<String> badint,
-			List<String> badintComments,
-			List<String> badintStart,
-			List<String> badintEnd,
-			List<String> badintRule,
-			List<String> omissionClassification,
-			List<String> customOmissionText,
-			List<String> omissionComment,
-			List<String> omissionReplaceBy,
-			List<String> omissionStart,
+	public void addErrorEntry(User cogrooUser, String text,
+			List<String> badint, List<String> badintComments,
+			List<String> badintStart, List<String> badintEnd,
+			List<String> badintRule, List<String> omissionClassification,
+			List<String> customOmissionText, List<String> omissionComment,
+			List<String> omissionReplaceBy, List<String> omissionStart,
 			List<String> omissionEnd) {
 
-		GrammarCheckerVersion version = versionDAO.retrieve("c" + BuildUtil.POM_VERSION);
+		GrammarCheckerVersion version = versionDAO.retrieve("c"
+				+ BuildUtil.POM_VERSION);
 
 		Date time = new Date();
 
 		// we split the report in several new entries...
 
-		if(omissionClassification != null) {
+		if (omissionClassification != null) {
 			for (int i = 0; i < omissionClassification.size(); i++) {
-					ErrorEntry errorEntry = new ErrorEntry(
-							text,
-							Integer.parseInt(omissionStart.get(i)),
-							Integer.parseInt(omissionEnd.get(i)),
-							new ArrayList<Comment>(),
-							version,
-							cogrooUser,
-							time,
-							time,
-							null,
-							null,
-							State.OPEN,
-							Priority.NORMAL);
+				ErrorEntry errorEntry = new ErrorEntry(text,
+						Integer.parseInt(omissionStart.get(i)),
+						Integer.parseInt(omissionEnd.get(i)),
+						new ArrayList<Comment>(), version, cogrooUser, time,
+						time, null, null, State.OPEN, Priority.NORMAL);
 
-					if(omissionComment.get(i) != null && omissionComment.get(i).length() > 0) {
-						List<Comment> comments = new ArrayList<Comment>();
-						Comment c = new Comment(cogrooUser, time, omissionComment.get(i), errorEntry, null);
-						commentDAO.add(c);
-						comments.add(c);
-						errorEntry.setComments(comments);
-					}
-
-					String classification = null;
-					String customClass = null;
-
-					if(omissionClassification.get(i).equals(CUSTOM)) {
-						classification = null;
-						customClass = customOmissionText.get(i);
-					} else {
-						classification = omissionClassification.get(i);
-						customClass = null;
-					}
-
-					GrammarCheckerOmission gcOmission = new GrammarCheckerOmission(
-							classification,
-							customClass,
-							omissionReplaceBy.get(i),
-							errorEntry);
-					omissionDAO.add(gcOmission);
-					errorEntry.setOmissions(gcOmission);
-
-					setStatus(errorEntry);
-					errorEntryDAO.add(errorEntry);
-					notificationForReport(errorEntry);
-					appData.incReportedErrors();
-					if(LOG.isDebugEnabled()) {
-						LOG.debug("Added errorEntry:" + errorEntry);
-					}
+				if (omissionComment.get(i) != null
+						&& omissionComment.get(i).length() > 0) {
+					List<Comment> comments = new ArrayList<Comment>();
+					Comment c = new Comment(cogrooUser, time,
+							omissionComment.get(i), errorEntry, null);
+					commentDAO.add(c);
+					comments.add(c);
+					errorEntry.setComments(comments);
 				}
+
+				String classification = null;
+				String customClass = null;
+
+				if (omissionClassification.get(i).equals(CUSTOM)) {
+					classification = null;
+					customClass = customOmissionText.get(i);
+				} else {
+					classification = omissionClassification.get(i);
+					customClass = null;
+				}
+
+				GrammarCheckerOmission gcOmission = new GrammarCheckerOmission(
+						classification, customClass, omissionReplaceBy.get(i),
+						errorEntry);
+				omissionDAO.add(gcOmission);
+				errorEntry.setOmissions(gcOmission);
+
+				setStatus(errorEntry);
+				errorEntryDAO.add(errorEntry);
+				notificationForReport(errorEntry);
+				appData.incReportedErrors();
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Added errorEntry:" + errorEntry);
+				}
+			}
 		}
 
-		if(badint != null) {
+		if (badint != null) {
 			for (int i = 0; i < badint.size(); i++) {
-				if( !badint.get(i).equals("ok") ) {
-					ErrorEntry errorEntry = new ErrorEntry(
-							text,
+				if (!badint.get(i).equals("ok")) {
+					ErrorEntry errorEntry = new ErrorEntry(text,
 							Integer.parseInt(badintStart.get(i)),
-							Integer.parseInt(badintEnd.get(i)),
-							null,
-							version,
-							cogrooUser,
-							time,
-							time,
-							null,
-							null,
-							State.OPEN,
+							Integer.parseInt(badintEnd.get(i)), null, version,
+							cogrooUser, time, time, null, null, State.OPEN,
 							Priority.NORMAL);
 
-					if(badintComments.get(i) != null && badintComments.get(i).length() > 0) {
+					if (badintComments.get(i) != null
+							&& badintComments.get(i).length() > 0) {
 						List<Comment> comments = new ArrayList<Comment>();
-						Comment c = new Comment(cogrooUser, time, badintComments.get(i), errorEntry, null);
+						Comment c = new Comment(cogrooUser, time,
+								badintComments.get(i), errorEntry, null);
 						commentDAO.add(c);
 						comments.add(c);
 						errorEntry.setComments(comments);
 					}
 
-					BadInterventionClassification classification = BadInterventionClassification.fromValue(badint.get(i));
+					BadInterventionClassification classification = BadInterventionClassification
+							.fromValue(badint.get(i));
 
 					GrammarCheckerBadIntervention gcBadIntervention = new GrammarCheckerBadIntervention(
-							classification,
-							badintRule.get(i),
-							errorEntry);
+							classification, badintRule.get(i), errorEntry);
 
 					badInterventionDAO.add(gcBadIntervention);
 					errorEntry.setBadIntervention(gcBadIntervention);
@@ -569,59 +561,59 @@ public class ErrorEntryLogic {
 					errorEntryDAO.add(errorEntry);
 					notificationForReport(errorEntry);
 					appData.incReportedErrors();
-					if(LOG.isDebugEnabled()) {
+					if (LOG.isDebugEnabled()) {
 						LOG.debug("Added errorEntry:" + errorEntry);
 					}
 				}
 			}
 		}
 
-
 	}
 
-	public List<HistoryEntryField> generateHistory(GrammarCheckerOmission before, GrammarCheckerOmission after) {
+	public List<HistoryEntryField> generateHistory(
+			GrammarCheckerOmission before, GrammarCheckerOmission after) {
 
 		List<HistoryEntryField> h = new ArrayList<HistoryEntryField>();
 
-		if(before == null && after == null) {
+		if (before == null && after == null) {
 			return h;
-		} else if(before != null && after == null) {
-			if( before.getCategory() != null ) {
+		} else if (before != null && after == null) {
+			if (before.getCategory() != null) {
 				HistoryEntryField category = new HistoryEntryField();
 				category.setFieldName(Messages.OMISSION_CATEGORY);
 				category.setBefore(before.getCategory());
 				h.add(category);
 			}
 
-			if( before.getCustomCategory() != null ) {
+			if (before.getCustomCategory() != null) {
 				HistoryEntryField custom = new HistoryEntryField();
 				custom.setFieldName(Messages.OMISSION_CUSTOM_CATEGORY);
 				custom.setBefore(before.getCustomCategory());
 				h.add(custom);
 			}
 
-			if( before.getReplaceBy() != null ) {
+			if (before.getReplaceBy() != null) {
 				HistoryEntryField replace = new HistoryEntryField();
 				replace.setFieldName(Messages.OMISSION_REPLACE_BY);
 				replace.setBefore(before.getReplaceBy());
 				h.add(replace);
 			}
-		} else if(before == null && after != null) {
-			if( after.getCategory() != null ) {
+		} else if (before == null && after != null) {
+			if (after.getCategory() != null) {
 				HistoryEntryField category = new HistoryEntryField();
 				category.setFieldName(Messages.OMISSION_CATEGORY);
 				category.setAfter(after.getCategory());
 				h.add(category);
 			}
 
-			if( after.getCustomCategory() != null ) {
+			if (after.getCustomCategory() != null) {
 				HistoryEntryField custom = new HistoryEntryField();
 				custom.setFieldName(Messages.OMISSION_CUSTOM_CATEGORY);
 				custom.setAfter(after.getCustomCategory());
 				h.add(custom);
 			}
 
-			if( after.getReplaceBy() != null ) {
+			if (after.getReplaceBy() != null) {
 				HistoryEntryField replace = new HistoryEntryField();
 				replace.setFieldName(Messages.OMISSION_REPLACE_BY);
 				replace.setAfter(after.getReplaceBy());
@@ -629,39 +621,41 @@ public class ErrorEntryLogic {
 			}
 		} else {
 
-			if( isDifferentAndNotNull(before.getCategory(), after.getCategory()) ) {
+			if (isDifferentAndNotNull(before.getCategory(), after.getCategory())) {
 				HistoryEntryField category = new HistoryEntryField();
 				category.setFieldName(Messages.OMISSION_CATEGORY);
-				if(before != null) {
+				if (before != null) {
 					category.setBefore(before.getCategory());
 				}
-				if(after != null) {
+				if (after != null) {
 					category.setAfter(after.getCategory());
 				}
 
 				h.add(category);
 			}
 
-			if( isDifferentAndNotNull(before.getCustomCategory(), after.getCustomCategory()) ) {
+			if (isDifferentAndNotNull(before.getCustomCategory(),
+					after.getCustomCategory())) {
 				HistoryEntryField custom = new HistoryEntryField();
 				custom.setFieldName(Messages.OMISSION_CUSTOM_CATEGORY);
-				if(before != null) {
+				if (before != null) {
 					custom.setBefore(before.getCustomCategory());
 				}
-				if(after != null) {
+				if (after != null) {
 					custom.setAfter(after.getCustomCategory());
 				}
 
 				h.add(custom);
 			}
 
-			if( isDifferentAndNotNull(before.getReplaceBy(), after.getReplaceBy()) ) {
+			if (isDifferentAndNotNull(before.getReplaceBy(),
+					after.getReplaceBy())) {
 				HistoryEntryField replace = new HistoryEntryField();
 				replace.setFieldName(Messages.OMISSION_REPLACE_BY);
-				if(before != null) {
+				if (before != null) {
 					replace.setBefore(before.getReplaceBy());
 				}
-				if(after != null) {
+				if (after != null) {
 					replace.setAfter(after.getReplaceBy());
 				}
 				h.add(replace);
@@ -672,71 +666,74 @@ public class ErrorEntryLogic {
 		return h;
 	}
 
-	public List<HistoryEntryField> generateHistory(GrammarCheckerBadIntervention before, GrammarCheckerBadIntervention after) {
+	public List<HistoryEntryField> generateHistory(
+			GrammarCheckerBadIntervention before,
+			GrammarCheckerBadIntervention after) {
 
 		List<HistoryEntryField> h = new ArrayList<HistoryEntryField>();
 
-		if(before == null && after == null) {
+		if (before == null && after == null) {
 			return h;
-		} else if(before != null && after == null) {
+		} else if (before != null && after == null) {
 
 			HistoryEntryField rule = new HistoryEntryField();
 			rule.setFieldName(Messages.BADINT_RULE);
-			rule.setBefore(""+before.getRule());
+			rule.setBefore("" + before.getRule());
 			h.add(rule);
 
-			if( before.getClassification() != null ) {
+			if (before.getClassification() != null) {
 
 				HistoryEntryField classification = new HistoryEntryField();
 				classification.setFieldName(Messages.BADINT_CLASSIFICATION);
 				classification.setFormatted(true);
 
-				classification.setBefore(""+before.getClassification());
+				classification.setBefore("" + before.getClassification());
 
 				h.add(classification);
 			}
-		} else if(before == null && after != null) {
+		} else if (before == null && after != null) {
 
 			HistoryEntryField rule = new HistoryEntryField();
 			rule.setFieldName(Messages.BADINT_RULE);
-			rule.setAfter(""+after.getRule());
+			rule.setAfter("" + after.getRule());
 			h.add(rule);
 
-			if( after.getClassification() != null ) {
+			if (after.getClassification() != null) {
 
 				HistoryEntryField classification = new HistoryEntryField();
 				classification.setFieldName(Messages.BADINT_CLASSIFICATION);
 				classification.setFormatted(true);
 
-				classification.setAfter(""+after.getClassification());
+				classification.setAfter("" + after.getClassification());
 
 				h.add(classification);
 			}
 		} else {
-			if( isDifferentAndNotNull(before.getRule(), after.getRule()) ) {
+			if (isDifferentAndNotNull(before.getRule(), after.getRule())) {
 
 				HistoryEntryField rule = new HistoryEntryField();
 				rule.setFieldName(Messages.BADINT_RULE);
-				if(before != null) {
-					rule.setBefore(""+before.getRule());
+				if (before != null) {
+					rule.setBefore("" + before.getRule());
 				}
-				if(after != null) {
-					rule.setAfter(""+after.getRule());
+				if (after != null) {
+					rule.setAfter("" + after.getRule());
 				}
 				h.add(rule);
 			}
 
-			if( isDifferentAndNotNull(before.getClassification(), after.getClassification()) ) {
+			if (isDifferentAndNotNull(before.getClassification(),
+					after.getClassification())) {
 
 				HistoryEntryField classification = new HistoryEntryField();
 				classification.setFieldName(Messages.BADINT_CLASSIFICATION);
 				classification.setFormatted(true);
 
-				if(before != null) {
-					classification.setBefore(""+before.getClassification());
+				if (before != null) {
+					classification.setBefore("" + before.getClassification());
 				}
-				if(after != null) {
-					classification.setAfter(""+after.getClassification());
+				if (after != null) {
+					classification.setAfter("" + after.getClassification());
 				}
 
 				h.add(classification);
@@ -747,35 +744,37 @@ public class ErrorEntryLogic {
 	}
 
 	private boolean isDifferentAndNotNull(Object a, Object b) {
-		if(	a != null && !a.equals(b) || b != null && !b.equals(a)) {
+		if (a != null && !a.equals(b) || b != null && !b.equals(a)) {
 			return true;
 		}
 		return false;
 	}
 
-	public List<HistoryEntryField> generateHistory(ErrorEntry before, ErrorEntry after) {
+	public List<HistoryEntryField> generateHistory(ErrorEntry before,
+			ErrorEntry after) {
 		List<HistoryEntryField> h = new ArrayList<HistoryEntryField>();
 
 		String beforeMarkedText = before.getMarkedText();
 		String afterMarkedText = after.getMarkedText();
-		if(isDifferentAndNotNull(beforeMarkedText, afterMarkedText)) {
+		if (isDifferentAndNotNull(beforeMarkedText, afterMarkedText)) {
 
 			HistoryEntryField markedText = new HistoryEntryField();
 			markedText.setFormatted(false);
 
 			markedText.setFieldName(Messages.ERRORENTRY_SELECTEDTEXT);
 
-			if(beforeMarkedText != null) {
+			if (beforeMarkedText != null) {
 				markedText.setBefore(beforeMarkedText);
 			}
-			if(afterMarkedText != null) {
+			if (afterMarkedText != null) {
 				markedText.setAfter(afterMarkedText);
 			}
 
 			h.add(markedText);
 		}
 
-		h.addAll(generateHistory(before.getBadIntervention(), after.getBadIntervention()));
+		h.addAll(generateHistory(before.getBadIntervention(),
+				after.getBadIntervention()));
 		h.addAll(generateHistory(before.getOmission(), after.getOmission()));
 
 		return h;
@@ -783,11 +782,11 @@ public class ErrorEntryLogic {
 
 	public void updateBadIntervention(ErrorEntry er, ErrorEntry original) {
 
-		if(er.getOmission() != null) {
+		if (er.getOmission() != null) {
 			this.omissionDAO.delete(er.getOmission());
 			er.setOmission(null);
 		}
-		if(er.getBadIntervention().getId() == null) {
+		if (er.getBadIntervention().getId() == null) {
 			this.badInterventionDAO.add(er.getBadIntervention());
 		} else {
 			this.badInterventionDAO.update(er.getBadIntervention());
@@ -804,11 +803,11 @@ public class ErrorEntryLogic {
 
 	public void updateOmission(ErrorEntry er, ErrorEntry original) {
 
-		if(er.getBadIntervention() != null) {
+		if (er.getBadIntervention() != null) {
 			this.badInterventionDAO.delete(er.getBadIntervention());
 			er.setBadIntervention(null);
 		}
-		if(er.getOmission().getId() == null) {
+		if (er.getOmission().getId() == null) {
 			this.omissionDAO.add(er.getOmission());
 		} else {
 			this.omissionDAO.update(er.getOmission());
@@ -821,10 +820,12 @@ public class ErrorEntryLogic {
 		notificationForChange(er, he);
 	}
 
-	public Long addCommentToErrorEntry(Long errorEntryID, Long userID, String comment, boolean tweet) {
+	public Long addCommentToErrorEntry(Long errorEntryID, Long userID,
+			String comment, boolean tweet) {
 		ErrorEntry errorEntry = errorEntryDAO.retrieve(errorEntryID);
 		User user = userDAO.retrieve(userID);
-		Comment c = new Comment(user, new Date(), comment, errorEntry, new ArrayList<Comment>());
+		Comment c = new Comment(user, new Date(), comment, errorEntry,
+				new ArrayList<Comment>());
 		commentDAO.add(c);
 		errorEntry.getComments().add(c);
 		updateModified(errorEntry);
@@ -837,7 +838,8 @@ public class ErrorEntryLogic {
 		Comment c = commentDAO.retrieve(commentID);
 		User user = userDAO.retrieve(userID);
 
-		Comment answer = new Comment(user, new Date(), comment, c, new ArrayList<Comment>());
+		Comment answer = new Comment(user, new Date(), comment, c,
+				new ArrayList<Comment>());
 
 		commentDAO.add(answer);
 		c.getAnswers().add(answer);
@@ -861,10 +863,10 @@ public class ErrorEntryLogic {
 	public void remove(ErrorEntry errorEntry) {
 
 		LOG.info("Will delete: " + errorEntry);
-		if(errorEntry.getBadIntervention() != null) {
+		if (errorEntry.getBadIntervention() != null) {
 			badInterventionDAO.delete(errorEntry.getBadIntervention());
 		}
-		if(errorEntry.getOmission() != null) {
+		if (errorEntry.getOmission() != null) {
 			omissionDAO.delete(errorEntry.getOmission());
 		}
 		errorEntryDAO.delete(errorEntry);
@@ -873,12 +875,14 @@ public class ErrorEntryLogic {
 
 	public void setPriority(ErrorEntry errorEntry, Priority priority) {
 		errorEntry = errorEntryDAO.retrieve(errorEntry.getId());
-		if(priority.equals(errorEntry.getPriority())) {
+		if (priority.equals(errorEntry.getPriority())) {
 			return;
 		}
 		String before = errorEntry.getPriority().name();
 		errorEntry.setPriority(priority);
-		HistoryEntry he = addHistory(errorEntry, Messages.ERROR_ENTRY_FIELD_PRIORITY, before, priority.name(), true);
+		HistoryEntry he = addHistory(errorEntry,
+				Messages.ERROR_ENTRY_FIELD_PRIORITY, before, priority.name(),
+				true);
 		updateModified(errorEntry);
 		errorEntryDAO.update(errorEntry);
 
@@ -887,12 +891,13 @@ public class ErrorEntryLogic {
 
 	public void setState(ErrorEntry errorEntry, State state) {
 		errorEntry = errorEntryDAO.retrieve(errorEntry.getId());
-		if(state.equals(errorEntry.getState())) {
+		if (state.equals(errorEntry.getState())) {
 			return;
 		}
 		String before = errorEntry.getState().name();
 		errorEntry.setState(state);
-		HistoryEntry he = addHistory(errorEntry, Messages.ERROR_ENTRY_FIELD_STATE, before, state.name(), true);
+		HistoryEntry he = addHistory(errorEntry,
+				Messages.ERROR_ENTRY_FIELD_STATE, before, state.name(), true);
 		updateModified(errorEntry);
 		errorEntryDAO.update(errorEntry);
 
@@ -903,11 +908,13 @@ public class ErrorEntryLogic {
 		errorEntry.setModified(new Date());
 	}
 
-	private HistoryEntry addHistory(ErrorEntry errorEntry, List<HistoryEntryField> hefList) {
+	private HistoryEntry addHistory(ErrorEntry errorEntry,
+			List<HistoryEntryField> hefList) {
 
-		HistoryEntry he = new HistoryEntry(this.user, new Date(), hefList, errorEntry);
+		HistoryEntry he = new HistoryEntry(this.user, new Date(), hefList,
+				errorEntry);
 
-		if(hefList.size() == 0) {
+		if (hefList.size() == 0) {
 			LOG.info("No history to log.");
 			return null;
 		}
@@ -920,7 +927,7 @@ public class ErrorEntryLogic {
 		this.historyEntryDAO.add(he);
 
 		List<HistoryEntry> heList = errorEntry.getHistoryEntries();
-		if(heList == null) {
+		if (heList == null) {
 			heList = new ArrayList<HistoryEntry>();
 			errorEntry.setHistoryEntries(heList);
 		}
@@ -928,7 +935,7 @@ public class ErrorEntryLogic {
 		errorEntry.getHistoryEntries().add(he);
 		this.errorEntryDAO.update(errorEntry);
 
-		if(LOG.isDebugEnabled()) {
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("Added history entry...");
 			LOG.debug(he);
 		}
@@ -937,25 +944,22 @@ public class ErrorEntryLogic {
 	}
 
 	private HistoryEntry addHistory(ErrorEntry errorEntry,
-			List<String> fieldList, List<String> beforeList, List<String> afterList, boolean isFormatted) {
+			List<String> fieldList, List<String> beforeList,
+			List<String> afterList, boolean isFormatted) {
 
-		if(fieldList.size() == 0) {
+		if (fieldList.size() == 0) {
 			LOG.info("No history to log.");
 			return null;
 		}
 
 		List<HistoryEntryField> hefList = new ArrayList<HistoryEntryField>();
 
+		HistoryEntry he = new HistoryEntry(this.user, new Date(), hefList,
+				errorEntry);
 
-		HistoryEntry he = new HistoryEntry(this.user, new Date(), hefList, errorEntry);
-
-		for(int i = 0; i < fieldList.size(); i++) {
-			HistoryEntryField h = new HistoryEntryField(
-					he,
-					fieldList.get(i),
-					beforeList.get(i),
-					afterList.get(i),
-					isFormatted);
+		for (int i = 0; i < fieldList.size(); i++) {
+			HistoryEntryField h = new HistoryEntryField(he, fieldList.get(i),
+					beforeList.get(i), afterList.get(i), isFormatted);
 			this.historyEntryFieldDAO.add(h);
 			hefList.add(h);
 		}
@@ -963,7 +967,7 @@ public class ErrorEntryLogic {
 		this.historyEntryDAO.add(he);
 
 		List<HistoryEntry> heList = errorEntry.getHistoryEntries();
-		if(heList == null) {
+		if (heList == null) {
 			heList = new ArrayList<HistoryEntry>();
 			errorEntry.setHistoryEntries(heList);
 		}
@@ -974,8 +978,8 @@ public class ErrorEntryLogic {
 		return he;
 	}
 
-	private HistoryEntry addHistory(ErrorEntry errorEntry,
-			String field, String before, String after, boolean isFormatted) {
+	private HistoryEntry addHistory(ErrorEntry errorEntry, String field,
+			String before, String after, boolean isFormatted) {
 
 		List<String> fields = new ArrayList<String>(1);
 		List<String> befores = new ArrayList<String>(1);
@@ -989,14 +993,15 @@ public class ErrorEntryLogic {
 	}
 
 	private void appendErrorDetails(StringBuilder body, ErrorEntry errorEntry) {
-		StringTemplate st = this.templateUtil.getTemplate(StringTemplateUtil.ERROR_DETAILS);
+		StringTemplate st = this.templateUtil
+				.getTemplate(StringTemplateUtil.ERROR_DETAILS);
 
 		st.setAttribute("problemID", errorEntry.getId());
 		st.setAttribute("submitter", errorEntry.getSubmitter().getName());
 		st.setAttribute("text", errorEntry.getMarkedTextNoCSS());
 		st.setAttribute("root", BuildUtil.BASE_URL);
 
-		if(errorEntry.getBadIntervention() != null) {
+		if (errorEntry.getBadIntervention() != null) {
 			GrammarCheckerBadIntervention bi = errorEntry.getBadIntervention();
 
 			st.setAttribute("type", "Intervenção indevida");
@@ -1005,11 +1010,12 @@ public class ErrorEntryLogic {
 			st.setAttribute("valueCategoryOrRule", bi.getRule());
 
 			st.setAttribute("errorTypeOrReplaceBy", "Erro");
-			st.setAttribute("valueErrorTypeOrReplaceBy", messages.getString(bi.getClassification().toString()));
+			st.setAttribute("valueErrorTypeOrReplaceBy",
+					messages.getString(bi.getClassification().toString()));
 		} else {
 			GrammarCheckerOmission o = errorEntry.getOmission();
 			String category = null;
-			if(o.getCategory() == null || o.getCategory().equals(CUSTOM)) {
+			if (o.getCategory() == null || o.getCategory().equals(CUSTOM)) {
 				category = o.getCustomCategory();
 			} else {
 				category = o.getCategory();
@@ -1032,28 +1038,33 @@ public class ErrorEntryLogic {
 		// only RSS
 		// generate the body
 		StringBuilder body = new StringBuilder();
-		if(LOG.isDebugEnabled()) {
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("Will create templates report: " + errorEntry);
 		}
-		StringTemplate st = this.templateUtil.getTemplate(StringTemplateUtil.ERROR_NEW);
+		StringTemplate st = this.templateUtil
+				.getTemplate(StringTemplateUtil.ERROR_NEW);
 		st.setAttribute("user", errorEntry.getSubmitter().getName());
-		if(errorEntry.getComments() != null && errorEntry.getComments().size() > 0) {
-			st.setAttribute("comment", errorEntry.getComments().get(0).getComment());
+		if (errorEntry.getComments() != null
+				&& errorEntry.getComments().size() > 0) {
+			st.setAttribute("comment", errorEntry.getComments().get(0)
+					.getComment());
 		}
-
 
 		body.append(st.toString());
 
 		appendErrorDetails(body, errorEntry);
 
-		//RSS
-		String subject = "Problema Reportado #" + errorEntry.getId() + " - Novo";
+		// RSS
+		String subject = "Problema Reportado #" + errorEntry.getId()
+				+ " - Novo";
 		String url = BuildUtil.BASE_URL + "reports/" + errorEntry.getId();
 		notificator.rssFeed(subject, url, body.toString());
 
-		StringTemplate stTweet = this.templateUtil.getTemplate(StringTemplateUtil.ERROR_NEW_TWEET);
+		StringTemplate stTweet = this.templateUtil
+				.getTemplate(StringTemplateUtil.ERROR_NEW_TWEET);
 
-		stTweet.setAttribute("user", errorEntry.getSubmitter().getTwitterRefOrName());
+		stTweet.setAttribute("user", errorEntry.getSubmitter()
+				.getTwitterRefOrName());
 		stTweet.setAttribute("id", errorEntry.getId());
 		stTweet.setAttribute("type", getEntryType(errorEntry));
 		stTweet.setAttribute("text", errorEntry.getMarkedTextNoHTML());
@@ -1062,15 +1073,18 @@ public class ErrorEntryLogic {
 
 	}
 
-	private void notificationForNewComment(ErrorEntry errorEntry, Comment comment, boolean tweet) {
+	private void notificationForNewComment(ErrorEntry errorEntry,
+			Comment comment, boolean tweet) {
 		// get the users
 		Set<User> userList = createToList(errorEntry);
 		// generate the subject
-		String subject = "Problema Reportado #" + errorEntry.getId() + " - Novo comentário";
+		String subject = "Problema Reportado #" + errorEntry.getId()
+				+ " - Novo comentário";
 		// generate the body
 		StringBuilder body = new StringBuilder();
 
-		StringTemplate st = this.templateUtil.getTemplate(StringTemplateUtil.NEW_COMMENT);
+		StringTemplate st = this.templateUtil
+				.getTemplate(StringTemplateUtil.NEW_COMMENT);
 		st.setAttribute("user", comment.getUser().getName());
 		st.setAttribute("comment", comment.getComment());
 
@@ -1079,45 +1093,52 @@ public class ErrorEntryLogic {
 		appendErrorDetails(body, errorEntry);
 
 		// send it!
-		notificator.sendEmail(StringEscapeUtils.unescapeHtml(body.toString()), subject, userList);
+		notificator.sendEmail(StringEscapeUtils.unescapeHtml(body.toString()),
+				subject, userList);
 
-		//RSS
-//		String friendlyStart = "Novo comentário de " + comment.getUser().getName() + " no problema " + errorEntry.getId();
-		String url =  BuildUtil.BASE_URL + REPORTS + errorEntry.getId();
+		// RSS
+		// String friendlyStart = "Novo comentário de " +
+		// comment.getUser().getName() + " no problema " + errorEntry.getId();
+		String url = BuildUtil.BASE_URL + REPORTS + errorEntry.getId();
 		notificator.rssFeed(subject, url, body.toString());
 
-		if(tweet) {
-		  StringTemplate stTweet = this.templateUtil.getTemplate(StringTemplateUtil.NEW_COMMENT_TWEET);
+		if (tweet) {
+			StringTemplate stTweet = this.templateUtil
+					.getTemplate(StringTemplateUtil.NEW_COMMENT_TWEET);
 
-		  stTweet.setAttribute("user", comment.getUser().getTwitterRefOrName());
-		  stTweet.setAttribute("ori", errorEntry.getSubmitter().getTwitterRefOrName());
-		  stTweet.setAttribute("id", errorEntry.getId());
-		  stTweet.setAttribute("type", getEntryType(errorEntry));
-		  stTweet.setAttribute("comment", comment.getComment());
+			stTweet.setAttribute("user", comment.getUser()
+					.getTwitterRefOrName());
+			stTweet.setAttribute("ori", errorEntry.getSubmitter()
+					.getTwitterRefOrName());
+			stTweet.setAttribute("id", errorEntry.getId());
+			stTweet.setAttribute("type", getEntryType(errorEntry));
+			stTweet.setAttribute("comment", comment.getComment());
 
-		  notificator.tweet(stTweet.toString(), url);
+			notificator.tweet(stTweet.toString(), url);
 		}
 	}
 
-	private static final ResourceBundle messages =
-	      ResourceBundle.getBundle("messages", new Locale("pt_BR"));
+	private static final ResourceBundle messages = ResourceBundle.getBundle(
+			"messages", new Locale("pt_BR"));
 
 	private String replaceSpan(String span) {
-		if(span == null) {
+		if (span == null) {
 			return null;
 		}
-		span = span.replace("class=\"badint\"", "style='background-color: #ADFF2F'\"");
-		return span.replace("class=\"omission\"", "style='background-color: #FA8072'\"");
+		span = span.replace("class=\"badint\"",
+				"style='background-color: #ADFF2F'\"");
+		return span.replace("class=\"omission\"",
+				"style='background-color: #FA8072'\"");
 	}
 
 	private HistoryEntryField process(HistoryEntryField field) {
 		HistoryEntryField c = new HistoryEntryField();
 		c.setFieldName(messages.getString(field.getFieldName()));
-		if(field.getIsFormatted()) {
-			if(field.getBefore() != null) {
+		if (field.getIsFormatted()) {
+			if (field.getBefore() != null) {
 				c.setBefore(messages.getString(field.getBefore()));
 			}
-			if(field.getAfter() != null) {
+			if (field.getAfter() != null) {
 				c.setAfter(messages.getString(field.getAfter()));
 			}
 		} else {
@@ -1129,33 +1150,38 @@ public class ErrorEntryLogic {
 	}
 
 	private String getEntryType(ErrorEntry errorEntry) {
-		if(errorEntry.getBadIntervention() != null) {
+		if (errorEntry.getBadIntervention() != null) {
 			return "Intervenção indevida";
 		}
 		return "Omissão";
 	}
 
-	private void notificationForChange(ErrorEntry errorEntry, HistoryEntry historyEntry) {
-		if(LOG.isDebugEnabled()) {
+	private void notificationForChange(ErrorEntry errorEntry,
+			HistoryEntry historyEntry) {
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("Sending notification for " + historyEntry);
 		}
-		if(historyEntry == null || historyEntry.getHistoryEntryField() == null || historyEntry.getHistoryEntryField().size() == 0) {
+		if (historyEntry == null || historyEntry.getHistoryEntryField() == null
+				|| historyEntry.getHistoryEntryField().size() == 0) {
 			// no changes
 			return;
 		}
 
 		// get the users
 		Set<User> userList = createToList(errorEntry);
-		if(LOG.isDebugEnabled()) {
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("Will send email for #" + userList + " users.");
 		}
 		// generate the subject
-		String subject = "Problema Reportado #" + errorEntry.getId() + " - Alterado";
+		String subject = "Problema Reportado #" + errorEntry.getId()
+				+ " - Alterado";
 		// generate the body
 		StringBuilder body = new StringBuilder();
 
-		StringTemplate stFeed = this.templateUtil.getTemplate(StringTemplateUtil.ERROR_CHANGED);
-		StringTemplate stTweet = this.templateUtil.getTemplate(StringTemplateUtil.ERROR_CHANGED_TWEET);
+		StringTemplate stFeed = this.templateUtil
+				.getTemplate(StringTemplateUtil.ERROR_CHANGED);
+		StringTemplate stTweet = this.templateUtil
+				.getTemplate(StringTemplateUtil.ERROR_CHANGED_TWEET);
 
 		stFeed.setAttribute("user", historyEntry.getUser().getName());
 
@@ -1170,15 +1196,18 @@ public class ErrorEntryLogic {
 		appendErrorDetails(body, errorEntry);
 
 		// send it!
-		notificator.sendEmail(StringEscapeUtils.unescapeHtml(body.toString()), subject, userList);
+		notificator.sendEmail(StringEscapeUtils.unescapeHtml(body.toString()),
+				subject, userList);
 
 		String url = BuildUtil.BASE_URL + REPORTS + errorEntry.getId();
 
-		//RSS
+		// RSS
 		notificator.rssFeed(subject, url, body.toString());
 
-		stTweet.setAttribute("ori", errorEntry.getSubmitter().getTwitterRefOrName());
-		stTweet.setAttribute("user", historyEntry.getUser().getTwitterRefOrName());
+		stTweet.setAttribute("ori", errorEntry.getSubmitter()
+				.getTwitterRefOrName());
+		stTweet.setAttribute("user", historyEntry.getUser()
+				.getTwitterRefOrName());
 		stTweet.setAttribute("id", errorEntry.getId());
 		stTweet.setAttribute("type", getEntryType(errorEntry));
 
@@ -1187,7 +1216,7 @@ public class ErrorEntryLogic {
 
 	private Set<User> createToList(ErrorEntry errorEntry) {
 		Set<User> userList = new HashSet<User>();
-		if(errorEntry.getSubmitter().getIsReceiveEmail()) {
+		if (errorEntry.getSubmitter().getIsReceiveEmail()) {
 			addUserIfIsReceveMail(errorEntry.getSubmitter(), userList);
 		}
 		for (HistoryEntry h : errorEntry.getHistoryEntries()) {
@@ -1199,15 +1228,15 @@ public class ErrorEntryLogic {
 				addUserIfIsReceveMail(a.getUser(), userList);
 			}
 		}
-		if(LOG.isDebugEnabled()) {
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("Added " + userList.size() + " to TO list.");
 			LOG.debug("The users are: " + Arrays.toString(userList.toArray()));
 		}
 		return userList;
 	}
 
-	private void addUserIfIsReceveMail(User user, Set<User> userList){
-		if(user.getIsReceiveEmail() && user.getEmail() != null) {
+	private void addUserIfIsReceveMail(User user, Set<User> userList) {
+		if (user.getIsReceiveEmail() && user.getEmail() != null) {
 			userList.add(user);
 		}
 	}
@@ -1223,103 +1252,104 @@ public class ErrorEntryLogic {
 		LOG.info("State: " + stateEnum);
 
 		for (ErrorEntry errorEntry : entries) {
-			if(priorityEnum != null) {
+			if (priorityEnum != null) {
 				errorEntry.setPriority(priorityEnum);
 			}
-			if(stateEnum != null) {
+			if (stateEnum != null) {
 				errorEntry.setState(stateEnum);
 			}
-			if(comment != null && comment.length() > 0) {
-				addCommentToErrorEntry(errorEntry.getId(), this.user.getId(), comment, false);
+			if (comment != null && comment.length() > 0) {
+				addCommentToErrorEntry(errorEntry.getId(), this.user.getId(),
+						comment, false);
 			}
 		}
 
 	}
 
 	public void refreshReports() {
-	  List<ErrorEntry> list = errorEntryDAO.listAll();
+		List<ErrorEntry> list = errorEntryDAO.listAll();
 
-	  for (ErrorEntry report : list) {
-	    setStatus(report);
-	    errorEntryDAO.update(report);
-	  }
+		for (ErrorEntry report : list) {
+			setStatus(report);
+			errorEntryDAO.update(report);
+		}
 	}
 
-public void setStatus(ErrorEntry report) {
+	public void setStatus(ErrorEntry report) {
 
-   GrammarCheckerBadIntervention badIntervention = report.getBadIntervention();
-   List<ProcessResult> results = cogrooFacade.processText(report.getText());
+		GrammarCheckerBadIntervention badIntervention = report
+				.getBadIntervention();
+		List<ProcessResult> results = cogrooFacade
+				.processText(report.getText());
 
-   if (report.getState().equals(State.REJECTED)) {
-     report.setStatusFlag(STATUS_INVALID);
-   }
-   else {
+		if (report.getState().equals(State.REJECTED)) {
+			report.setStatusFlag(STATUS_INVALID);
+		} else {
 
-     if (badIntervention != null) {
-       for (ProcessResult result : results) {
-         List<Mistake> mistakes = result.getMistakes();
+			if (badIntervention != null) {
+				for (ProcessResult result : results) {
+					List<Mistake> mistakes = result.getMistakes();
 
-         if (!mistakes.isEmpty()) {
+					if (!mistakes.isEmpty()) {
 
-           for (Mistake mistake : mistakes) {
-             if (badIntervention.getRule().equals(mistake.getRuleIdentifier())) {
-               report.setStatusFlag(STATUS_NOT);
-               break;
-             }
-             else {
-               report.setStatusFlag(STATUS_WARN);
-             }
+						for (Mistake mistake : mistakes) {
+							if (badIntervention.getRule().equals(
+									mistake.getRuleIdentifier())) {
+								report.setStatusFlag(STATUS_NOT);
+								break;
+							} else {
+								report.setStatusFlag(STATUS_WARN);
+							}
 
-           }
-         }
-         else {
-           report.setStatusFlag(STATUS_OK);
-         }
-       }
-     }
-     else {
+						}
+					} else {
+						report.setStatusFlag(STATUS_OK);
+					}
+				}
+			} else {
 
-       GrammarCheckerOmission omission = report.getOmission();
+				GrammarCheckerOmission omission = report.getOmission();
 
-       if (omission != null) {
+				if (omission != null) {
 
-         for (ProcessResult result : results) {
-           List<Mistake> mistakes = result.getMistakes();
+					for (ProcessResult result : results) {
+						List<Mistake> mistakes = result.getMistakes();
 
-           if (!mistakes.isEmpty()) {
+						if (!mistakes.isEmpty()) {
 
-             boolean status = false;
+							boolean status = false;
 
-             for (Mistake mistake : mistakes) {
+							for (Mistake mistake : mistakes) {
 
-               RuleDefinition rule = rulesLogic.getRule(mistake.getRuleIdentifier());
+								RuleDefinition rule = rulesLogic
+										.getRule(mistake.getRuleIdentifier());
 
-               if(rule == null) {
-                 LOG.warn("Got null rule for id: " + mistake.getRuleIdentifier());
-             } else if ( Objects.equal(rule.getCategory(), omission.getCategory()) ) {
-               status = true;
-             }
+								if (rule == null) {
+									LOG.warn("Got null rule for id: "
+											+ mistake.getRuleIdentifier());
+								} else if (Objects.equal(rule.getCategory(),
+										omission.getCategory())) {
+									status = true;
+								}
 
-           }
-           if (status == true) {
-             report.setStatusFlag(STATUS_OK);
-           }
-           else {
-             report.setStatusFlag(STATUS_WARN);
-           }
-         }
-         else {
-           report.setStatusFlag(STATUS_NOT);
-         }
-       }
-     }
-   }
- }
-}
+							}
+							if (status == true) {
+								report.setStatusFlag(STATUS_OK);
+							} else {
+								report.setStatusFlag(STATUS_WARN);
+							}
+						} else {
+							report.setStatusFlag(STATUS_NOT);
+						}
+					}
+				}
+			}
+		}
+	}
 
-  public ReportStats getStats() {
-    ReportStats stats = new ReportStats(errorEntryDAO.listAll());
-    return stats;
-  }
+	public ReportStats getStats() {
+		ReportStats stats = new ReportStats(errorEntryDAO.listAll());
+		return stats;
+	}
 
 }

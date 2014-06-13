@@ -42,7 +42,9 @@ public class CommentDAO {
 		em.remove(comment);
 	}
 
-	  public long count(User submitter) {
-	    return (Long) em.createQuery("SELECT count(*) from " + COMMENT_ENTITY + " c where c.user = " + submitter.getId()).getSingleResult();
-	  }
+	public long count(User submitter) {
+		return (Long) em.createQuery(
+				"SELECT count(*) from " + COMMENT_ENTITY + " c where c.user = "
+						+ submitter.getId()).getSingleResult();
+	}
 }

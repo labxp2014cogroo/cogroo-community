@@ -54,14 +54,14 @@ public class User {
 	private Date cachedLastLogin = null;
 
 	@Transient
-    private long reportedErrorsCount = -1;
+	private long reportedErrorsCount = -1;
 
 	@Transient
-    private long commentsCount = -1;
+	private long commentsCount = -1;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<WordUser> wordUserList = new ArrayList<WordUser>();
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private List<DictionaryPatch> dictionaryPatches = new ArrayList<DictionaryPatch>();
 
@@ -75,18 +75,19 @@ public class User {
 	private String recoverCode;
 
 	@Column(length = 32)
-    private String emailOptOutCode;
+	private String emailOptOutCode;
 
-  @Column //Transactional Mails
+	@Column
+	// Transactional Mails
 	private Boolean isReceiveEmail;
 
-  @Column
-  private Boolean isReceiveNewsMail;
+	@Column
+	private Boolean isReceiveNewsMail;
 
-  public User() {
+	public User() {
 	}
 
-    /** User with the default provider */
+	/** User with the default provider */
 	public User(String login) {
 		this.provider = "cogroo";
 		this.login = login;
@@ -111,22 +112,25 @@ public class User {
 	}
 
 	public Date getLastLogin() {
-		if(cachedLastLogin == null) {
-			cachedLastLogin = (lastLogin != null && lastLogin != 0) ? new Date(lastLogin) : null;
+		if (cachedLastLogin == null) {
+			cachedLastLogin = (lastLogin != null && lastLogin != 0) ? new Date(
+					lastLogin) : null;
 		}
 		return cachedLastLogin;
 	}
 
 	public long getLastLoginAsLong() {
-		if(cachedLastLogin == null) {
-			cachedLastLogin = (lastLogin != null && lastLogin != 0) ? new Date(lastLogin) : null;
+		if (cachedLastLogin == null) {
+			cachedLastLogin = (lastLogin != null && lastLogin != 0) ? new Date(
+					lastLogin) : null;
 		}
 		return cachedLastLogin != null ? cachedLastLogin.getTime() : 0;
 	}
 
 	public Date getPreviousLogin() {
-		if(previousLogin == null) {
-			previousLogin = (lastLogin != null && lastLogin != 0) ? new Date(lastLogin) : null;
+		if (previousLogin == null) {
+			previousLogin = (lastLogin != null && lastLogin != 0) ? new Date(
+					lastLogin) : null;
 		}
 		return previousLogin;
 	}
@@ -198,7 +202,7 @@ public class User {
 	public String getRoleName() {
 		return roleName;
 	}
-	
+
 	public List<DictionaryPatch> getDictionaryPatches() {
 		return dictionaryPatches;
 	}
@@ -210,8 +214,9 @@ public class User {
 	@Transient
 	public Role getRole() {
 		Role r = RoleProvider.getInstance().getRoleForName(roleName);
-		if(r == null) {
-			r = RoleProvider.getInstance().getRoleForName(br.usp.ime.cogroo.security.User.ROLE_NAME);
+		if (r == null) {
+			r = RoleProvider.getInstance().getRoleForName(
+					br.usp.ime.cogroo.security.User.ROLE_NAME);
 		}
 		return r;
 	}
@@ -271,7 +276,7 @@ public class User {
 	}
 
 	public boolean getIsReceiveEmail() {
-		if(isReceiveEmail == null) {
+		if (isReceiveEmail == null) {
 			isReceiveEmail = Boolean.valueOf(true);
 		}
 		return isReceiveEmail.booleanValue();
@@ -282,12 +287,12 @@ public class User {
 	}
 
 	public Boolean getIsReceiveNewsMail() {
-	    return isReceiveNewsMail;
-	  }
+		return isReceiveNewsMail;
+	}
 
-	  public void setIsReceiveNewsMail(Boolean isReceiveNewsMail) {
-	    this.isReceiveNewsMail = isReceiveNewsMail;
-	  }
+	public void setIsReceiveNewsMail(Boolean isReceiveNewsMail) {
+		this.isReceiveNewsMail = isReceiveNewsMail;
+	}
 
 	public void setService(String provider) {
 		this.provider = provider;
@@ -308,36 +313,35 @@ public class User {
 	}
 
 	public String getTwitterRefOrName() {
-		if(twitter != null && twitter.length() > 0) {
+		if (twitter != null && twitter.length() > 0) {
 			return "@" + twitter;
 		} else {
 			return getName();
 		}
 	}
 
-	   public String getEmailOptOutCode() {
-	     return emailOptOutCode;
-	   }
+	public String getEmailOptOutCode() {
+		return emailOptOutCode;
+	}
 
-	   public void setEmailOptOutCode(String emailOptOutCode) {
-	     this.emailOptOutCode = emailOptOutCode;
-	   }
+	public void setEmailOptOutCode(String emailOptOutCode) {
+		this.emailOptOutCode = emailOptOutCode;
+	}
 
-    public long getReportedErrorsCount() {
-      return reportedErrorsCount;
-    }
+	public long getReportedErrorsCount() {
+		return reportedErrorsCount;
+	}
 
-    public void setReportedErrorsCount(long reportedErrorsCount) {
-      this.reportedErrorsCount = reportedErrorsCount;
-    }
+	public void setReportedErrorsCount(long reportedErrorsCount) {
+		this.reportedErrorsCount = reportedErrorsCount;
+	}
 
-    public long getCommentsCount() {
-      return commentsCount;
-    }
+	public long getCommentsCount() {
+		return commentsCount;
+	}
 
-    public void setCommentsCount(long l) {
-      this.commentsCount = l;
-    }
-
+	public void setCommentsCount(long l) {
+		this.commentsCount = l;
+	}
 
 }
