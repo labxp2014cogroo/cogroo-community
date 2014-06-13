@@ -4,11 +4,11 @@ import com.thoughtworks.selenium.Selenium;
 
 public class WhenActions {
 	private final Selenium browser;
-	
+
 	public WhenActions(Selenium browser) {
 		this.browser = browser;
 	}
-	
+
 	public void iSearchForWord(String word) {
 		browser.type("word", word);
 		browser.click("searchbtm");
@@ -18,7 +18,7 @@ public class WhenActions {
 		browser.open("/dictionaryEntrySearch");
 		return this;
 	}
-	
+
 	public WhenActions and() {
 		return this;
 	}
@@ -29,13 +29,9 @@ public class WhenActions {
 		browser.type("password", password);
 		browser.click("entrar");
 	}
-	
-	public void iRegisterAs(String username,
-			String email,
-			String password,
-			String repeatPassword,
-			String name,
-			Boolean agree) {
+
+	public void iRegisterAs(String username, String email, String password,
+			String repeatPassword, String name, Boolean agree) {
 		browser.click("//div[@id='loginlink']/p/a/b");
 		browser.click("//div[@id='logform']/form/p/a[1]/b");
 		browser.type("login", username);
@@ -43,7 +39,7 @@ public class WhenActions {
 		browser.type("pw", password);
 		browser.type("passwordRepeat", repeatPassword);
 		browser.type("name", name);
-		if(agree) {
+		if (agree) {
 			browser.click("iAgree");
 		}
 		browser.click("//input[@value=' Inscrever-se » ']");
@@ -51,8 +47,7 @@ public class WhenActions {
 
 	public void iLogout() {
 		browser.click("link=(logout)");
-		
+
 	}
 
-	
 }

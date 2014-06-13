@@ -46,54 +46,34 @@ public class HistoryDAOTest {
 	}
 
 	private void populateWithUsers() {
-		
+
 		robson = new User("Robson");
-		
+
 		wesley = new User("Wesley");
-		
+
 		em.getTransaction().begin();
 		userDAO.add(robson);
 		userDAO.add(wesley);
 		em.getTransaction().commit();
-		
+
 	}
-	
-private void populate() {
-		
+
+	private void populate() {
+
 		GrammarCheckerVersionDAO versionDAO = new GrammarCheckerVersionDAO(em);
-		
-		GrammarCheckerVersion version= null;
-		
-		
+
+		GrammarCheckerVersion version = null;
+
 		em.getTransaction().begin();
 		version = versionDAO.retrieve("0.0.1-SNAPSHOT");
 		em.getTransaction().commit();
-		
-		ErrorEntry error1 = new ErrorEntry(
-				"A sample text", 
-				1, 4,
-				null, 
-				version, 
-				robson, 
-				new Date(),
-				new Date(), 
-				null, 
-				null, 
-				null, 
-				null);
-		ErrorEntry error2 = new ErrorEntry(
-				"A sample text", 
-				1, 4,
-				null, 
-				version, 
-				wesley, 
-				new Date(),
-				new Date(), 
-				null, 
-				null, 
-				State.CLOSED, 
-				Priority.IMMEDIATE);
-		
+
+		ErrorEntry error1 = new ErrorEntry("A sample text", 1, 4, null,
+				version, robson, new Date(), new Date(), null, null, null, null);
+		ErrorEntry error2 = new ErrorEntry("A sample text", 1, 4, null,
+				version, wesley, new Date(), new Date(), null, null,
+				State.CLOSED, Priority.IMMEDIATE);
+
 		em.getTransaction().begin();
 		errorReportDAO.add(error1);
 		errorReportDAO.add(error2);
@@ -108,27 +88,30 @@ private void populate() {
 	@Test
 	public void testCreteHistory() {
 		List<HistoryEntryField> l = new ArrayList<HistoryEntryField>();
-		HistoryEntry h = new HistoryEntry(wesley, new Date(), l, errorReportDAO.listAll().get(0));
-		
-		HistoryEntryField he0 = new HistoryEntryField(h, "fieldName0", "before0", "after0", true);
-//		HistoryEntryField he1 = new HistoryEntryField(h, "fieldName1", "before1", "after1", false);
-		
+		HistoryEntry h = new HistoryEntry(wesley, new Date(), l, errorReportDAO
+				.listAll().get(0));
+
+		HistoryEntryField he0 = new HistoryEntryField(h, "fieldName0",
+				"before0", "after0", true);
+		// HistoryEntryField he1 = new HistoryEntryField(h, "fieldName1",
+		// "before1", "after1", false);
+
 		l.add(he0);
-//		l.add(he1);
-		
+		// l.add(he1);
+
 		em.getTransaction().begin();
 		historyEntryDAO.add(he0);
-//		historyEntryDAO.add(he1);
+		// historyEntryDAO.add(he1);
 		historyDAO.add(h);
 		em.getTransaction().commit();
-		
+
 		HistoryEntry hist = historyDAO.retrieve(h.getId());
-		
+
 		assertEquals(2, hist.getHistoryEntryField().size());
-		
+
 		assertTrue(hist.getHistoryEntryField().get(0).getIsFormatted());
 		assertFalse(hist.getHistoryEntryField().get(1).getIsFormatted());
-		
+
 	}
-	
+
 }

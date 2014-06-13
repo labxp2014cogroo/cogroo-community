@@ -68,29 +68,25 @@ public class ErrorEntryLogicTest {
 		ApplicationData appdata = mock(ApplicationData.class);
 
 		ServletContext mockServletContext = mock(ServletContext.class);
-		String path = ErrorEntryLogicTest.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "../../src/main/webapp/stringtemplates";
-		when(mockServletContext.getRealPath("/stringtemplates")).thenReturn(path);
+		String path = ErrorEntryLogicTest.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath()
+				+ "../../src/main/webapp/stringtemplates";
+		when(mockServletContext.getRealPath("/stringtemplates")).thenReturn(
+				path);
 
 		Notificator mockNotificato = mock(Notificator.class);
 
-		mErrorEntryLogic = new ErrorEntryLogic(
-				lu, new ErrorEntryDAO(em),
-				new UserDAO(em),
-				new CommentDAO(em),
-				facade,
+		mErrorEntryLogic = new ErrorEntryLogic(lu, new ErrorEntryDAO(em),
+				new UserDAO(em), new CommentDAO(em), facade,
 				new GrammarCheckerVersionDAO(em),
 				new GrammarCheckerOmissionDAO(em),
-				new GrammarCheckerBadInterventionDAO(em),
-				new HistoryEntryDAO(em),
-				new HistoryEntryFieldDAO(em),
-				appdata,
-				mockNotificato,
-				new StringTemplateUtil(mockServletContext),
-				new TextSanitizer(),
-				new RulesLogic(facade));
+				new GrammarCheckerBadInterventionDAO(em), new HistoryEntryDAO(
+						em), new HistoryEntryFieldDAO(em), appdata,
+				mockNotificato, new StringTemplateUtil(mockServletContext),
+				new TextSanitizer(), new RulesLogic(facade));
 	}
 
-	@Test(expected=CommunityException.class)
+	@Test(expected = CommunityException.class)
 	public void testAddErrorEntryInvalidUser() throws CommunityException {
 		mErrorEntryLogic.addErrorEntry("invaliduser", "");
 	}
@@ -98,7 +94,7 @@ public class ErrorEntryLogicTest {
 	@Test
 	public void testAddErrorEntry() throws CommunityException, IOException {
 
-	  List<ErrorEntry> list = createAndCommitErrorEntryList();
+		List<ErrorEntry> list = createAndCommitErrorEntryList();
 
 		assertTrue(list.size() > 0);
 		assertNotNull(list.get(0).getId());
@@ -109,9 +105,11 @@ public class ErrorEntryLogicTest {
 	@Test
 	public void testAddComment() throws CommunityException, IOException {
 
-
 		em.getTransaction().begin();
-		List<ErrorEntry> list = mErrorEntryLogic.addErrorEntry("cogroo", william.getLogin(), ResourcesUtil.getResourceAsString(getClass(), "/br/usp/ime/cogroo/logic/ErrorReport1.xml"));
+		List<ErrorEntry> list = mErrorEntryLogic.addErrorEntry("cogroo",
+				william.getLogin(), ResourcesUtil
+						.getResourceAsString(getClass(),
+								"/br/usp/ime/cogroo/logic/ErrorReport1.xml"));
 		list.get(0).setHistoryEntries(new ArrayList<HistoryEntry>());
 		list.get(0).setComments(new ArrayList<Comment>());
 		em.getTransaction().commit();
@@ -119,11 +117,15 @@ public class ErrorEntryLogicTest {
 		Long errorID = list.get(0).getId();
 
 		em.getTransaction().begin();
-		Long commentID = mErrorEntryLogic.addCommentToErrorEntry(errorID, wesley.getId(), "a comment", false);// addComment(errorID, newComment);
+		Long commentID = mErrorEntryLogic.addCommentToErrorEntry(errorID,
+				wesley.getId(), "a comment", false);// addComment(errorID,
+													// newComment);
 		em.getTransaction().commit();
 
 		em.getTransaction().begin();
-		mErrorEntryLogic.addAnswerToComment(commentID, william.getId(), "a answer");// (errorID, wesley.getId().intValue(), "a comment");// addComment(errorID, newComment);
+		mErrorEntryLogic.addAnswerToComment(commentID, william.getId(),
+				"a answer");// (errorID, wesley.getId().intValue(),
+							// "a comment");// addComment(errorID, newComment);
 		em.getTransaction().commit();
 
 		ErrorEntryDAO dao = new ErrorEntryDAO(em);
@@ -136,56 +138,73 @@ public class ErrorEntryLogicTest {
 		assertEquals(1, comments.get(0).getAnswers().size());
 
 		assertEquals(wesley, comments.get(0).getUser()); // the submitter
-		assertEquals(william, comments.get(0).getAnswers().get(0).getUser()); // wesley added the first comment
-		assertEquals("a comment", comments.get(0).getComment()); // the comment from wesley
-		assertEquals("a answer", comments.get(0).getAnswers().get(0).getComment()); // the answer
+		assertEquals(william, comments.get(0).getAnswers().get(0).getUser()); // wesley
+																				// added
+																				// the
+																				// first
+																				// comment
+		assertEquals("a comment", comments.get(0).getComment()); // the comment
+																	// from
+																	// wesley
+		assertEquals("a answer", comments.get(0).getAnswers().get(0)
+				.getComment()); // the answer
 
 	}
 
 	@Test
-	public void testUserErrorsCommentsCount() throws CommunityException, IOException {
+	public void testUserErrorsCommentsCount() throws CommunityException,
+			IOException {
 
-
-	        em.getTransaction().begin();
-	        List<ErrorEntry> list = mErrorEntryLogic.addErrorEntry("cogroo", william.getLogin(), ResourcesUtil.getResourceAsString(getClass(), "/br/usp/ime/cogroo/logic/ErrorReport1.xml"));
-	        list.get(0).setHistoryEntries(new ArrayList<HistoryEntry>());
-	        list.get(0).setComments(new ArrayList<Comment>());
-	        em.getTransaction().commit();
-
-	        Long errorID = list.get(0).getId();
-
-	        em.getTransaction().begin();
-	        Long commentID = mErrorEntryLogic.addCommentToErrorEntry(errorID, wesley.getId(), "a comment", false);// addComment(errorID, newComment);
-	        em.getTransaction().commit();
-
-	        em.getTransaction().begin();
-	        mErrorEntryLogic.addAnswerToComment(commentID, william.getId(), "a answer");// (errorID, wesley.getId().intValue(), "a comment");// addComment(errorID, newComment);
-	        em.getTransaction().commit();
-
-	        ErrorEntryDAO dao = new ErrorEntryDAO(em);
-	        CommentDAO cdao = new CommentDAO(em);
-
-	        assertEquals(4, dao.count(william));
-	        assertEquals(0, dao.count(wesley));
-
-	        assertEquals(5, cdao.count(william));
-	        assertEquals(1, cdao.count(wesley));
-	    }
-
-	@Test
-	public void testDeleteAnswer() throws CommunityException, IOException {
-
-
-	    List<ErrorEntry> list = createAndCommitErrorEntryList();
+		em.getTransaction().begin();
+		List<ErrorEntry> list = mErrorEntryLogic.addErrorEntry("cogroo",
+				william.getLogin(), ResourcesUtil
+						.getResourceAsString(getClass(),
+								"/br/usp/ime/cogroo/logic/ErrorReport1.xml"));
+		list.get(0).setHistoryEntries(new ArrayList<HistoryEntry>());
+		list.get(0).setComments(new ArrayList<Comment>());
+		em.getTransaction().commit();
 
 		Long errorID = list.get(0).getId();
 
 		em.getTransaction().begin();
-		Long commentID = mErrorEntryLogic.addCommentToErrorEntry(errorID, wesley.getId(), "a comment", false);// addComment(errorID, newComment);
+		Long commentID = mErrorEntryLogic.addCommentToErrorEntry(errorID,
+				wesley.getId(), "a comment", false);// addComment(errorID,
+													// newComment);
 		em.getTransaction().commit();
 
 		em.getTransaction().begin();
-		mErrorEntryLogic.addAnswerToComment(commentID, william.getId(), "a answer");// (errorID, wesley.getId().intValue(), "a comment");// addComment(errorID, newComment);
+		mErrorEntryLogic.addAnswerToComment(commentID, william.getId(),
+				"a answer");// (errorID, wesley.getId().intValue(),
+							// "a comment");// addComment(errorID, newComment);
+		em.getTransaction().commit();
+
+		ErrorEntryDAO dao = new ErrorEntryDAO(em);
+		CommentDAO cdao = new CommentDAO(em);
+
+		assertEquals(4, dao.count(william));
+		assertEquals(0, dao.count(wesley));
+
+		assertEquals(5, cdao.count(william));
+		assertEquals(1, cdao.count(wesley));
+	}
+
+	@Test
+	public void testDeleteAnswer() throws CommunityException, IOException {
+
+		List<ErrorEntry> list = createAndCommitErrorEntryList();
+
+		Long errorID = list.get(0).getId();
+
+		em.getTransaction().begin();
+		Long commentID = mErrorEntryLogic.addCommentToErrorEntry(errorID,
+				wesley.getId(), "a comment", false);// addComment(errorID,
+													// newComment);
+		em.getTransaction().commit();
+
+		em.getTransaction().begin();
+		mErrorEntryLogic.addAnswerToComment(commentID, william.getId(),
+				"a answer");// (errorID, wesley.getId().intValue(),
+							// "a comment");// addComment(errorID, newComment);
 		em.getTransaction().commit();
 
 		ErrorEntryDAO dao = new ErrorEntryDAO(em);
@@ -197,13 +216,18 @@ public class ErrorEntryLogicTest {
 		assertEquals(1, comments.size());
 
 		assertEquals(wesley, comments.get(0).getUser()); // the submitter
-		assertEquals(william, error.getComments().get(0).getAnswers().get(0).getUser()); // wesley added the first comment
+		assertEquals(william, error.getComments().get(0).getAnswers().get(0)
+				.getUser()); // wesley added the first comment
 
 		assertEquals(1, comments.get(0).getAnswers().size());
 
-
 		em.getTransaction().begin();
-		mErrorEntryLogic.removeAnswer(comments.get(0).getAnswers().get(0), comments.get(0));// addAnswerToComment(commentID, william.getId(), "a answer");// (errorID, wesley.getId().intValue(), "a comment");// addComment(errorID, newComment);
+		mErrorEntryLogic.removeAnswer(comments.get(0).getAnswers().get(0),
+				comments.get(0));// addAnswerToComment(commentID,
+									// william.getId(), "a answer");// (errorID,
+									// wesley.getId().intValue(),
+									// "a comment");// addComment(errorID,
+									// newComment);
 		em.getTransaction().commit();
 
 		ErrorEntry error1 = dao.retrieve(new Long(errorID));
@@ -214,8 +238,7 @@ public class ErrorEntryLogicTest {
 	@Test
 	public void testSetPriority() throws CommunityException, IOException {
 
-
-	  List<ErrorEntry> list = createAndCommitErrorEntryList();
+		List<ErrorEntry> list = createAndCommitErrorEntryList();
 
 		Long errorID = list.get(0).getId();
 
@@ -224,7 +247,6 @@ public class ErrorEntryLogicTest {
 		em.getTransaction().begin();
 		mErrorEntryLogic.setPriority(list.get(0), Priority.IMMEDIATE);
 		em.getTransaction().commit();
-
 
 		ErrorEntryDAO dao = new ErrorEntryDAO(em);
 
@@ -234,14 +256,12 @@ public class ErrorEntryLogicTest {
 
 		assertEquals(1, error.getHistoryEntries().size());
 
-
 	}
 
 	@Test
 	public void testSetState() throws CommunityException, IOException {
 
-
-	  List<ErrorEntry> list = createAndCommitErrorEntryList();
+		List<ErrorEntry> list = createAndCommitErrorEntryList();
 
 		Long errorID = list.get(0).getId();
 
@@ -250,7 +270,6 @@ public class ErrorEntryLogicTest {
 		em.getTransaction().begin();
 		mErrorEntryLogic.setState(list.get(0), State.CLOSED);
 		em.getTransaction().commit();
-
 
 		ErrorEntryDAO dao = new ErrorEntryDAO(em);
 
@@ -264,17 +283,16 @@ public class ErrorEntryLogicTest {
 		mErrorEntryLogic.setPriority(list.get(0), Priority.IMMEDIATE);
 		em.getTransaction().commit();
 
-
 		assertEquals(Priority.IMMEDIATE, error.getPriority());
 
 		assertEquals(2, error.getHistoryEntries().size());
 	}
 
 	@Test
-	public void testSetStateAndPriority() throws CommunityException, IOException {
+	public void testSetStateAndPriority() throws CommunityException,
+			IOException {
 
-
-	  List<ErrorEntry> list = createAndCommitErrorEntryList();
+		List<ErrorEntry> list = createAndCommitErrorEntryList();
 
 		Long errorID = list.get(0).getId();
 
@@ -284,7 +302,6 @@ public class ErrorEntryLogicTest {
 		mErrorEntryLogic.setState(list.get(0), State.CLOSED);
 		em.getTransaction().commit();
 
-
 		ErrorEntryDAO dao = new ErrorEntryDAO(em);
 
 		ErrorEntry error = dao.retrieve(new Long(errorID));
@@ -292,13 +309,17 @@ public class ErrorEntryLogicTest {
 		assertEquals(State.CLOSED, error.getState());
 	}
 
-	private List<ErrorEntry> createAndCommitErrorEntryList() throws CommunityException, IOException {
-	     em.getTransaction().begin();
-	        List<ErrorEntry> list = mErrorEntryLogic.addErrorEntry("cogroo", william.getLogin(), ResourcesUtil.getResourceAsString(getClass(), "/br/usp/ime/cogroo/logic/ErrorReport1.xml"));
-	        list.get(0).setHistoryEntries(new ArrayList<HistoryEntry>());
-	        list.get(0).setComments(new ArrayList<Comment>());
-	        em.getTransaction().commit();
+	private List<ErrorEntry> createAndCommitErrorEntryList()
+			throws CommunityException, IOException {
+		em.getTransaction().begin();
+		List<ErrorEntry> list = mErrorEntryLogic.addErrorEntry("cogroo",
+				william.getLogin(), ResourcesUtil
+						.getResourceAsString(getClass(),
+								"/br/usp/ime/cogroo/logic/ErrorReport1.xml"));
+		list.get(0).setHistoryEntries(new ArrayList<HistoryEntry>());
+		list.get(0).setComments(new ArrayList<Comment>());
+		em.getTransaction().commit();
 
-	        return list;
+		return list;
 	}
 }

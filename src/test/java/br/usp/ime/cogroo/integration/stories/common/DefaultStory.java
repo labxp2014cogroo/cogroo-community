@@ -11,20 +11,20 @@ public class DefaultStory {
 	private SeleniumFactory factory;
 	protected GivenContexts given;
 	protected WhenActions when;
-    protected ThenAsserts then;
+	protected ThenAsserts then;
 
-    @Before
-    public void setUp() {
-    	factory = new SeleniumFactory();
-    	Selenium browser = factory.getBrowser();
+	@Before
+	public void setUp() {
+		factory = new SeleniumFactory();
+		Selenium browser = factory.getBrowser();
 
-    	given = new GivenContexts(browser);
-        when = new WhenActions(browser);
-        then = new ThenAsserts(browser);
-    }
-    
-    @After
-    public void tearDown() {
-    	factory.close();
-    }
+		given = new GivenContexts(browser);
+		when = new WhenActions(browser);
+		then = new ThenAsserts(browser);
+	}
+
+	@After
+	public void tearDown() {
+		factory.close();
+	}
 }

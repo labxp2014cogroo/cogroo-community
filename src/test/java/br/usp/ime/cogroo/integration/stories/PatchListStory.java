@@ -15,7 +15,8 @@ public class PatchListStory {
 
 	@Before
 	public void setUp() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:8080/");
+		selenium = new DefaultSelenium("localhost", 4444, "*chrome",
+				"http://localhost:8080/");
 		selenium.start();
 	}
 
@@ -29,7 +30,8 @@ public class PatchListStory {
 		selenium.waitForPageToLoad("30000");
 		selenium.click("link=Palavras sugeridas");
 		selenium.waitForPageToLoad("30000");
-		assertEquals("Comentários", selenium.getText("//table[@id='entriesList']/thead/tr/th[8]"));
+		assertEquals("Comentários",
+				selenium.getText("//table[@id='entriesList']/thead/tr/th[8]"));
 		assertTrue(selenium.isElementPresent("name=entriesList_length"));
 	}
 

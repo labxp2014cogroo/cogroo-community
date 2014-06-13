@@ -42,7 +42,7 @@ public class ErrorEntryDAOTest {
 
 		GrammarCheckerVersionDAO versionDAO = new GrammarCheckerVersionDAO(em);
 
-		GrammarCheckerVersion version= null;
+		GrammarCheckerVersion version = null;
 
 		UserDAO userDAO = new UserDAO(em);
 
@@ -52,30 +52,12 @@ public class ErrorEntryDAOTest {
 		version = versionDAO.retrieve("0.0.1-SNAPSHOT");
 		em.getTransaction().commit();
 
-		ErrorEntry error1 = new ErrorEntry(
-				"A sample text",
-				1, 4,
-				null,
-				version,
-				william,
-				new Date(),
-				new Date(),
-				null,
-				null,
-				null,
+		ErrorEntry error1 = new ErrorEntry("A sample text", 1, 4, null,
+				version, william, new Date(), new Date(), null, null, null,
 				null);
-		ErrorEntry error2 = new ErrorEntry(
-				"A sample text",
-				1, 4,
-				null,
-				version,
-				wesley,
-				new Date(),
-				new Date(),
-				null,
-				null,
-				State.CLOSED,
-				Priority.IMMEDIATE);
+		ErrorEntry error2 = new ErrorEntry("A sample text", 1, 4, null,
+				version, wesley, new Date(), new Date(), null, null,
+				State.CLOSED, Priority.IMMEDIATE);
 
 		em.getTransaction().begin();
 		errorReportDAO.add(error1);
@@ -85,13 +67,13 @@ public class ErrorEntryDAOTest {
 
 	@Test
 	public void testCanGetError() {
-		List<ErrorEntry> reports =  errorReportDAO.listAll();
+		List<ErrorEntry> reports = errorReportDAO.listAll();
 		assertEquals(2, reports.size());
 	}
 
 	@Test
 	public void testPriority() {
-		List<ErrorEntry> reports =  errorReportDAO.listAll();
+		List<ErrorEntry> reports = errorReportDAO.listAll();
 
 		assertEquals(Priority.NORMAL, reports.get(0).getPriority());
 		assertEquals(State.OPEN, reports.get(0).getState());
@@ -102,7 +84,7 @@ public class ErrorEntryDAOTest {
 
 	@Test
 	public void testPriority2() {
-		List<ErrorEntry> reports =  errorReportDAO.listAll();
+		List<ErrorEntry> reports = errorReportDAO.listAll();
 
 		reports.get(0).setPriority(Priority.HIGH);
 		reports.get(0).setState(State.FEEDBACK);
@@ -111,7 +93,7 @@ public class ErrorEntryDAOTest {
 		errorReportDAO.update(reports.get(0));
 		em.getTransaction().commit();
 
-		List<ErrorEntry> reports1 =  errorReportDAO.listAll();
+		List<ErrorEntry> reports1 = errorReportDAO.listAll();
 		assertEquals(Priority.HIGH, reports1.get(0).getPriority());
 		assertEquals(State.FEEDBACK, reports1.get(0).getState());
 	}

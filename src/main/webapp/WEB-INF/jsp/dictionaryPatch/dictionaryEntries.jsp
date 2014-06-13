@@ -15,13 +15,20 @@ var colors = Array();
 colors[1] = '#CFCFCF';
 colors[0] = '#B9B9B9';
 
+bufferDetails = Array();
+
 
 function submitForm () {
 	$("#formAp").attr("action",'<c:url value="/patchDisapproval"/>');
 }
 
 function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
-
+	
+	if (!(bufferDetails[idPatch] === undefined || bufferDetails[idPatch] === null)){
+		oTable.fnOpen( nTr, bufferDetails[idPatch], 'details' );
+		return;
+	}
+	
 	datum = {'idPatch':idPatch};
 	$.ajax({
 		timeout: 10000, // ten seconds
@@ -36,7 +43,7 @@ function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 					json = JSON.parse(response);
 					if (json.status == json.ok){
 						html = '<form action="<c:url value="/patchApproval"/>" method="post" id="formAp">';
-						html += '<table class="display"><tr align="center"><td><h3>Flags</h3></td><td><h3>Derivações</h3></td><td>';
+						html += '<table class="display"><tr align="center"><td width="8%"><h3>Flags</h3></td><td><h3>Derivações</h3></td><td width="8%">';
 						if (patchState == "OPEN" && canApprove) {
  							html += '<input id="checkAllFlags'+ idPatch +'" type="checkbox" checked="checked" onchange="isChecked = $(this).attr(\'checked\');';
  	 						html += '$(\'.flagscheckbox'+ idPatch +'\').attr(\'checked\', isChecked);">';
@@ -84,10 +91,11 @@ function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 							html += '<input style="float: right;" value="Aprovar" type="submit"></div>';
 						}
 						html += '</form>';
-						
+						bufferDetails[idPatch] = html;
 					}else {
 						html = json.msg;
 					}
+					
 					oTable.fnOpen( nTr, html, 'details' );
 			},
 		error: function(response){

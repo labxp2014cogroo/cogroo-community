@@ -23,21 +23,20 @@ public class UserDAOTest {
 	public void setUp() {
 		em = HSQLDBEntityManagerFactory.createEntityManager();
 
-		
 		populateWithUsers();
 	}
 
 	private void populateWithUsers() {
 		userDAO = new UserDAO(em);
 		robson = new User("Robson");
-		
+
 		wesley = new User("Wesley");
-		
+
 		em.getTransaction().begin();
 		userDAO.add(robson);
 		userDAO.add(wesley);
 		em.getTransaction().commit();
-		
+
 	}
 
 	@After
@@ -50,7 +49,7 @@ public class UserDAOTest {
 		List<User> actual = userDAO.listAll();
 		Assert.assertEquals(2, actual.size());
 	}
-	
+
 	@Test
 	public void bdShouldDeleteWesley() {
 		em.getTransaction().begin();
@@ -59,7 +58,7 @@ public class UserDAOTest {
 		Assert.assertFalse(userDAO.exist("Wesley"));
 		Assert.assertNull(userDAO.retrieveByLogin("Wesley"));
 	}
-	
+
 	@Test
 	public void bdShouldExistWesley() {
 		Assert.assertTrue(userDAO.exist("Wesley"));
@@ -70,11 +69,10 @@ public class UserDAOTest {
 		userDAO.update(wesley);
 		Assert.assertTrue(userDAO.exist("Wesley"));
 	}
-	
+
 	@Test
 	public void bdShouldGetWesleyByID() {
-		Assert.assertEquals(wesley,userDAO.retrieve(wesley.getId()));
+		Assert.assertEquals(wesley, userDAO.retrieve(wesley.getId()));
 	}
 
-	
 }

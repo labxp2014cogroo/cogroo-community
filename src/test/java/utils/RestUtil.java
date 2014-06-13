@@ -18,15 +18,15 @@ public class RestUtil {
 
 	private static final Logger LOG = Logger.getLogger(RestUtil.class);
 
-	public String get(String urlRoot, String path)
-			throws IOException {
-		
+	public String get(String urlRoot, String path) throws IOException {
+
 		return execute("GET", urlRoot, path, null);
 	}
 
-	public Map<String, String> post(String urlRoot, String path, Map<String, String> data)
-			throws IOException {
-		return br.usp.ime.cogroo.util.RestUtil.extractResponse(execute("POST", urlRoot, path, convert(data)));
+	public Map<String, String> post(String urlRoot, String path,
+			Map<String, String> data) throws IOException {
+		return br.usp.ime.cogroo.util.RestUtil.extractResponse(execute("POST",
+				urlRoot, path, convert(data)));
 	}
 
 	public String execute(String method, String urlRoot, String path,
@@ -40,25 +40,27 @@ public class RestUtil {
 			connection.setRequestMethod(method);
 			connection.setRequestProperty("Content-Type",
 					"application/x-www-form-urlencoded");
-			
-			
+
 			StringBuilder sb = new StringBuilder();
 			sb.append("CoGrOO/" + "3.0.7" + " ");
-			sb.append("Java/" + System.getProperty("java.version") + " (" + System.getProperty("java.vendor") + ") ");
-			sb.append(System.getProperty("os.name") + "/" + System.getProperty("os.version") + " (" + System.getProperty("os.arch") + ") ");
-			
-			connection.setRequestProperty ( "User-agent", sb.toString());
-			
+			sb.append("Java/" + System.getProperty("java.version") + " ("
+					+ System.getProperty("java.vendor") + ") ");
+			sb.append(System.getProperty("os.name") + "/"
+					+ System.getProperty("os.version") + " ("
+					+ System.getProperty("os.arch") + ") ");
+
+			connection.setRequestProperty("User-agent", sb.toString());
+
 			connection.setRequestProperty("Content-Language", "en-US");
 
 			connection.setUseCaches(false);
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
 
-			if(urlParameters != null) {
+			if (urlParameters != null) {
 				connection.setRequestProperty("Content-Length",
 						"" + Integer.toString(urlParameters.getBytes().length));
-				
+
 				// Send request
 				DataOutputStream wr = new DataOutputStream(
 						connection.getOutputStream());
@@ -66,7 +68,6 @@ public class RestUtil {
 				wr.flush();
 				wr.close();
 			}
-
 
 			// Get Response
 			InputStream is = connection.getInputStream();

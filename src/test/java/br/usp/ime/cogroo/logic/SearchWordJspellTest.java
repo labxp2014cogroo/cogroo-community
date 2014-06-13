@@ -15,40 +15,53 @@ public class SearchWordJspellTest {
 		try {
 			Assert.assertEquals(true, SearchWordJspell.existsInJspell("casa"));
 			Assert.assertEquals(true, SearchWordJspell.existsInJspell("bola"));
-			Assert.assertEquals(false, SearchWordJspell.existsInJspell("bolaas"));
+			Assert.assertEquals(false,
+					SearchWordJspell.existsInJspell("bolaas"));
 			Assert.assertEquals(false, SearchWordJspell.existsInJspell("if"));
-			Assert.assertEquals(true, SearchWordJspell.existsInJspell("bolacha"));
-			Assert.assertEquals(true, SearchWordJspell.existsInJspell("inconstitucional"));
+			Assert.assertEquals(true,
+					SearchWordJspell.existsInJspell("bolacha"));
+			Assert.assertEquals(true,
+					SearchWordJspell.existsInJspell("inconstitucional"));
 			Assert.assertEquals(true, SearchWordJspell.existsInJspell("afinal"));
 			Assert.assertEquals(true, SearchWordJspell.existsInJspell("imoral"));
-			Assert.assertEquals(false, SearchWordJspell.existsInJspell("bolachão"));
+			Assert.assertEquals(false,
+					SearchWordJspell.existsInJspell("bolachão"));
 		} catch (FileNotFoundException e) {
 			// ignora o aruivo log
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void searchUnknownWords() throws IOException {
 		LinkedList<String> expected = new LinkedList<String>();
 		expected.add("BLaBLAbla");
 		expected.add("feiia");
-		Assert.assertEquals(expected, SearchWordJspell.searchUnknownWords("minha BLaBLAbla é feiia"));
-		
+		Assert.assertEquals(expected,
+				SearchWordJspell.searchUnknownWords("minha BLaBLAbla é feiia"));
+
 		expected = new LinkedList<String>();
-		Assert.assertEquals(expected, SearchWordJspell.searchUnknownWords("eu moro em Pinheiros, mas vou me mudar hoje!"));
-		
+		Assert.assertEquals(
+				expected,
+				SearchWordJspell
+						.searchUnknownWords("eu moro em Pinheiros, mas vou me mudar hoje!"));
+
 		expected = new LinkedList<String>();
 		expected.add("Pinheiroos");
-		Assert.assertEquals(expected, SearchWordJspell.searchUnknownWords("eu moro em Pinheiroos, mas vou me mudar hoje!"));
-		
+		Assert.assertEquals(
+				expected,
+				SearchWordJspell
+						.searchUnknownWords("eu moro em Pinheiroos, mas vou me mudar hoje!"));
+
 		expected = new LinkedList<String>();
 		expected.add("UNIP");
 		expected.add("UNINOVE");
 		expected.add("UNICID");
-		Assert.assertEquals(expected, SearchWordJspell.searchUnknownWords("Olá! Onde você estuda? Na UNIP, UNINOVE; UNICID. ?"));
+		Assert.assertEquals(
+				expected,
+				SearchWordJspell
+						.searchUnknownWords("Olá! Onde você estuda? Na UNIP, UNINOVE; UNICID. ?"));
 	}
-	
-	
+
 }

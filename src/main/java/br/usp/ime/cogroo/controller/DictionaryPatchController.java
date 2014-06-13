@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,9 +37,11 @@ import br.usp.ime.cogroo.security.annotations.LoggedIn;
 
 @Resource
 public class DictionaryPatchController {
+	private static final Logger LOG = Logger
+			.getLogger(DictionaryPatchController.class);
 
-	private DictionaryPatchDAO dictionaryPatchDAO;
 	private Result result;
+	private DictionaryPatchDAO dictionaryPatchDAO;
 	private Validator validator;
 	private LoggedUser loggedUser;
 	private HttpServletRequest request;
@@ -89,17 +92,17 @@ public class DictionaryPatchController {
 
 		result.include("dictionaryPatchList", dictionaryPatchList);
 	}
-	
+
 	@Get
-	@Path ("/dictionaryEntrySearch")
+	@Path("/dictionaryEntrySearch")
 	public void dictionaryEntrySearch() {
 	}
-	
+
 	@LoggedIn
 	public void newEntry(String word) {
 		result.include("word", word);
 	}
-	
+
 	@Path("/newEntry/loggedUser")
 	public void verifyLoggedUser(String word) {
 		String user_word;
@@ -139,20 +142,14 @@ public class DictionaryPatchController {
 					+ loggedUser.getUser().getName();
 
 			WebServiceProxy webService = WebServiceProxy.getInstance();
-
 			webService.insertEntry(newEntry, message);
 
-			// TODO tratar exceções e quando insertEntry devolve false
-
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Could not find WebService properties file", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Communication problem", e);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error while parsing JSON", e);
 		}
 
 		result.redirectTo(getClass()).dictionaryEntries();
@@ -177,7 +174,7 @@ public class DictionaryPatchController {
 
 		result.include("dictionaryPatch", dictionaryPatch);
 	}
-	
+
 	@Post
 	public void searchEntry(String text) throws JSONException {
 		List<Vocable> vocablesList;
@@ -189,7 +186,8 @@ public class DictionaryPatchController {
 				validator.add(new ValidationMessage(
 						ExceptionMessages.EMPTY_FIELD,
 						ExceptionMessages.EMPTY_FIELD));
-				validator.onErrorUsePageOf(DictionaryPatchController.class).dictionaryEntrySearch();
+				validator.onErrorUsePageOf(DictionaryPatchController.class)
+						.dictionaryEntrySearch();
 			} else {
 				vocablesList = SearchWordJspell.searchWord(text);
 				result.include("typed_word", text);
@@ -209,7 +207,7 @@ public class DictionaryPatchController {
 		}
 		result.redirectTo(DictionaryPatchController.class).newEntry(text);
 	}
-	
+
 	public String[][] vocablesAsStrings(List<Vocable> vocables) {
 
 		String[][] descriptions = new String[vocables.size()][3];
@@ -225,7 +223,7 @@ public class DictionaryPatchController {
 
 		return descriptions;
 	}
-	
+
 	@Post
 	public void chooseCategory(String word, String category) {
 		if (category == null) {
@@ -237,7 +235,8 @@ public class DictionaryPatchController {
 		result.include("word", word);
 		result.include("entry", word + "/CAT=" + category + ",");
 		result.include("category", category);
-		validator.onErrorUsePageOf(DictionaryPatchController.class).newEntry(word);
+		validator.onErrorUsePageOf(DictionaryPatchController.class).newEntry(
+				word);
 		result.redirectTo(getClass()).grammarProperties(word);
 	}
 
@@ -310,7 +309,7 @@ public class DictionaryPatchController {
 		dictionaryPatchDAO.add(dictionarypatch);
 
 		result.include("okMessage", "Palavra cadastrada com sucesso!");
-		
+
 		result.redirectTo(DictionaryPatchController.class).dictionaryEntries();
 	}
 }
