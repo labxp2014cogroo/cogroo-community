@@ -7,12 +7,15 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.jfree.util.Log;
+import org.json.JSONException;
 
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.view.Results;
 import br.usp.ime.cogroo.dao.CogrooFacade;
 import br.usp.ime.cogroo.logic.SearchWordJspell;
 import br.usp.ime.cogroo.logic.TextSanitizer;
@@ -29,16 +32,18 @@ public class GrammarController {
 	private final Result result;
 	private CogrooFacade cogroo;
 	private LoggedUser loggedUser;
+	private Validator validator;
 	private TextSanitizer sanitizer;
 
 	private static final ResourceBundle messages = ResourceBundle.getBundle(
 			"messages", new Locale("pt_BR"));
 
 	public GrammarController(Result result, CogrooFacade cogroo,
-			LoggedUser loggedUser, TextSanitizer sanitizer) {
+			LoggedUser loggedUser, Validator validator, TextSanitizer sanitizer) {
 		this.result = result;
 		this.cogroo = cogroo;
 		this.loggedUser = loggedUser;
+		this.validator = validator;
 		this.sanitizer = sanitizer;
 	}
 
@@ -95,6 +100,8 @@ public class GrammarController {
 		} catch (IOException e) {
 			Log.error("Falhou ao consultar as palavras existentes.", e);
 			result.include("unknownWordsList", new LinkedList<String>());
+		} catch (JSONException e) {
+			Log.error("Falhou ao consultar as palavras existentes.", e);
 		}
 	}
 

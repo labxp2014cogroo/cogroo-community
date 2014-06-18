@@ -37,4 +37,6 @@ public class ExceptionMessages {
 	public static final String BAD_OPT_OUT_CODE = "BAD_OPT_OUT_CODE";
 
 	public static final String NO_CATEGORY_SELECTED = "NO_CATEGORY_SELECTED";
+	
+	public final static String BAD_SERVER = "BAD_SERVER";
 }

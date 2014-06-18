@@ -179,7 +179,7 @@ public class DictionaryPatchController {
 	}
 
 	@Post
-	public void searchEntry(String text) throws JSONException {
+	public void searchEntry(String text) {
 		List<Vocable> vocablesList;
 		String status = "status";
 		String mensagemErro = "mensagem_erro";
@@ -189,8 +189,7 @@ public class DictionaryPatchController {
 				validator.add(new ValidationMessage(
 						ExceptionMessages.EMPTY_FIELD,
 						ExceptionMessages.EMPTY_FIELD));
-				validator.onErrorUsePageOf(DictionaryPatchController.class)
-						.dictionaryEntrySearch();
+				validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 			} else {
 				vocablesList = SearchWordJspell.searchWord(text);
 				result.include("typed_word", text);
@@ -207,6 +206,10 @@ public class DictionaryPatchController {
 		} catch (IOException e) {
 			result.include(mensagemErro, "Serviço fora do ar");
 			result.include(status, 501);
+		} catch (JSONException e) {
+			validator.add(new ValidationMessage("Serviço fora do ar",
+					ExceptionMessages.ERROR));
+			validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 		}
 		result.redirectTo(DictionaryPatchController.class)
 				.dictionaryEntrySearch();
@@ -329,11 +332,11 @@ public class DictionaryPatchController {
 		}
 
 		insertPatch(entry);
-		
+
 		result.include("okMessage", "Palavra cadastrada com sucesso!");
 		result.redirectTo(getClass()).dictionaryEntries();
 	}
-	
+
 	public void insertPatch(String entry) {
 		DictionaryPatch dictionarypatch = new DictionaryPatch();
 		dictionarypatch.setNewEntry(entry);
