@@ -3,9 +3,13 @@ package br.usp.ime.cogroo.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.json.JSONException;
@@ -16,33 +20,43 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.validator.ValidationMessage;
 import br.com.caelum.vraptor.view.Results;
 import br.usp.ime.cogroo.dao.DictionaryPatchDAO;
+import br.usp.ime.cogroo.exceptions.ExceptionMessages;
 import br.usp.ime.cogroo.logic.DerivationsQuery;
+import br.usp.ime.cogroo.logic.SearchWordJspell;
 import br.usp.ime.cogroo.logic.WebServiceProxy;
 import br.usp.ime.cogroo.model.DictionaryPatch;
+import br.usp.ime.cogroo.model.Flags;
 import br.usp.ime.cogroo.model.LoggedUser;
+import br.usp.ime.cogroo.model.Vocable;
 import br.usp.ime.cogroo.model.errorreport.State;
+import br.usp.ime.cogroo.security.annotations.LoggedIn;
 
 @Resource
 public class DictionaryPatchController {
-	
 	private static final Logger LOG = Logger
 			.getLogger(DictionaryPatchController.class);
-	
+
 	private Result result;
 	private DictionaryPatchDAO dictionaryPatchDAO;
+	private Validator validator;
 	private LoggedUser loggedUser;
+	private HttpServletRequest request;
 
-	public DictionaryPatchController(Result result,
-			DictionaryPatchDAO dictionaryPatchDAO, LoggedUser loggedUser) {
+	public DictionaryPatchController(Result result, Validator validator,
+			LoggedUser loggedUser, HttpServletRequest request,
+			DictionaryPatchDAO dictionaryPatchDAO) {
 		this.result = result;
-		this.dictionaryPatchDAO = dictionaryPatchDAO;
+		this.validator = validator;
 		this.loggedUser = loggedUser;
+		this.request = request;
+		this.dictionaryPatchDAO = dictionaryPatchDAO;
 	}
 
 	@Get
-	@Path("/getPatch")
 	public void getPatchDetails(Long idPatch) throws JSONException {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 		JSONObject response = new JSONObject();
@@ -71,7 +85,6 @@ public class DictionaryPatchController {
 	}
 
 	@Get
-	@Path("/dictionaryEntries")
 	public void dictionaryEntries() {
 		List<DictionaryPatch> dictionaryPatchList = new ArrayList<DictionaryPatch>();
 
@@ -80,8 +93,36 @@ public class DictionaryPatchController {
 		result.include("dictionaryPatchList", dictionaryPatchList);
 	}
 
+	@Get
+	@Path("/dictionaryEntrySearch")
+	public void dictionaryEntrySearch() {
+	}
+
+	@LoggedIn
+	public void newEntry(String word) {
+		result.include("word", word);
+	}
+
+	@Path("/newEntry/loggedUser")
+	public void verifyLoggedUser(String word) {
+		String user_word;
+		if (word != null) {
+			request.getSession().setAttribute("word", word);
+		}
+
+		if (loggedUser.isLogged()) {
+			if (word == null) {
+				user_word = (String) request.getSession().getAttribute("word");
+			} else {
+				user_word = word;
+			}
+			result.redirectTo(getClass()).newEntry(user_word);
+		} else {
+			result.redirectTo(LoginController.class).login();
+		}
+	}
+
 	@Post
-	@Path("/patchApproval")
 	public void patchApproval(String[] flags, long idPatch) {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 
@@ -115,7 +156,6 @@ public class DictionaryPatchController {
 	}
 
 	@Post
-	@Path("/patchDisapproval")
 	public void patchDisapproval(String[] flags, long idPatch) {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 
@@ -125,7 +165,7 @@ public class DictionaryPatchController {
 	}
 
 	@Get
-	@Path("/dictionaryEntries/{patch.id}")
+	@Path("/dictionaryPatch/entriesDetails/{patch.id}")
 	public void entriesDetails(DictionaryPatch dictionaryPatch) {
 		if (dictionaryPatch == null) {
 			result.redirectTo(getClass()).dictionaryEntries();
@@ -133,5 +173,149 @@ public class DictionaryPatchController {
 		}
 
 		result.include("dictionaryPatch", dictionaryPatch);
+	}
+
+	@Post
+	public void searchEntry(String text) throws JSONException {
+		List<Vocable> vocablesList;
+		String status = "status";
+		String mensagem_erro = "mensagem_erro";
+
+		try {
+			if (text == null || text.length() < 1) {
+				validator.add(new ValidationMessage(
+						ExceptionMessages.EMPTY_FIELD,
+						ExceptionMessages.EMPTY_FIELD));
+				validator.onErrorUsePageOf(DictionaryPatchController.class)
+						.dictionaryEntrySearch();
+			} else {
+				vocablesList = SearchWordJspell.searchWord(text);
+				result.include("typed_word", text);
+
+				if (vocablesList.isEmpty()) {
+					result.include(mensagem_erro,
+							"Essa palavra não consta no dicionário");
+					result.include(status, 404);
+				} else {
+					result.include("vocables", vocablesAsStrings(vocablesList));
+					result.include(status, 0);
+				}
+			}
+		} catch (IOException e) {
+			result.include(mensagem_erro, "Serviço fora do ar");
+			result.include(status, 501);
+		}
+		result.redirectTo(DictionaryPatchController.class).newEntry(text);
+	}
+
+	public String[][] vocablesAsStrings(List<Vocable> vocables) {
+
+		String[][] descriptions = new String[vocables.size()][3];
+
+		int i = 0;
+
+		for (Vocable vocable : vocables) {
+			descriptions[i][0] = vocable.getRadical();
+			descriptions[i][1] = vocable.getCategory();
+			descriptions[i][2] = vocable.getPropertiesAsString();
+			i++;
+		}
+
+		return descriptions;
+	}
+
+	@Post
+	public void chooseCategory(String word, String category) {
+		if (category == null) {
+			validator.add(new ValidationMessage(
+					ExceptionMessages.NO_CATEGORY_SELECTED,
+					ExceptionMessages.ERROR));
+		}
+		result.include("word", word);
+		String entry = word + "/CAT=" + category;
+		validator.onErrorUsePageOf(getClass()).newEntry(word);
+
+		if (category.equals("in")) {
+			entry += "//";
+			result.redirectTo(getClass()).chooseFlags(entry, new String[0]);
+		} else {
+			entry += ",";
+			result.include("entry", entry);
+			result.include("category", category);
+			result.redirectTo(getClass()).grammarProperties(word);
+		}
+	}
+
+	public void grammarProperties(String word) {
+		result.include("word", word);
+	}
+
+	@Post
+	public void chooseProperties(String word, String entry, String gender,
+			String number, String transitivity, String type) {
+
+		if (gender != null) {
+			entry = entry + gender;
+		}
+
+		if (number != null) {
+			entry = entry + number;
+		}
+
+		if (transitivity != null) {
+			entry = entry + "T=inf," + transitivity;
+		}
+
+		if (type != null) {
+			entry = entry + type;
+		}
+
+		entry = entry + "/";
+
+		Map<String, String> derivations = DerivationsQuery
+				.queryDerivations(entry);
+
+		result.include("word", word);
+		result.include("entry", entry);
+		result.include("derivations", derivations);
+
+		Map<String, String> mapFlags = new HashMap<String, String>();
+
+		Flags flags;
+		try {
+			flags = Flags.getInstance();
+			Set<String> keys = derivations.keySet();
+			Iterator<String> it = keys.iterator();
+			while (it.hasNext()) {
+				String key = it.next();
+				mapFlags.put(key, flags.getTextFromFlag(key));
+			}
+			result.include("flagsTexts", mapFlags);
+		} catch (IOException e) {
+			result.include("flagsTexts", null);
+		}
+
+		result.redirectTo(getClass()).derivations(word);
+	}
+
+	public void derivations(String word) {
+		result.include("word", word);
+	}
+
+	@Post
+	public void chooseFlags(String entry, String[] flag) {
+
+		for (String f : flag) {
+			entry += f;
+		}
+
+		DictionaryPatch dictionarypatch = new DictionaryPatch();
+		dictionarypatch.setNewEntry(entry);
+		dictionarypatch.setUser(loggedUser.getUser());
+		dictionaryPatchDAO.add(dictionarypatch);
+
+		result.include("okMessage", "Palavra cadastrada com sucesso!");
+
+		result.redirectTo(DictionaryPatchController.class).dictionaryEntries();
 	}
 }

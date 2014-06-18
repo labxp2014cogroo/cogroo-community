@@ -6,19 +6,20 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class ResourcesUtil {
-	
+
 	public static File getResourceFile(Class<?> theClass, String fileName) {
 		return new File(theClass.getResource(fileName).getFile());
 	}
-	
-	public static String getResourceAsString(Class<?> theClass, String fileName) throws IOException {
-		
+
+	public static String getResourceAsString(Class<?> theClass, String fileName)
+			throws IOException {
+
 		File f = new File(theClass.getResource(fileName).getFile());
 		FileReader fr = new FileReader(f);
 		BufferedReader br = new BufferedReader(fr);
 		StringBuilder sb = new StringBuilder();
 		String line = br.readLine();
-		while(line != null) {
+		while (line != null) {
 			sb.append(line + "\n");
 			line = br.readLine();
 		}

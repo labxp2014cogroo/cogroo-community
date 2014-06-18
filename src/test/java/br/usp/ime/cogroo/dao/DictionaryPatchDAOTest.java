@@ -23,20 +23,20 @@ public class DictionaryPatchDAOTest {
 	private EntityManager em;
 	private DictionaryPatchDAO dictionaryPatchDAO;
 	private DictionaryPatch patch;
-	private UserDAO userDAO; 
+	private UserDAO userDAO;
 
 	@Before
 	public void setUp() {
 		em = HSQLDBEntityManagerFactory.createEntityManager();
 		populateWithOnePatch();
 	}
-	
+
 	@Test
-	public void bdShoulHaveOnePatch () {
-		
-		List<DictionaryPatch> actual = dictionaryPatchDAO.listAll(); 
+	public void bdShoulHaveOnePatch() {
+
+		List<DictionaryPatch> actual = dictionaryPatchDAO.listAll();
 		Assert.assertEquals(1, actual.size());
-		
+
 	}
 
 	private void populateWithOnePatch() {
@@ -45,28 +45,29 @@ public class DictionaryPatchDAOTest {
 		Date creation = new Date(0);
 		Date modified = new Date(1000);
 		State state = State.OPEN;
-		
+
 		Comment comment = new Comment();
 		comment.setComment("a comment");
-		
+
 		List<Comment> comments = new ArrayList<Comment>();
 		comments.add(comment);
-		
-		User user = new User("rodrigo");  
+
+		User user = new User("rodrigo");
 		populateUser(user);
-		String newEntry = "Nova Entrada"; 
+		String newEntry = "Nova Entrada";
 		String previousEntry = "Entrada Velha";
-		
-		patch = new DictionaryPatch(comments, user, creation, modified, state, newEntry, previousEntry);
+
+		patch = new DictionaryPatch(comments, user, creation, modified, state,
+				newEntry, previousEntry);
 		em.getTransaction().begin();
 		dictionaryPatchDAO.add(patch);
 		em.getTransaction().commit();
 	}
-	
-	private void populateUser (User user) {
-		userDAO = new UserDAO(em); 
+
+	private void populateUser(User user) {
+		userDAO = new UserDAO(em);
 		em.getTransaction().begin();
-		userDAO.add(user); 
+		userDAO.add(user);
 		em.getTransaction().commit();
 	}
 

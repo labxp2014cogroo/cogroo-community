@@ -13,7 +13,6 @@ import org.cogroo.tools.checker.rules.model.TagMask.Person;
 import org.cogroo.tools.checker.rules.model.TagMask.Punctuation;
 import org.cogroo.tools.checker.rules.model.TagMask.Tense;
 
-
 public class DummyTagDictionary implements CogrooTagDictionary {
 
 	@Override
@@ -30,34 +29,34 @@ public class DummyTagDictionary implements CogrooTagDictionary {
 
 	@Override
 	public String[] getPrimitive(String lexeme, TagMask tagMask, boolean cs) {
-		String[] res = {"primitiveA","primitiveB"};
+		String[] res = { "primitiveA", "primitiveB" };
 		return res;
 	}
 
 	@Override
 	public String[] getPrimitive(String lexeme,
 			MorphologicalTag morphologicalTag, boolean cs) {
-		String[] res = {"primitiveA","primitiveB"};
+		String[] res = { "primitiveA", "primitiveB" };
 		return res;
 	}
 
 	@Override
 	public MorphologicalTag[] getTags(String word) {
-		MorphologicalTag[] t = {getMophtagA(),getMophtagB()};
+		MorphologicalTag[] t = { getMophtagA(), getMophtagB() };
 		return t;
 	}
 
 	@Override
 	public MorphologicalTag[] getTags(String word, boolean cs) {
-		MorphologicalTag[] t = {getMophtagA(),getMophtagB()};
+		MorphologicalTag[] t = { getMophtagA(), getMophtagB() };
 		return t;
 	}
 
 	@Override
 	public boolean match(String lexeme, TagMask tagMask, boolean cs) {
-	  return true;
+		return true;
 	}
-	
+
 	private MorphologicalTag getMophtagA() {
 		MorphologicalTag aa = new MorphologicalTag();
 		aa.setCase(Case.ACCUSATIVE);
@@ -70,7 +69,7 @@ public class DummyTagDictionary implements CogrooTagDictionary {
 		aa.setTense(Tense.CONDITIONAL);
 		return aa;
 	}
-	
+
 	private MorphologicalTag getMophtagB() {
 		MorphologicalTag aa = new MorphologicalTag();
 		aa.setCase(Case.DATIVE);
@@ -81,10 +80,10 @@ public class DummyTagDictionary implements CogrooTagDictionary {
 		return aa;
 	}
 
-  @Override
-  public TagInterpreter getTagInterpreter() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+	@Override
+	public TagInterpreter getTagInterpreter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

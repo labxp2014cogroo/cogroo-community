@@ -39,17 +39,21 @@ public class LoginControllerTest {
 	private LoggedUser loggedUser;
 
 	@Before
-	public void setUp(){
+	public void setUp() {
 
 		mockResult = new MockResult();
 		mockUserDAO = mock(UserDAO.class);
 		AnalyticsManager am = mock(AnalyticsManager.class);
-		when(am.getDatedMetricsAsString(any(DataFeed.class))).thenReturn("2010-11-17,0,8,21;2010-11-18,12,20,81;2010-11-19,9,16,65");
-		ApplicationData mockAppData = mock(ApplicationData.class);//new ApplicationData(am, mockContext);
+		when(am.getDatedMetricsAsString(any(DataFeed.class))).thenReturn(
+				"2010-11-17,0,8,21;2010-11-18,12,20,81;2010-11-19,9,16,65");
+		ApplicationData mockAppData = mock(ApplicationData.class);// new
+																	// ApplicationData(am,
+																	// mockContext);
 		loggedUser = new LoggedUser(mockAppData);
 		Validator mockValidator = new MockValidator();
 		HttpServletRequest mockRequest = new MockHttpServletRequest();
-		loginController = new LoginController(mockResult, mockUserDAO, loggedUser, mockValidator, mockRequest, mockAppData, null);
+		loginController = new LoginController(mockResult, mockUserDAO,
+				loggedUser, mockValidator, mockRequest, mockAppData, null);
 
 	}
 
@@ -61,25 +65,31 @@ public class LoginControllerTest {
 		try {
 			loginController.login(username, password);
 			fail();
-		} catch(ValidationException e) {
-			assertTrue("Couldn't assert that message for empty user was created.",
-					checkIfContainsError(e.getErrors(), ExceptionMessages.USER_CANNOT_BE_EMPTY, ExceptionMessages.ERROR));
+		} catch (ValidationException e) {
+			assertTrue(
+					"Couldn't assert that message for empty user was created.",
+					checkIfContainsError(e.getErrors(),
+							ExceptionMessages.USER_CANNOT_BE_EMPTY,
+							ExceptionMessages.ERROR));
 		}
 
 	}
 
 	@Test
 	public void testCannotLoginWithUserNameWithOnlySpaces() {
-//		User userWithEmptyName = new User("   ");
+		// User userWithEmptyName = new User("   ");
 		String username = "    ";
 		String password = "";
 
 		try {
 			loginController.login(username, password);
 			fail();
-		} catch(ValidationException e) {
-			assertTrue("Couldn't assert that message for empty user was created.",
-					checkIfContainsError(e.getErrors(), ExceptionMessages.USER_CANNOT_BE_EMPTY, ExceptionMessages.ERROR));
+		} catch (ValidationException e) {
+			assertTrue(
+					"Couldn't assert that message for empty user was created.",
+					checkIfContainsError(e.getErrors(),
+							ExceptionMessages.USER_CANNOT_BE_EMPTY,
+							ExceptionMessages.ERROR));
 		}
 
 	}
@@ -91,11 +101,11 @@ public class LoginControllerTest {
 
 		String passCripto = CriptoUtils.digestMD5(userName, password);
 
-
 		User userWithName = new User(userName);
 		userWithName.setPassword(passCripto);
 
-		when(mockUserDAO.retrieveByLogin("cogroo", userName)).thenReturn(userWithName);
+		when(mockUserDAO.retrieveByLogin("cogroo", userName)).thenReturn(
+				userWithName);
 		when(mockUserDAO.existLogin("cogroo", userName)).thenReturn(true);
 
 		loginController.login(userName, password);
@@ -104,10 +114,12 @@ public class LoginControllerTest {
 
 	}
 
-	private boolean checkIfContainsError(List<Message> errors, String message, String category) {
+	private boolean checkIfContainsError(List<Message> errors, String message,
+			String category) {
 		boolean foundError = false;
 		for (Message error : errors) {
-			if(error.getMessage().equals(message) && error.getCategory().equals(category)) {
+			if (error.getMessage().equals(message)
+					&& error.getCategory().equals(category)) {
 				foundError = true;
 			}
 		}

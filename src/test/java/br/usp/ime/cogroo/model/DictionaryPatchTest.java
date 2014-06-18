@@ -18,10 +18,9 @@ import br.usp.ime.cogroo.model.errorreport.State;
 
 @Category(LabXP2014.class)
 public class DictionaryPatchTest {
-	
-	private final double DELTA = 1e-8;  
+
+	private final double DELTA = 1e-8;
 	private DictionaryPatch patch = new DictionaryPatch();
-	
 
 	@Test
 	public void testDictonaryPatch() {
@@ -89,14 +88,14 @@ public class DictionaryPatchTest {
 		assertEquals(patch.getModified(), modified);
 
 	}
-	
+
 	@Test
 	public void setCreationTest() {
 		Date creation = new Date();
-		patch.setCreation(creation); 
+		patch.setCreation(creation);
 		assertEquals(patch.getCreation(), creation);
 	}
-	
+
 	@Test
 	public void setStateTest() {
 		patch.setState(State.OPEN);
@@ -108,33 +107,33 @@ public class DictionaryPatchTest {
 		patch.setState(State.FEEDBACK);
 		assertEquals(patch.getState(), State.FEEDBACK);
 	}
-	
+
 	@Test
 	public void setNewEntryTest() {
-		String newEntry = "NewEntryTest"; 
+		String newEntry = "NewEntryTest";
 		patch.setNewEntry(newEntry);
 		assertEquals(patch.getNewEntry(), newEntry);
 	}
-	
+
 	@Test
 	public void setPreviousEntryTest() {
-		String previousEntry = "PreviousEntryTest"; 
+		String previousEntry = "PreviousEntryTest";
 		patch.setPreviousEntry(previousEntry);
 		assertEquals(patch.getPreviousEntry(), previousEntry);
 	}
-	
+
 	@Test
 	public void setAndGetIdTest() {
 		patch.setId(10L);
 		assertEquals(patch.getId(), 10L, DELTA);
 	}
-	
+
 	@Test
 	public void onCreateTest() {
 		patch.onCreate();
 		assertEquals(patch.getCreation(), patch.getModified());
 	}
-	
+
 	@Test
 	public void onUpdateModifiedDateIsDate() {
 		patch.onUpdate();
@@ -143,7 +142,7 @@ public class DictionaryPatchTest {
 
 	@Test
 	public void setAndGetHistoryEntriesTest() {
-		List<HistoryEntry> historyEntries = new Vector<HistoryEntry>(); 
+		List<HistoryEntry> historyEntries = new Vector<HistoryEntry>();
 		patch.setHistoryEntries(historyEntries);
 		assertEquals(patch.getHistoryEntries(), historyEntries);
 	}

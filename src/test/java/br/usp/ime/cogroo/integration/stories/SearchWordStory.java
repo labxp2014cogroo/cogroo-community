@@ -15,7 +15,8 @@ public class SearchWordStory {
 
 	@Before
 	public void setUp() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:8080/");
+		selenium = new DefaultSelenium("localhost", 4444, "*chrome",
+				"http://localhost:8080/");
 		selenium.start();
 	}
 
@@ -27,14 +28,20 @@ public class SearchWordStory {
 		selenium.type("id=text", "casa");
 		selenium.click("id=go");
 		selenium.waitForPageToLoad("30000");
-		assertEquals("feminino, singular", selenium.getText("//table[@id='table_morf']/tbody/tr/td[4]"));
-		assertEquals("verbo", selenium.getText("//table[@id='table_morf']/tbody/tr[2]/td[3]"));
-		assertEquals("presente, terceira, singular, transitivo", selenium.getText("//table[@id='table_morf']/tbody/tr[2]/td[4]"));
-		assertEquals("verbo", selenium.getText("//table[@id='table_morf']/tbody/tr[3]/td[3]"));
-		assertEquals("imperativo, segunda, singular, transitivo", selenium.getText("//table[@id='table_morf']/tbody/tr[3]/td[4]"));
-		assertEquals("substantivo comum", selenium.getText("//table[@id='table_morf']/tbody/tr/td[3]"));
+		assertEquals("feminino, singular",
+				selenium.getText("//table[@id='table_morf']/tbody/tr/td[4]"));
+		assertEquals("verbo",
+				selenium.getText("//table[@id='table_morf']/tbody/tr[2]/td[3]"));
+		assertEquals("presente, terceira, singular, transitivo",
+				selenium.getText("//table[@id='table_morf']/tbody/tr[2]/td[4]"));
+		assertEquals("verbo",
+				selenium.getText("//table[@id='table_morf']/tbody/tr[3]/td[3]"));
+		assertEquals("imperativo, segunda, singular, transitivo",
+				selenium.getText("//table[@id='table_morf']/tbody/tr[3]/td[4]"));
+		assertEquals("substantivo comum",
+				selenium.getText("//table[@id='table_morf']/tbody/tr/td[3]"));
 	}
-	
+
 	@Test
 	public void testSearchNonExistantWordStory() throws Exception {
 		selenium.open("/");
@@ -43,7 +50,8 @@ public class SearchWordStory {
 		selenium.type("id=text", "palavraInexistente");
 		selenium.click("id=go");
 		selenium.waitForPageToLoad("30000");
-		assertTrue(selenium.getText("css=div.yellow_box").contains("palavraInexistente"));
+		assertTrue(selenium.getText("css=div.yellow_box").contains(
+				"palavraInexistente"));
 		assertEquals("Sugerir", selenium.getValue("css=input.a_button"));
 	}
 

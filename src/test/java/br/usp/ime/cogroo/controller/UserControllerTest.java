@@ -30,7 +30,6 @@ import br.usp.ime.cogroo.model.LoggedUser;
 import br.usp.ime.cogroo.model.User;
 import br.usp.ime.cogroo.security.Admin;
 
-
 public class UserControllerTest {
 
 	private MockResult result;
@@ -44,7 +43,7 @@ public class UserControllerTest {
 	private User giliane;
 	private UserController unknownController;
 	private EntityManager em;
-  private LoggedUser unknownLoggedUser;
+	private LoggedUser unknownLoggedUser;
 
 	@Before
 	public void setUp() {
@@ -71,33 +70,38 @@ public class UserControllerTest {
 		userDAO.add(admin);
 		em.getTransaction().commit();
 
-
 		LoggedUser loggedUser1 = new LoggedUser(appData);
 		loggedUser1.login(admin);
 
-
 		TextSanitizer ts = new TextSanitizer();
-		adminController = new UserController(result, userDAO, loggedUser1, validator, null, ts, null, null);
+		adminController = new UserController(result, userDAO, loggedUser1,
+				validator, null, ts, null, null);
 
 		LoggedUser loggedUser2 = new LoggedUser(appData);
 		loggedUser2.login(william);
-		userController = new UserController(result, userDAO, loggedUser2, validator, null, ts, null, null);
+		userController = new UserController(result, userDAO, loggedUser2,
+				validator, null, ts, null, null);
 
 		unknownLoggedUser = new LoggedUser(appData);
-		unknownController = new UserController(result, userDAO, unknownLoggedUser, validator, null, ts, null, null);
+		unknownController = new UserController(result, userDAO,
+				unknownLoggedUser, validator, null, ts, null, null);
 	}
 
 	@Test
-	public void testUnknownUserCantSeeUserList() throws SecurityException, NoSuchMethodException {
+	public void testUnknownUserCantSeeUserList() throws SecurityException,
+			NoSuchMethodException {
 		try {
-		    InterceptorUtil.validate(UserController.class.getMethod("userList"), unknownLoggedUser, result);
+			InterceptorUtil.validate(
+					UserController.class.getMethod("userList"),
+					unknownLoggedUser, result);
 			unknownController.userList();
 			fail();
 		} catch (ValidationException e) {
 			List<Message> errors = e.getErrors();
 			assertTrue(errors.size() > 0);
 			Message message = errors.get(0);
-			assertEquals(ExceptionMessages.ONLY_LOGGED_USER_CAN_DO_THIS, message.getMessage());
+			assertEquals(ExceptionMessages.ONLY_LOGGED_USER_CAN_DO_THIS,
+					message.getMessage());
 			assertEquals(ExceptionMessages.ERROR, message.getCategory());
 		}
 	}
@@ -119,36 +123,40 @@ public class UserControllerTest {
 	}
 
 	@Test
-	public void testUnknownUserCantSeeUserDetails() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public void testUnknownUserCantSeeUserDetails()
+			throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		try {
-		    Method method = InterceptorUtil.findMethod(UserController.class, "user", User.class);
-		    InterceptorUtil.validate(method, unknownLoggedUser, result);
-		    method.invoke(unknownController, william);
+			Method method = InterceptorUtil.findMethod(UserController.class,
+					"user", User.class);
+			InterceptorUtil.validate(method, unknownLoggedUser, result);
+			method.invoke(unknownController, william);
 			fail();
 		} catch (ValidationException e) {
 			List<Message> errors = e.getErrors();
 			assertTrue(errors.size() > 0);
 			Message message = errors.get(0);
-			assertEquals(ExceptionMessages.ONLY_LOGGED_USER_CAN_DO_THIS, message.getMessage());
+			assertEquals(ExceptionMessages.ONLY_LOGGED_USER_CAN_DO_THIS,
+					message.getMessage());
 			assertEquals(ExceptionMessages.ERROR, message.getCategory());
 		}
 	}
 
 	@Test
-	public void testUnknownUserCantSetRole() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public void testUnknownUserCantSetRole() throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		try {
-		  Method method = InterceptorUtil.findMethod(
-		      UserController.class,
-		      "userRole",
-		      User.class, String.class);
-          InterceptorUtil.validate(method, unknownLoggedUser, result);
-          method.invoke(unknownController, wesley, Admin.ROLE_NAME);
+			Method method = InterceptorUtil.findMethod(UserController.class,
+					"userRole", User.class, String.class);
+			InterceptorUtil.validate(method, unknownLoggedUser, result);
+			method.invoke(unknownController, wesley, Admin.ROLE_NAME);
 			fail();
 		} catch (ValidationException e) {
 			List<Message> errors = e.getErrors();
 			assertTrue(errors.size() > 0);
 			Message message = errors.get(0);
-			assertEquals(ExceptionMessages.ONLY_LOGGED_USER_CAN_DO_THIS, message.getMessage());
+			assertEquals(ExceptionMessages.ONLY_LOGGED_USER_CAN_DO_THIS,
+					message.getMessage());
 			assertEquals(ExceptionMessages.ERROR, message.getCategory());
 		}
 	}
@@ -162,7 +170,8 @@ public class UserControllerTest {
 			List<Message> errors = e.getErrors();
 			assertTrue(errors.size() > 0);
 			Message message = errors.get(0);
-			assertEquals(ExceptionMessages.ONLY_LOGGED_USER_CAN_DO_THIS, message.getMessage());
+			assertEquals(ExceptionMessages.ONLY_LOGGED_USER_CAN_DO_THIS,
+					message.getMessage());
 			assertEquals(ExceptionMessages.ERROR, message.getCategory());
 		}
 	}

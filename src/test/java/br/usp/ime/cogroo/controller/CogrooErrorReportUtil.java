@@ -149,16 +149,16 @@ public class CogrooErrorReportUtil {
 		if (body != null) {
 			connection.setDoOutput(true);
 			OutputStream output = connection.getOutputStream();
-			DataOutputStream out2 = new DataOutputStream( output );
-			out2.writeBytes(convert(body)); 
+			DataOutputStream out2 = new DataOutputStream(output);
+			out2.writeBytes(convert(body));
 		}
 
 		// do request
 		long time = System.currentTimeMillis();
 		connection.connect();
 
-//		InputStream responseBodyStream = connection.getInputStream();
-//		StringBuffer responseBody = new StringBuffer();
+		// InputStream responseBodyStream = connection.getInputStream();
+		// StringBuffer responseBody = new StringBuffer();
 		// while ((read = responseBodyStream.read(buffer)) != -1)
 		// {
 		// responseBody.append(new String(buffer, 0, read));
@@ -167,9 +167,9 @@ public class CogrooErrorReportUtil {
 		time = System.currentTimeMillis() - time;
 
 		// start printing output
-//		if (!quiet)
-//			System.out.println("[read " + responseBody.length() + " chars in "
-//					+ time + "ms]");
+		// if (!quiet)
+		// System.out.println("[read " + responseBody.length() + " chars in "
+		// + time + "ms]");
 
 		// look at headers
 		// the 0th header has a null key, and the value is the response line
@@ -192,17 +192,17 @@ public class CogrooErrorReportUtil {
 		}
 
 		// dump body
-//		System.out.print(responseBody);
+		// System.out.print(responseBody);
 		System.out.flush();
 	}
 
-	private static String convert(Map<String,String> data) {
+	private static String convert(Map<String, String> data) {
 		StringBuilder sb = new StringBuilder();
 		for (String key : data.keySet()) {
 			sb.append(key + "=" + data);
 			sb.append("&");
 		}
-		
+
 		return sb.subSequence(0, sb.length() - 2).toString();
 	}
 

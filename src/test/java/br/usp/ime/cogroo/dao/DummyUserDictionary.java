@@ -9,26 +9,25 @@ import org.cogroo.tools.checker.rules.dictionary.LexicalDictionary;
 import org.cogroo.util.PairWordPOSTag;
 
 public class DummyUserDictionary implements LexicalDictionary {
-	
+
 	private Map<String, List<PairWordPOSTag>> dictionary;
-	
+
 	public DummyUserDictionary() {
 		this.dictionary = new HashMap<String, List<PairWordPOSTag>>();
-		
+
 		List<PairWordPOSTag> apple = new ArrayList<PairWordPOSTag>();
 		apple.add(new PairWordPOSTag("aLemma", "aPOSTag"));
 		dictionary.put("apple", apple);
-		
+
 		List<PairWordPOSTag> casas = new ArrayList<PairWordPOSTag>();
 		casas.add(new PairWordPOSTag("casa", "noun,female,plural"));
-		casas.add(new PairWordPOSTag("casar", "verb,singular,second,present,indicative,finite"));
-		
+		casas.add(new PairWordPOSTag("casar",
+				"verb,singular,second,present,indicative,finite"));
+
 		dictionary.put("casas", casas);
-		
-		
 
 	}
-	
+
 	@Override
 	public boolean wordExists(String arg0) {
 		return this.dictionary.containsKey(arg0);
@@ -51,9 +50,5 @@ public class DummyUserDictionary implements LexicalDictionary {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-
-	
 
 }

@@ -7,7 +7,7 @@
 	<div class="dashed_white">
 	<h4>Qual palavra deseja consultar?</h4>
 	<br>
-	<form action="<c:url value="/searchEntry"/>" method="post">
+	<form action="<c:url value="/dictionaryPatch/searchEntry"/>" method="post">
 		<input type="text" name="text" id="text"/>
 		<input type="submit" value=" OK &raquo; " id="go" />
 	</form>
@@ -20,7 +20,7 @@
 			N&atilde;o encontramos a palavra ${typed_word}.
 			<br/>
 			Deseja suger&iacute;-la?<br/>
-			<a href="/newEntry/loggedUser?word=${typed_word}" >
+			<a href="/dicionaryPatch/newEntry/loggedUser?word=${typed_word}" >
 				<input type="button" value="Sugerir" class="a_button" />
 			</a>
 		</c:when>

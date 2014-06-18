@@ -129,7 +129,7 @@ public class ParseViewTest {
 
 		// TODO: can't delete user!
 		User u = userDAO.retrieveByLogin(user);
-		if(u != null) {
+		if (u != null) {
 			em.getTransaction().begin();
 			userDAO.delete(u);
 			em.getTransaction().commit();

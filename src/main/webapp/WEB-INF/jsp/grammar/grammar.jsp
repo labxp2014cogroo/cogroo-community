@@ -40,7 +40,7 @@
 		<c:if test="${! empty unknownWordsList}">
 			<p> As seguintes palavras não existem no dicionário (clique para adicioná-las): </p>
 			<c:forEach items="${unknownWordsList}" var="unknownWord" >
-					<p> <a href="/newEntry?word=${unknownWord}" title="Incluir palavra" > ${unknownWord} </a> </p>
+					<p> <a href="/dictionaryPatch/newEntry?word=${unknownWord}" title="Incluir palavra" > ${unknownWord} </a> </p>
 			</c:forEach>
 		</c:if>
 		
