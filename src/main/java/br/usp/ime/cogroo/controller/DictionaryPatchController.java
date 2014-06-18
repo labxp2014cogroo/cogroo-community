@@ -234,7 +234,7 @@ public class DictionaryPatchController {
 					ExceptionMessages.ERROR));
 		}
 
-//		Trata maiúsculas e minúsculas:
+		// Trata maiúsculas e minúsculas:
 		if (category.equals("np")) {
 			word = word.substring(0, 1).toUpperCase()
 					+ word.substring(1).toLowerCase().trim();
@@ -244,14 +244,15 @@ public class DictionaryPatchController {
 
 		result.include("word", word);
 		result.include("category", category);
-		
+
 		String entry = word + "/CAT=" + category;
 		validator.onErrorUsePageOf(getClass()).newEntry(word);
-		
-//		Trata interjeições:
+
+		// Trata interjeições:
 		if (category.equals("in")) {
 			entry += "//";
-			result.redirectTo(getClass()).chooseFlags(entry, new String[0]);
+			insertPatch(entry);
+			result.redirectTo(getClass()).dictionaryEntries();
 		} else {
 			entry += ",";
 			result.include("entry", entry);
@@ -316,20 +317,25 @@ public class DictionaryPatchController {
 		result.include("word", word);
 	}
 
-	@Get
+	@Post
 	public void chooseFlags(String entry, String[] flag) {
 
-		for (String f : flag) {
-			entry += f;
+		if (flag != null) {
+			for (String f : flag) {
+				entry += f;
+			}
 		}
 
+		insertPatch(entry);
+		
+		result.include("okMessage", "Palavra cadastrada com sucesso!");
+		result.redirectTo(getClass()).dictionaryEntries();
+	}
+	
+	public void insertPatch(String entry) {
 		DictionaryPatch dictionarypatch = new DictionaryPatch();
 		dictionarypatch.setNewEntry(entry);
 		dictionarypatch.setUser(loggedUser.getUser());
 		dictionaryPatchDAO.add(dictionarypatch);
-
-		result.include("okMessage", "Palavra cadastrada com sucesso!");
-
-		result.redirectTo(DictionaryPatchController.class).dictionaryEntries();
 	}
 }
