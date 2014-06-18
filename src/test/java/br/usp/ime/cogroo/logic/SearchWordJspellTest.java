@@ -1,6 +1,5 @@
 package br.usp.ime.cogroo.logic;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -12,26 +11,17 @@ import org.junit.Test;
 public class SearchWordJspellTest {
 
 	@Test
-	public void testWordExistsInJspell() throws JSONException {
-		try {
-			Assert.assertEquals(true, SearchWordJspell.existsInJspell("casa"));
-			Assert.assertEquals(true, SearchWordJspell.existsInJspell("bola"));
-			Assert.assertEquals(false,
-					SearchWordJspell.existsInJspell("bolaas"));
-			Assert.assertEquals(false, SearchWordJspell.existsInJspell("if"));
-			Assert.assertEquals(true,
-					SearchWordJspell.existsInJspell("bolacha"));
-			Assert.assertEquals(true,
-					SearchWordJspell.existsInJspell("inconstitucional"));
-			Assert.assertEquals(true, SearchWordJspell.existsInJspell("afinal"));
-			Assert.assertEquals(true, SearchWordJspell.existsInJspell("imoral"));
-			Assert.assertEquals(false,
-					SearchWordJspell.existsInJspell("bolachão"));
-		} catch (FileNotFoundException e) {
-			// ignora o aruivo log
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void testWordExistsInJspell() throws JSONException, IOException {
+		Assert.assertEquals(true, SearchWordJspell.existsInJspell("casa"));
+		Assert.assertEquals(true, SearchWordJspell.existsInJspell("bola"));
+		Assert.assertEquals(false, SearchWordJspell.existsInJspell("bolaas"));
+		Assert.assertEquals(false, SearchWordJspell.existsInJspell("if"));
+		Assert.assertEquals(true, SearchWordJspell.existsInJspell("bolacha"));
+		Assert.assertEquals(true,
+				SearchWordJspell.existsInJspell("inconstitucional"));
+		Assert.assertEquals(true, SearchWordJspell.existsInJspell("afinal"));
+		Assert.assertEquals(true, SearchWordJspell.existsInJspell("imoral"));
+		Assert.assertEquals(false, SearchWordJspell.existsInJspell("bolachão"));
 	}
 
 	@Test
