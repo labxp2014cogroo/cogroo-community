@@ -42,39 +42,44 @@ function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 					var k = 0;
 					json = JSON.parse(response);
 					if (json.status == json.ok){
+						derivations = json.derivations;
 						html = '<form action="<c:url value="/patchApproval"/>" method="post" id="formAp">';
 						html += '<table class="display"><tr align="center"><td width="8%"><h3>Flags</h3></td><td><h3>Derivações</h3></td><td width="8%">';
-						if (patchState == "OPEN" && canApprove) {
+						if (patchState == "OPEN" && canApprove && derivations.length > 0) {
  							html += '<input id="checkAllFlags'+ idPatch +'" type="checkbox" checked="checked" onchange="isChecked = $(this).attr(\'checked\');';
  	 						html += '$(\'.flagscheckbox'+ idPatch +'\').attr(\'checked\', isChecked);">';
 						}
 						html += '</td></tr>';
-						derivations = json.derivations;
 
 						var obs = false;
-						
-						for (var flag in derivations){
-							html += '<tr style="background-color:' + colors[k++ % colors.length] + '"><td align="center">';
-							html += flag + '</td><td>';
-							if (derivations[flag].length > 0){
-								html += derivations[flag][0];
-		 						for(var l = 1; l < derivations[flag].length; l++){
-		 							html += ', ' + derivations[flag][l];	
+
+						if (derivations.length > 0) {
+							for (var flag in derivations){
+								html += '<tr style="background-color:' + colors[k++ % colors.length] + '"><td align="center">';
+								html += flag + '</td><td>';
+								if (derivations[flag].length > 0){
+									html += derivations[flag][0];
+			 						for(var l = 1; l < derivations[flag].length; l++){
+			 							html += ', ' + derivations[flag][l];	
+			 						}
 		 						}
-	 						}
-	 						html += '</td><td align="center">'
-							if (patchState == "OPEN" && canApprove) {
-								if (flag.length == 1) {
-	 								html += '<input name="flags[]" value="' + flag + '" class="flagscheckbox'+idPatch+'" checked="checked" type="checkbox"';
-		 							html += 'onchange="$(\'#checkAllFlags'+idPatch+'\').attr(\'checked\', false);">';
+		 						html += '</td><td align="center">'
+								if (patchState == "OPEN" && canApprove) {
+									if (flag.length == 1) {
+		 								html += '<input name="flags[]" value="' + flag + '" class="flagscheckbox'+idPatch+'" checked="checked" type="checkbox"';
+			 							html += 'onchange="$(\'#checkAllFlags'+idPatch+'\').attr(\'checked\', false);">';
+									}
+									else {
+										html += '*fc';
+										obs = true;
+									}
 								}
-								else {
-									html += '*fc';
-									obs = true;
-								}
+		 						html += '</td></tr>';
 							}
-	 						html += '</td></tr>';
+						} else {
+							html += '<tr><td align="center" colspan="3" style="background-color:#B9B9B9">Não há derivações dessa palavra</td></tr>';
 						}
+						
 						if (canApprove) {
 							html += '<tr><td colspan="3">';
 							if (obs == true) {

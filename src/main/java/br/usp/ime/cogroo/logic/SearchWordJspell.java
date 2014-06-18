@@ -16,35 +16,31 @@ public class SearchWordJspell {
 
 	static final String baseAnalyseURL = "http://interno.cogroo.org:4040/jspell/analyse.json?id=default&lexeme=";
 
-	public static List<Vocable> searchWord(String text) throws IOException {
+	public static List<Vocable> searchWord(String text) throws IOException, JSONException {
 		List<Vocable> vocables = new LinkedList<Vocable>();
-		try {
-			JSONArray analisis = WebServiceProxy.getInstance()
-					.analysisRequest(text).getJSONArray("analise");
+		JSONArray analisis = WebServiceProxy.getInstance()
+				.analysisRequest(text).getJSONArray("analise");
 
-			for (int i = 0; i < analisis.length(); i++) {
-				JSONObject json = analisis.getJSONObject(i);
-				Vocable v = new Vocable(json.getString("CAT"), text,
-						json.getString("rad"));
+		for (int i = 0; i < analisis.length(); i++) {
+			JSONObject json = analisis.getJSONObject(i);
+			Vocable v = new Vocable(json.getString("CAT"), text,
+					json.getString("rad"));
 
-				Iterator<String> jsonIterator = json.keys();
-				while (jsonIterator.hasNext()) {
-					String key = jsonIterator.next();
-					if (!(key.equals("CAT") || key.equals("rad") || key
-							.equals("PREAO90"))) {
-						v.addProperty(key, json.getString(key));
-					}
+			Iterator<String> jsonIterator = json.keys();
+			while (jsonIterator.hasNext()) {
+				String key = jsonIterator.next();
+				if (!(key.equals("CAT") || key.equals("rad") || key
+						.equals("PREAO90"))) {
+					v.addProperty(key, json.getString(key));
 				}
-				vocables.add(v);
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
+			vocables.add(v);
 		}
 		return vocables;
 	}
 
 	public static List<String> searchUnknownWords(String text)
-			throws IOException {
+			throws IOException, JSONException {
 
 		List<String> unknownWords = new LinkedList<String>();
 		StringTokenizer tokens = new StringTokenizer(text, " ,.!?();:");
@@ -60,7 +56,7 @@ public class SearchWordJspell {
 		return unknownWords;
 	}
 
-	public static boolean existsInJspell(String word) throws IOException {
+	public static boolean existsInJspell(String word) throws IOException, JSONException {
 		return (!SearchWordJspell.searchWord(word).isEmpty());
 	}
 

@@ -46,38 +46,32 @@ public class WebServiceProxy {
 		return WebServiceProxy.singleton;
 	}
 
-	public JSONObject tryRequest(String text) throws IOException {
+	public JSONObject tryRequest(String text) throws IOException, JSONException {
 		return this.getJSONFromWebService(this.webServiceProperties
 				.getProperty("try") + URLEncoder.encode(text, "ISO-8859-1"));
 	}
 
-	public JSONObject analysisRequest(String text) throws IOException {
+	public JSONObject analysisRequest(String text) throws IOException, JSONException {
 		return this.getJSONFromWebService(this.webServiceProperties
 				.getProperty("analysis") + text);
 	}
 
-	public JSONObject retrieveRequest(String lemma) throws IOException {
+	public JSONObject retrieveRequest(String lemma) throws IOException, JSONException {
 		return this.getJSONFromWebService(this.webServiceProperties
 				.getProperty("retrieve") + lemma);
 	}
 
-	private JSONObject getJSONFromWebService(String suffix) throws IOException {
+	private JSONObject getJSONFromWebService(String suffix) throws IOException, JSONException {
 		String requestURL = this.baseURL + suffix;
 		HttpClient client = new DefaultHttpClient();
 		HttpGet request = new HttpGet(requestURL);
 		HttpResponse response;
 		Scanner scanner;
 		JSONObject jsonResult = null;
-		try {
-			response = client.execute(request);
-			scanner = new Scanner(response.getEntity().getContent());
-			jsonResult = new JSONObject(scanner.nextLine());
-			scanner.close();
-		} catch (ClientProtocolException e) {
-			LOG.error("Erro na comunicação com o servidor", e);
-		} catch (JSONException e) {
-			LOG.error("Erro na codificação do JSON", e);
-		}
+		response = client.execute(request);
+		scanner = new Scanner(response.getEntity().getContent());
+		jsonResult = new JSONObject(scanner.nextLine());
+		scanner.close();
 		return jsonResult;
 	}
 

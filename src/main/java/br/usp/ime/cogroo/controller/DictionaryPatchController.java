@@ -125,6 +125,7 @@ public class DictionaryPatchController {
 	}
 
 	@Post
+	@Path("/patchApproval")
 	public void patchApproval(String[] flags, long idPatch) {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 
@@ -158,6 +159,7 @@ public class DictionaryPatchController {
 	}
 
 	@Post
+	@Path("/patchDisapproval")
 	public void patchDisapproval(String[] flags, long idPatch) {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 
@@ -206,6 +208,10 @@ public class DictionaryPatchController {
 		} catch (IOException e) {
 			result.include(mensagemErro, "Serviço fora do ar");
 			result.include(status, 501);
+		} catch (JSONException e) {
+			validator.add(new ValidationMessage("Serviço fora do ar",
+					ExceptionMessages.ERROR));
+			validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch(isEdition);
 		}
 		result.redirectTo(DictionaryPatchController.class).dictionaryEntrySearch(isEdition);
 	}
@@ -233,13 +239,26 @@ public class DictionaryPatchController {
 					ExceptionMessages.NO_CATEGORY_SELECTED,
 					ExceptionMessages.ERROR));
 		}
+
+		// Trata maiúsculas e minúsculas:
+		if (category.equals("np")) {
+			word = word.substring(0, 1).toUpperCase()
+					+ word.substring(1).toLowerCase().trim();
+		} else {
+			word = word.toLowerCase().trim();
+		}
+
 		result.include("word", word);
+		result.include("category", category);
+
 		String entry = word + "/CAT=" + category;
 		validator.onErrorUsePageOf(getClass()).newEntry(word);
 
+		// Trata interjeições:
 		if (category.equals("in")) {
 			entry += "//";
-			result.redirectTo(getClass()).chooseFlags(entry, new String[0]);
+			insertPatch(entry);
+			result.redirectTo(getClass()).dictionaryEntries();
 		} else {
 			entry += ",";
 			result.include("entry", entry);
@@ -307,17 +326,22 @@ public class DictionaryPatchController {
 	@Post
 	public void chooseFlags(String entry, String[] flag) {
 
-		for (String f : flag) {
-			entry += f;
+		if (flag != null) {
+			for (String f : flag) {
+				entry += f;
+			}
 		}
 
+		insertPatch(entry);
+
+		result.include("okMessage", "Palavra cadastrada com sucesso!");
+		result.redirectTo(getClass()).dictionaryEntries();
+	}
+
+	public void insertPatch(String entry) {
 		DictionaryPatch dictionarypatch = new DictionaryPatch();
 		dictionarypatch.setNewEntry(entry);
 		dictionarypatch.setUser(loggedUser.getUser());
 		dictionaryPatchDAO.add(dictionarypatch);
-
-		result.include("okMessage", "Palavra cadastrada com sucesso!");
-
-		result.redirectTo(DictionaryPatchController.class).dictionaryEntries();
 	}
 }
