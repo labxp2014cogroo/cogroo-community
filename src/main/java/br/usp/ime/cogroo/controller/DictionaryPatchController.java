@@ -232,19 +232,21 @@ public class DictionaryPatchController {
 					ExceptionMessages.NO_CATEGORY_SELECTED,
 					ExceptionMessages.ERROR));
 		}
-		result.include("word", word);
-		String entry = word + "/CAT=" + category;
-		validator.onErrorUsePageOf(getClass()).newEntry(word);
-
-		if (category.equals("in")) {
-			entry += "//";
-			result.redirectTo(getClass()).chooseFlags(entry, new String[0]);
-		} else {
-			entry += ",";
-			result.include("entry", entry);
-			result.include("category", category);
-			result.redirectTo(getClass()).grammarProperties(word);
+		
+//		Trata maiúsculas e minúsculas:
+		if (category.equals("np")) {
+			word = word.substring(0,1).toUpperCase() + word.substring(1).toLowerCase().trim();
 		}
+		else {
+			word = word.toLowerCase().trim();
+		}
+		
+		result.include("word", word);
+		result.include("entry", word + "/CAT=" + category + ",");
+		result.include("category", category);
+		validator.onErrorUsePageOf(DictionaryPatchController.class).newEntry(
+				word);
+		result.redirectTo(getClass()).grammarProperties(word);
 	}
 
 	public void grammarProperties(String word) {
