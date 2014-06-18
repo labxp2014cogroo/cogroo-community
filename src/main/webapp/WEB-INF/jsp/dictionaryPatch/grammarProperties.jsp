@@ -3,7 +3,7 @@
 	<h2>Classifique a palavra "${word }"</h2>
 	<br>
 	<div id="others" class="vocable_form">
-		<h3>Quanto ao gï¿½nero:</h3>
+		<h3>Quanto ao gênero:</h3>
 		<br>
 		<div class="dashed_white">
 			<input type="radio" name="gender" value="G=m," />Masculino<br>
@@ -11,35 +11,35 @@
 			<input type="radio" name="gender" value="G=n," />Neutro [ex: o(a) estudante]<br>
 		</div>
 		<br>
-		<h3>Quanto ao nï¿½mero:</h3>
+		<h3>Quanto ao número:</h3>
 		<br>
 		<div class="dashed_white">
 			<input type="radio" name="number" value="N=s" />Singular<br>
 			<input type="radio" name="number" value="N=p" />Plural<br>
-			<input type="radio" name="number" value="N=_" />Indefinido [ex: o(s) ï¿½culos]<br>
+			<input type="radio" name="number" value="N=_" />Indefinido [ex: o(s) óculos]<br>
 		</div>
 	</div>
 	
 	<div id="v" class="vocable_form">
-		<h3>Quanto ï¿½ transitividade:</h3>
+		<h3>Quanto à transitividade:</h3>
 		<br>
 		<div class="dashed_white">
 			<input type="radio" name="transitivity" value="TR=t" />Transitivo<br>
 			<input type="radio" name="transitivity" value="TR=i" />Intransitivo<br>
 			<input type="radio" name="transitivity" value="TR=_" />Ambos<br>
-			<input type="radio" name="transitivity" value="TR=l" />De Ligaï¿½ï¿½o<br>
+			<input type="radio" name="transitivity" value="TR=l" />De Ligação<br>
 		</div>
 	</div>
 	
 	<div id="adv" class="vocable_form">
-		<h3>Quanto ï¿½ circunstï¿½ncia:</h3>
+		<h3>Quanto à circunstância:</h3>
 		<br>
 		<div class="dashed_white">
 			<input type="radio" name="type" value="SUBCAT=modo" />Modo<br>
 			<input type="radio" name="type" value="SUBCAT=tempo" />Tempo<br>
 			<input type="radio" name="type" value="SUBCAT=lugar" />Lugar<br>
 			<input type="radio" name="type" value="SUBCAT=quant" />Quantidade<br>
-			<input type="radio" name="type" value="SUBCAT=neg" />Negaï¿½ï¿½o<br>
+			<input type="radio" name="type" value="SUBCAT=neg" />Negação<br>
 		</div>
 	</div>
 	<br>

@@ -206,7 +206,8 @@ public class DictionaryPatchController {
 			result.include(mensagemErro, "Serviço fora do ar");
 			result.include(status, 501);
 		}
-		result.redirectTo(DictionaryPatchController.class).dictionaryEntrySearch();
+		result.redirectTo(DictionaryPatchController.class)
+				.dictionaryEntrySearch();
 	}
 
 	public String[][] vocablesAsStrings(List<Vocable> vocables) {
@@ -232,21 +233,31 @@ public class DictionaryPatchController {
 					ExceptionMessages.NO_CATEGORY_SELECTED,
 					ExceptionMessages.ERROR));
 		}
-		
+
 //		Trata maiúsculas e minúsculas:
 		if (category.equals("np")) {
-			word = word.substring(0,1).toUpperCase() + word.substring(1).toLowerCase().trim();
-		}
-		else {
+			word = word.substring(0, 1).toUpperCase()
+					+ word.substring(1).toLowerCase().trim();
+		} else {
 			word = word.toLowerCase().trim();
 		}
-		
+
 		result.include("word", word);
-		result.include("entry", word + "/CAT=" + category + ",");
 		result.include("category", category);
-		validator.onErrorUsePageOf(DictionaryPatchController.class).newEntry(
-				word);
-		result.redirectTo(getClass()).grammarProperties(word);
+		
+		String entry = word + "/CAT=" + category;
+		validator.onErrorUsePageOf(getClass()).newEntry(word);
+		
+//		Trata interjeições:
+		if (category.equals("in")) {
+			entry += "//";
+			result.redirectTo(getClass()).chooseFlags(entry, new String[0]);
+		} else {
+			entry += ",";
+			result.include("entry", entry);
+			result.include("category", category);
+			result.redirectTo(getClass()).grammarProperties(word);
+		}
 	}
 
 	public void grammarProperties(String word) {
@@ -305,7 +316,7 @@ public class DictionaryPatchController {
 		result.include("word", word);
 	}
 
-	@Post
+	@Get
 	public void chooseFlags(String entry, String[] flag) {
 
 		for (String f : flag) {
