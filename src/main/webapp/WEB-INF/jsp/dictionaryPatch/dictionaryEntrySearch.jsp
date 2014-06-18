@@ -3,11 +3,28 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery-ui/jquery-ui-1.8.5.custom.css"/>" />
 
 <div class="white_box">
-<h2>Consultar palavras</h2>
+<c:choose>
+	<c:when test="${isEdition}">
+		<h2>Editar palavras</h2>
+	</c:when>
+	<c:otherwise>
+		<h2>Consultar palavras</h2>
+	</c:otherwise>
+</c:choose>
 	<div class="dashed_white">
-	<h4>Qual palavra deseja consultar?</h4>
+	
+	<c:choose>
+	<c:when test="${isEdition}">
+		<h4>Qual palavra deseja editar?</h4>
+	</c:when>
+	<c:otherwise>
+		<h4>Qual palavra deseja consultar?</h4>
+	</c:otherwise>
+</c:choose>
+	
 	<br>
 	<form action="<c:url value="/dictionaryPatch/searchEntry"/>" method="post">
+		<input type="hidden" name="isEdition" value="${isEdition}" />
 		<input type="text" name="text" id="text"/>
 		<input type="submit" value=" OK &raquo; " id="go" />
 	</form>

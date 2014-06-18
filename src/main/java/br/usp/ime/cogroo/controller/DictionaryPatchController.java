@@ -96,7 +96,8 @@ public class DictionaryPatchController {
 
 	@Get
 	@Path("/dictionaryEntrySearch")
-	public void dictionaryEntrySearch() {
+	public void dictionaryEntrySearch(boolean isEdition) {
+		result.include("isEdition", isEdition);
 	}
 
 	@LoggedIn
@@ -177,7 +178,7 @@ public class DictionaryPatchController {
 	}
 
 	@Post
-	public void searchEntry(String text) throws JSONException {
+	public void searchEntry(String text, boolean isEdition) throws JSONException {
 		List<Vocable> vocablesList;
 		String status = "status";
 		String mensagemErro = "mensagem_erro";
@@ -188,7 +189,7 @@ public class DictionaryPatchController {
 						ExceptionMessages.EMPTY_FIELD,
 						ExceptionMessages.EMPTY_FIELD));
 				validator.onErrorUsePageOf(DictionaryPatchController.class)
-						.dictionaryEntrySearch();
+						.dictionaryEntrySearch(false);
 			} else {
 				vocablesList = SearchWordJspell.searchWord(text);
 				result.include("typed_word", text);
@@ -206,7 +207,7 @@ public class DictionaryPatchController {
 			result.include(mensagemErro, "Serviço fora do ar");
 			result.include(status, 501);
 		}
-		result.redirectTo(DictionaryPatchController.class).dictionaryEntrySearch();
+		result.redirectTo(DictionaryPatchController.class).dictionaryEntrySearch(isEdition);
 	}
 
 	public String[][] vocablesAsStrings(List<Vocable> vocables) {
