@@ -124,6 +124,7 @@ public class DictionaryPatchController {
 	}
 
 	@Post
+	@Path("/patchApproval")
 	public void patchApproval(String[] flags, long idPatch) {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 
@@ -157,6 +158,7 @@ public class DictionaryPatchController {
 	}
 
 	@Post
+	@Path("/patchDisapproval")
 	public void patchDisapproval(String[] flags, long idPatch) {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 
