@@ -85,6 +85,7 @@ public class DictionaryPatchController {
 	}
 
 	@Get
+	@Path("/dictionaryEntries")
 	public void dictionaryEntries() {
 		List<DictionaryPatch> dictionaryPatchList = new ArrayList<DictionaryPatch>();
 
@@ -103,20 +104,20 @@ public class DictionaryPatchController {
 		result.include("word", word);
 	}
 
-	@Path("/newEntry/loggedUser")
+	@Path("newEntry/loggedUser")
 	public void verifyLoggedUser(String word) {
-		String user_word;
+		String userWord;
 		if (word != null) {
 			request.getSession().setAttribute("word", word);
 		}
 
 		if (loggedUser.isLogged()) {
 			if (word == null) {
-				user_word = (String) request.getSession().getAttribute("word");
+				userWord = (String) request.getSession().getAttribute("word");
 			} else {
-				user_word = word;
+				userWord = word;
 			}
-			result.redirectTo(getClass()).newEntry(user_word);
+			result.redirectTo(getClass()).newEntry(userWord);
 		} else {
 			result.redirectTo(LoginController.class).login();
 		}
@@ -165,7 +166,7 @@ public class DictionaryPatchController {
 	}
 
 	@Get
-	@Path("/dictionaryPatch/entriesDetails/{patch.id}")
+	@Path("/dictionaryPatchDetails/{patch.id}")
 	public void entriesDetails(DictionaryPatch dictionaryPatch) {
 		if (dictionaryPatch == null) {
 			result.redirectTo(getClass()).dictionaryEntries();
@@ -179,7 +180,7 @@ public class DictionaryPatchController {
 	public void searchEntry(String text) throws JSONException {
 		List<Vocable> vocablesList;
 		String status = "status";
-		String mensagem_erro = "mensagem_erro";
+		String mensagemErro = "mensagem_erro";
 
 		try {
 			if (text == null || text.length() < 1) {
@@ -193,7 +194,7 @@ public class DictionaryPatchController {
 				result.include("typed_word", text);
 
 				if (vocablesList.isEmpty()) {
-					result.include(mensagem_erro,
+					result.include(mensagemErro,
 							"Essa palavra não consta no dicionário");
 					result.include(status, 404);
 				} else {
@@ -202,10 +203,10 @@ public class DictionaryPatchController {
 				}
 			}
 		} catch (IOException e) {
-			result.include(mensagem_erro, "Serviço fora do ar");
+			result.include(mensagemErro, "Serviço fora do ar");
 			result.include(status, 501);
 		}
-		result.redirectTo(DictionaryPatchController.class).newEntry(text);
+		result.redirectTo(DictionaryPatchController.class).dictionaryEntrySearch();
 	}
 
 	public String[][] vocablesAsStrings(List<Vocable> vocables) {

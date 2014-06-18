@@ -32,7 +32,7 @@ function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 	datum = {'idPatch':idPatch};
 	$.ajax({
 		timeout: 10000, // ten seconds
-		url : '<c:url value="/getPatch" />',
+		url : '<c:url value="/dictionaryPatch/getPatchDetails" />',
 		type : "get",
 		data : datum,
 		beforeSend: function(response){
@@ -196,7 +196,7 @@ Lista de palavras
 		<tbody>
 			<c:forEach items="${dictionaryPatchList}" var="patch" varStatus="i">
 				<c:if test="${patch.isNew}">
-					<tr id="tr_dictionaryPatch_${ i.count }" class="highlighted" title="<c:url value="/dictionaryEntries/${patch.id}"/>">
+					<tr id="tr_dictionaryPatch_${ i.count }" class="highlighted" title="<c:url value="/dictionaryPatchDetails/${patch.id}"/>">
 				</c:if>
 				<c:if test="${not patch.isNew}">
 					<tr id="tr_dictionaryPatch_${ i.count }" title="<c:url value="/dictionaryEntries/${patch.id}"/>">

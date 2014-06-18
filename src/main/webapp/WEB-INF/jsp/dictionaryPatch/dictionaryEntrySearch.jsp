@@ -20,7 +20,7 @@
 			N&atilde;o encontramos a palavra ${typed_word}.
 			<br/>
 			Deseja suger&iacute;-la?<br/>
-			<a href="/dicionaryPatch/newEntry/loggedUser?word=${typed_word}" >
+			<a href="/newEntry/loggedUser?word=${typed_word}" >
 				<input type="button" value="Sugerir" class="a_button" />
 			</a>
 		</c:when>
