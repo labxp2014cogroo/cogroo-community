@@ -18,6 +18,7 @@ public class Vocable {
 	private String category;
 	private LinkedList<String> properties;
 	private ParserYaml parser;
+	private String entry;
 	private static final Joiner COMMA_JOINER = Joiner.on(", ");
 
 	public Vocable() {
@@ -71,6 +72,14 @@ public class Vocable {
 
 	public void setRadical(String radical) {
 		this.radical = radical;
+	}
+
+	public String getEntry() {
+		return entry;
+	}
+
+	public void setEntry(String entry) {
+		this.entry = entry;
 	}
 
 }

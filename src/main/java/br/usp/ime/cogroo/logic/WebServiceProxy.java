@@ -56,6 +56,11 @@ public class WebServiceProxy {
 				.getProperty("analysis") + text);
 	}
 
+	public JSONObject retrieveRequest(String lemma) throws IOException {
+		return this.getJSONFromWebService(this.webServiceProperties
+				.getProperty("retrieve") + lemma);
+	}
+
 	private JSONObject getJSONFromWebService(String suffix) throws IOException {
 		String requestURL = this.baseURL + suffix;
 		HttpClient client = new DefaultHttpClient();
