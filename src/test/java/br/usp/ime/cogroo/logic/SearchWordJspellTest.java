@@ -6,12 +6,13 @@ import java.util.LinkedList;
 
 import junit.framework.Assert;
 
+import org.json.JSONException;
 import org.junit.Test;
 
 public class SearchWordJspellTest {
 
 	@Test
-	public void testWordExistsInJspell() {
+	public void testWordExistsInJspell() throws JSONException {
 		try {
 			Assert.assertEquals(true, SearchWordJspell.existsInJspell("casa"));
 			Assert.assertEquals(true, SearchWordJspell.existsInJspell("bola"));
@@ -34,7 +35,7 @@ public class SearchWordJspellTest {
 	}
 
 	@Test
-	public void searchUnknownWords() throws IOException {
+	public void searchUnknownWords() throws IOException, JSONException {
 		LinkedList<String> expected = new LinkedList<String>();
 		expected.add("BLaBLAbla");
 		expected.add("feiia");
