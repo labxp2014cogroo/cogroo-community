@@ -166,7 +166,7 @@
 				<ul>
 					<li><a title="Faça consultas ao léxico" href="<c:url value="/dictionaryEntrySearch"/>">Consultar palavra</a></li>
 					<c:if test="${loggedUser.logged}">
-						<li><a title="Editar palavras" href="<c:url value="/dictionaryEntrySearch?isEdition=true"/>">Editar palavra</a></li>
+						<li><a title="Editar palavras" href="<c:url value="/dictionaryPatch/renameLemma"/>">Editar palavra</a></li>
 						<li><a href="<c:url value="/dictionaryEntries" />">Palavras sugeridas</a></li>
 					</c:if>
 				</ul>

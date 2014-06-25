@@ -1,11 +1,26 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/dataTables_table_jui.css"/>" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/dataTables_table.css"/>" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery-ui/jquery-ui-1.8.5.custom.css"/>" />
+<script src="<c:url value='/js/jquery.dataTables.min.js' />" type="text/javascript" ></script>
+<script src="<c:url value='/js/jquery.dataTables.sort.js' />" type="text/javascript" ></script>
+
+<h2> Renomear Lema </h2>
 
 <div class="white_box">
-<h2>Consultar palavras</h2>
-	<div class="dashed_white">
-	<h4>Qual palavra deseja consultar?</h4>
+	<h2>Editar palavras</h2>
+<div class="dashed_white">
+	
+	<h4>Qual palavra deseja editar?</h4>
+	
 	<br>
 	<form action="<c:url value="/dictionaryPatch/searchEntry"/>" method="post">
 		<input type="text" name="text" id="text"/>
@@ -28,7 +43,7 @@
 			${mensagem_erro}
 		</c:when>	
 		<c:when test="${status == 0}">
-			<h3>Classifica��es da Palavra: ${typed_word}</h3>
+			<h3>Classificações da Palavra: ${typed_word}</h3>
 			<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
 				<thead>
 					<tr>

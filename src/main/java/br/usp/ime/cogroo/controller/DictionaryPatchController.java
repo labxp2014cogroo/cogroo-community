@@ -96,8 +96,48 @@ public class DictionaryPatchController {
 
 	@Get
 	@Path("/dictionaryEntrySearch")
-	public void dictionaryEntrySearch(boolean isEdition) {
-		result.include("isEdition", isEdition);
+	public void dictionaryEntrySearch() {
+	}
+	
+	@Get
+	public void renameLemma() {
+	}
+	
+	@Post
+	public void searchLemma(String word) {
+		List<Vocable> vocablesList;
+		String status = "status";
+		String mensagemErro = "mensagem_erro";
+
+		try {
+			if (word == null || word.length() < 1) {
+				validator.add(new ValidationMessage(
+						ExceptionMessages.EMPTY_FIELD,
+						ExceptionMessages.EMPTY_FIELD));
+				validator.onErrorUsePageOf(getClass()).renameLemma();
+			} else {
+				vocablesList = SearchWordJspell.searchLemma(word);
+				result.include("typed_word", word);
+
+				if (vocablesList.isEmpty()) {
+					result.include(mensagemErro,
+							"Essa palavra não consta no dicionário");
+					result.include(status, 404);
+				} else {
+					result.include("vocables", vocablesAsStrings(vocablesList));
+					result.include(status, 0);
+				}
+			}
+		} catch (IOException e) {
+			result.include(mensagemErro, "Serviço fora do ar");
+			result.include(status, 501);
+		} catch (JSONException e) {
+			validator.add(new ValidationMessage("Serviço fora do ar",
+					ExceptionMessages.ERROR));
+			validator.onErrorUsePageOf(getClass()).renameLemma();
+		}
+		result.redirectTo(DictionaryPatchController.class)
+				.renameLemma();
 	}
 
 	@LoggedIn
@@ -180,7 +220,7 @@ public class DictionaryPatchController {
 	}
 
 	@Post
-	public void searchEntry(String text, boolean isEdition) throws JSONException {
+	public void searchEntry(String text) {
 		List<Vocable> vocablesList;
 		String status = "status";
 		String mensagemErro = "mensagem_erro";
@@ -190,8 +230,7 @@ public class DictionaryPatchController {
 				validator.add(new ValidationMessage(
 						ExceptionMessages.EMPTY_FIELD,
 						ExceptionMessages.EMPTY_FIELD));
-				validator.onErrorUsePageOf(DictionaryPatchController.class)
-						.dictionaryEntrySearch(false);
+				validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 			} else {
 				vocablesList = SearchWordJspell.searchWord(text);
 				result.include("typed_word", text);
@@ -211,9 +250,10 @@ public class DictionaryPatchController {
 		} catch (JSONException e) {
 			validator.add(new ValidationMessage("Serviço fora do ar",
 					ExceptionMessages.ERROR));
-			validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch(isEdition);
+			validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 		}
-		result.redirectTo(DictionaryPatchController.class).dictionaryEntrySearch(isEdition);
+		result.redirectTo(DictionaryPatchController.class)
+				.dictionaryEntrySearch();
 	}
 
 	public String[][] vocablesAsStrings(List<Vocable> vocables) {
