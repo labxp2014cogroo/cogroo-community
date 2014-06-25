@@ -105,7 +105,7 @@ public class DictionaryPatchController {
 	
 	@Post
 	public void searchLemma(String word) {
-		List<Vocable> vocablesList;
+		HashMap<String, Vocable> vocablesList;
 		String status = "status";
 		String mensagemErro = "mensagem_erro";
 
@@ -124,7 +124,8 @@ public class DictionaryPatchController {
 							"Essa palavra não consta no dicionário");
 					result.include(status, 404);
 				} else {
-					result.include("vocables", vocablesAsStrings(vocablesList));
+					//TODO: Implement a equivalent method for the line below for HashMap
+					//result.include("vocables", vocablesAsStrings(vocablesList));
 					result.include(status, 0);
 				}
 			}
