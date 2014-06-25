@@ -222,8 +222,8 @@ public class DictionaryPatchController {
 		int i = 0;
 
 		for (Vocable vocable : vocables) {
-			descriptions[i][0] = vocable.getRadical();
-			descriptions[i][1] = vocable.getCategory();
+			descriptions[i][0] = vocable.getCategory();
+			descriptions[i][1] = vocable.getRadical();
 			descriptions[i][2] = vocable.getPropertiesAsString();
 			i++;
 		}

@@ -16,39 +16,42 @@
 <div class="yellow_box">
 	<c:choose>
 		<c:when test="${status == 404}">
-			${mensagem_erro}.
-			Não encontramos a palavra ${typed_word}.
-			<br/>
-			Deseja sugeri-la?<br/>
-			<a href="/newEntry/loggedUser?word=${typed_word}" >
-				<input type="button" value="Sugerir" class="a_button" />
-			</a>
+			<h2>A palavra "${typed_word}" não consta no dicionário.</h2>
+			<div class="dashed_white">
+				<h4>Deseja sugeri-la?</h4>
+				</br>
+				<a href="/newEntry/loggedUser?word=${typed_word}"><input type="button" value="Sugerir" class="a_button"/></a>
+			</div>
 		</c:when>
 		<c:when test="${status == 501}">
 			${mensagem_erro}
 		</c:when>	
 		<c:when test="${status == 0}">
-			<h3>Classificações da Palavra: ${typed_word}</h3>
-			<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
-				<thead>
-					<tr>
-					  <th>Nº</th>
-					  <th>Lemas</th>
-					  <th>Classe</th>
-					  <th>Flexão</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach items="${vocables}" var="vocable" varStatus="j">
+			<h2>Palavra: ${typed_word}</h2>
+			<div class="dashed_white">
+				<h4>Classificações:</h4>
+				</br>
+				<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
+					<thead>
 						<tr>
-							<td>${j.count }</td>
-							<td>${vocable[0]}</td>
-							<td>${vocable[1]}</td>
-							<td>${vocable[2]}</td>
-					    </tr>
-					</c:forEach>
-				</tbody>
-			</table>
+						  <th>Nº</th>
+						  <th>Classe gramatical</th>
+						  <th>Raiz</th>
+						  <th>Flexão</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${vocables}" var="vocable" varStatus="j">
+							<tr>
+								<td>${j.count }</td>
+								<td>${vocable[0]}</td>
+								<td>${vocable[1]}</td>
+								<td>${vocable[2]}</td>
+						    </tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
 		</c:when>
 	</c:choose>
 </div>
