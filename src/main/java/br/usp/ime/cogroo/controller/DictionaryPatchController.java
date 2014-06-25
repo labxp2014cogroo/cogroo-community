@@ -105,7 +105,8 @@ public class DictionaryPatchController {
 	
 	@Post
 	public void searchLemma(String word) {
-		HashMap<String, Vocable> vocablesList;
+		System.out.println(word);
+		List<Vocable> vocablesList;
 		String status = "status";
 		String mensagemErro = "mensagem_erro";
 
@@ -118,24 +119,25 @@ public class DictionaryPatchController {
 			} else {
 				vocablesList = SearchWordJspell.searchLemma(word);
 				result.include("typed_word", word);
-
 				if (vocablesList.isEmpty()) {
 					result.include(mensagemErro,
 							"Essa palavra não consta no dicionário");
 					result.include(status, 404);
 				} else {
 					//TODO: Implement a equivalent method for the line below for HashMap
-					//result.include("vocables", vocablesAsStrings(vocablesList));
+					System.out.println(vocablesAsStrings(vocablesList));
+					result.include("vocables", vocablesAsStrings(vocablesList));
 					result.include(status, 0);
 				}
 			}
 		} catch (IOException e) {
-			result.include(mensagemErro, "Serviço fora do ar");
+			result.include(mensagemErro, "Serviço fora do ar2");
 			result.include(status, 501);
 		} catch (JSONException e) {
-			validator.add(new ValidationMessage("Serviço fora do ar",
-					ExceptionMessages.ERROR));
-			validator.onErrorUsePageOf(getClass()).renameLemma();
+			//validator.add(new ValidationMessage("Serviço fora do ar1",
+			//		ExceptionMessages.ERROR));
+			//validator.onErrorUsePageOf(getClass()).renameLemma();
+			e.printStackTrace();
 		}
 		result.redirectTo(DictionaryPatchController.class)
 				.renameLemma();
@@ -242,6 +244,7 @@ public class DictionaryPatchController {
 					result.include(status, 404);
 				} else {
 					result.include("vocables", vocablesAsStrings(vocablesList));
+					//result.include("vocables", vocablesList);
 					result.include(status, 0);
 				}
 			}
@@ -254,19 +257,18 @@ public class DictionaryPatchController {
 			validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 		}
 		result.redirectTo(DictionaryPatchController.class)
-				.dictionaryEntrySearch();
+				.renameLemma();
 	}
 
 	public String[][] vocablesAsStrings(List<Vocable> vocables) {
 
-		String[][] descriptions = new String[vocables.size()][3];
-
+		String[][] descriptions = new String[vocables.size()][4];
 		int i = 0;
-
 		for (Vocable vocable : vocables) {
 			descriptions[i][0] = vocable.getRadical();
 			descriptions[i][1] = vocable.getCategory();
 			descriptions[i][2] = vocable.getPropertiesAsString();
+			descriptions[i][3] = vocable.getEntry();
 			i++;
 		}
 

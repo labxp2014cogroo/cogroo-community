@@ -16,14 +16,14 @@
 <h2> Renomear Lema </h2>
 
 <div class="white_box">
-	<h2>Editar palavras</h2>
+	<h2>Editar palavras****</h2>
 <div class="dashed_white">
 	
 	<h4>Qual palavra deseja editar?</h4>
 	
 	<br>
-	<form action="<c:url value="/dictionaryPatch/searchEntry"/>" method="post">
-		<input type="text" name="text" id="text"/>
+	<form action="<c:url value="/dictionaryPatch/searchLemma"/>" method="post">
+		<input type="text" name="word" id="text"/>
 		<input type="submit" value=" OK &raquo; " id="go" />
 	</form>
 	</div>
@@ -51,6 +51,7 @@
 					  <th>Lemas</th>
 					  <th>Classe</th>
 					  <th>Flex�o</th>
+					  <th>Entrada</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -60,6 +61,7 @@
 							<td>${vocable[0]}</td>
 							<td>${vocable[1]}</td>
 							<td>${vocable[2]}</td>
+							<td>${vocable[3]}</td>
 					    </tr>
 					</c:forEach>
 				</tbody>

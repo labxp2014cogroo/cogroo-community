@@ -120,7 +120,7 @@ public class WebServiceProxy {
 		return result.get("status").equals("OK");
 	}
 	
-	public static Vocable dictionaryEntryJsonToVocable(JSONObject json, String word) throws JSONException{
+	public static Vocable dictionaryEntryJsonToVocable(JSONObject json, String word) throws JSONException {
 		Vocable vocable = new Vocable(json.getString("CAT"), word, json.getString("rad"));
 		Iterator<String> jsonIterator = json.keys();
 		while (jsonIterator.hasNext()) {
