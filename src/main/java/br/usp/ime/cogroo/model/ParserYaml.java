@@ -68,7 +68,7 @@ public class ParserYaml {
 				key = line.split(":")[0].trim();
 				secondLevel = new HashMap<String, String>();
 				hash.get(key).setB(secondLevel);
-			} else if (line.matches("[_a-zA-Z0-9]+:\\s*-?[_0-9a-zA-Z]+.*")) {
+			} else if (line.matches("[\\-_a-zA-Z0-9]+:\\s*-?[_0-9a-zA-Z]+.*")) {
 				pair = line.split(":");
 				secondLevel.put(pair[0].trim(), pair[1].trim());
 			}
