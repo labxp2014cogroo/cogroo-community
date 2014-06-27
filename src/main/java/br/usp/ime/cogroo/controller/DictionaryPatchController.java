@@ -45,7 +45,10 @@ public class DictionaryPatchController {
 	private Validator validator;
 	private LoggedUser loggedUser;
 	private HttpServletRequest request;
-
+	
+	public DictionaryPatchController () {
+	}
+	
 	public DictionaryPatchController(Result result, Validator validator,
 			LoggedUser loggedUser, HttpServletRequest request,
 			DictionaryPatchDAO dictionaryPatchDAO) {
@@ -139,8 +142,7 @@ public class DictionaryPatchController {
 			//validator.onErrorUsePageOf(getClass()).renameLemma();
 			e.printStackTrace();
 		}
-		result.redirectTo(DictionaryPatchController.class)
-				.renameLemma();
+		result.redirectTo(getClass()).renameLemma();
 	}
 
 	@LoggedIn
@@ -387,4 +389,22 @@ public class DictionaryPatchController {
 		dictionarypatch.setUser(loggedUser.getUser());
 		dictionaryPatchDAO.add(dictionarypatch);
 	}
+	
+	@Get
+	@Path("/adjustLemma")
+	public void adjustLemma(String word, String entry) {
+		result.include("word", word);
+		result.include("entry", entry);
+	}
+	
+	@Post
+	public String correctedLemma(String word, String entry) {
+		String newEntry = word + entry.substring(entry.indexOf("/"), entry.length());
+		
+		result.redirectTo(getClass()).renameLemma();
+		
+		return newEntry;
+	}
+	
+	
 }
