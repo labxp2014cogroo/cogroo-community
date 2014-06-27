@@ -105,7 +105,6 @@ public class DictionaryPatchController {
 	
 	@Post
 	public void searchLemma(String word) {
-		System.out.println(word);
 		List<Vocable> vocablesList;
 		String status = "status";
 		String mensagemErro = "mensagem_erro";
@@ -125,7 +124,7 @@ public class DictionaryPatchController {
 					result.include(status, 404);
 				} else {
 					//TODO: Implement a equivalent method for the line below for HashMap
-					System.out.println(vocablesAsStrings(vocablesList));
+					
 					result.include("vocables", vocablesAsStrings(vocablesList));
 					result.include(status, 0);
 				}

@@ -16,7 +16,7 @@
 <h2> Renomear Lema </h2>
 
 <div class="white_box">
-	<h2>Editar palavras****</h2>
+	<h2>Editar palavras</h2>
 <div class="dashed_white">
 	
 	<h4>Qual palavra deseja editar?</h4>
@@ -67,6 +67,7 @@
 								<form action="adjustLemma" method="get">
 									<button> Editar </button>
 									<input type="hidden" value="${typed_word}" name="word"/>
+									<input type="hidden" value="${vocable[1]}" name="lemma" />
 									<input type="hidden" value="${vocable[3]}" name="entry" />
 								</form>
 							</td>
