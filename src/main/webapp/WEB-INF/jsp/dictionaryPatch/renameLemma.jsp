@@ -64,7 +64,7 @@
 							<td>${vocable[2]}</td>
 							<td>${vocable[3]}</td>
 							<td>
-								<form action="adjustLemma" method="get">
+								<form action="/dictionaryPatch/adjustLemma" method="get">
 									<button> Editar </button>
 									<input type="hidden" value="${typed_word}" name="word"/>
 									<input type="hidden" value="${vocable[3]}" name="entry" />
