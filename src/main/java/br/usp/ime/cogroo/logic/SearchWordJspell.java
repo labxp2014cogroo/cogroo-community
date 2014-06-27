@@ -30,31 +30,27 @@ public class SearchWordJspell {
 	}
 
 	//TODO: Refactor please.
-	public static List<Vocable> searchLemma(String text)
+	public static List<Vocable> searchLemma(String word)
 			throws IOException, JSONException {
 		HashMap<String, Vocable> vocables = new HashMap<String, Vocable>();
 		WebServiceProxy webServiceProxy = WebServiceProxy.getInstance();
-		JSONArray analysis = webServiceProxy.analysisRequest(text)
+		JSONArray analysis = webServiceProxy.analysisRequest(word)
 				.getJSONArray("analise");
 		// Iterates over each radical (lemma)
 		for (int i = 0; i < analysis.length(); i++) {
 			JSONObject analysisJSON = analysis.getJSONObject(i);
 			String lemma = analysisJSON.getString("rad");
 			JSONObject retrieveResult = webServiceProxy.retrieveRequest(lemma);
-			System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n" + retrieveResult.toString());
 			Iterator<String> dictionariesIterator = retrieveResult.keys();
 			// Iterates over each category of dictionary
 			while (dictionariesIterator.hasNext()) {
-				String k = dictionariesIterator.next();
-				System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n" + k);
+				String dictionaryCategory = dictionariesIterator.next();
 				JSONArray entries = retrieveResult
-						.getJSONArray(k);
+						.getJSONArray(dictionaryCategory);
 				// Iterates over each entry
 				for (int j = 0; j < entries.length(); j++) {
 					String entry = entries.getString(j);
-					JSONObject lemmaResult = webServiceProxy.tryRequest(lemma);
-					System.out.println(lemma);
-					System.out.println(lemmaResult);
+					JSONObject lemmaResult = webServiceProxy.tryRequest(entry);
 					Vocable v = WebServiceProxy.dictionaryEntryJsonToVocable(lemmaResult.getJSONArray("analise").getJSONObject(0), lemma);
 					v.setEntry(entry);
 					vocables.put(entry, v);
