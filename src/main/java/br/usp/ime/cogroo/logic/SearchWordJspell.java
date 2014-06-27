@@ -30,7 +30,7 @@ public class SearchWordJspell {
 		return vocables;
 	}
 
-	//TODO: Refactor please.
+	
 	public static List<Vocable> searchLemma(String word)
 			throws IOException, JSONException {
 		WebServiceProxy webServiceProxy = WebServiceProxy.getInstance();

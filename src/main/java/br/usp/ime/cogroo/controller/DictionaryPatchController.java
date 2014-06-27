@@ -388,7 +388,7 @@ public class DictionaryPatchController {
 	
 	@Get
 	@Path("/dictionaryPatch/adjustLemma")
-	public void adjustLemma(String word, String entry) {
+	public void adjustLemma(String word, String entry, String lema) {
 		System.out.println(entry);
 		result.include("word", word);
 		result.include("entry", entry);

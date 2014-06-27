@@ -2,11 +2,14 @@ package br.usp.ime.cogroo.logic;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 import junit.framework.Assert;
 
 import org.json.JSONException;
 import org.junit.Test;
+
+import br.usp.ime.cogroo.model.Vocable;
 
 public class SearchWordJspellTest {
 
@@ -24,6 +27,20 @@ public class SearchWordJspellTest {
 		Assert.assertEquals(false, SearchWordJspell.existsInJspell("bolachão"));
 	}
 
+	@Test
+	public void testSearchLemma() throws JSONException, IOException {
+		List<Vocable> expected = new LinkedList<Vocable>();
+		Vocable casar = new Vocable("v", "casar", "casar");
+		casar.addProperty("TR", "t");
+		casar.addProperty("T"," inf");
+		expected.add(casar);
+		Vocable casa = new Vocable("nc", "casa", "casa");
+		casa.addProperty("G","f");
+		casa.addProperty("N","s");
+		expected.add(casa);
+		Assert.assertEquals(expected, SearchWordJspell.searchLemma("casa"));
+	}
+	
 	@Test
 	public void searchUnknownWords() throws IOException, JSONException {
 		LinkedList<String> expected = new LinkedList<String>();

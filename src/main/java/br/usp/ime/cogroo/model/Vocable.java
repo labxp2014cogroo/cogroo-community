@@ -2,7 +2,10 @@ package br.usp.ime.cogroo.model;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -18,7 +21,7 @@ public class Vocable {
 	private String category;
 	private LinkedList<String> properties;
 	private ParserYaml parser;
-	private String entry;
+	private String entry = "";
 	private static final Joiner COMMA_JOINER = Joiner.on(", ");
 
 	public Vocable() {
@@ -31,6 +34,29 @@ public class Vocable {
 			LOG.error("Unsupported Encoding: UTF-8 when trying to open "
 					+ ParserYaml.YAML_FILE);
 		}
+	}
+
+	public boolean equals(Vocable v) {
+		return (this.word.equals(v.getWord())
+				&& this.radical.equals(v.getRadical())
+				&& this.entry.equals(v.getEntry()) && this.compareProperties(v));
+	}
+
+	private boolean compareProperties(Vocable v) {
+		if (v == null) {
+			return false;
+		}
+
+		if (this.properties.size() != v.properties.size()) {
+			return false;
+		}
+		
+		List<String> self = new ArrayList<String>(this.getProperties());
+		List<String> other = new ArrayList<String>(v.getProperties());
+		
+		Collections.sort(self);
+		Collections.sort(other);
+		return self.equals(other);
 	}
 
 	public Vocable(String category, String word, String radical) {
@@ -54,6 +80,10 @@ public class Vocable {
 
 	public void setCategory(String category) {
 		this.category = parser.getValue("CAT", category);
+	}
+
+	public List<String> getProperties() {
+		return this.properties;
 	}
 
 	public String getPropertiesAsString() {
