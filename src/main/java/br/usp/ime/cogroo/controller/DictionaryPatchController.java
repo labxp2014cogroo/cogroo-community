@@ -46,9 +46,6 @@ public class DictionaryPatchController {
 	private LoggedUser loggedUser;
 	private HttpServletRequest request;
 	
-	public DictionaryPatchController () {
-	}
-	
 	public DictionaryPatchController(Result result, Validator validator,
 			LoggedUser loggedUser, HttpServletRequest request,
 			DictionaryPatchDAO dictionaryPatchDAO) {
