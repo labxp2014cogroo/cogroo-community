@@ -387,17 +387,25 @@ public class DictionaryPatchController {
 	}
 	
 	@Get
-	@Path("/adjustLemma")
+	@Path("/dictionaryPatch/adjustLemma")
 	public void adjustLemma(String word, String entry) {
+		System.out.println(entry);
 		result.include("word", word);
 		result.include("entry", entry);
 	}
 	
 	@Post
+	@Path("/dictionaryPatch/correctedLemma")
 	public String correctedLemma(String word, String entry) {
+		
+		System.out.println(entry);
 		String newEntry = word + entry.substring(entry.indexOf("/"), entry.length());
 		
 		result.redirectTo(getClass()).renameLemma();
+		
+		validator.add(new ValidationMessage(
+				ExceptionMessages.NO_CATEGORY_SELECTED,
+				ExceptionMessages.ERROR));
 		
 		return newEntry;
 	}
