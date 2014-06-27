@@ -43,15 +43,16 @@
 			${mensagem_erro}
 		</c:when>	
 		<c:when test="${status == 0}">
-			<h3>Classificações da Palavra: ${typed_word}</h3>
+			<h3>Radicais que geram a palavra <u>${typed_word}</u></h3>
 			<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
 				<thead>
 					<tr>
-					  <th>N�</th>
+					  <th>Nº</th>
 					  <th>Lemas</th>
 					  <th>Classe</th>
-					  <th>Flex�o</th>
+					  <th>Características</th>
 					  <th>Entrada</th>
+					  <th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -62,6 +63,13 @@
 							<td>${vocable[1]}</td>
 							<td>${vocable[2]}</td>
 							<td>${vocable[3]}</td>
+							<td>
+								<form action="adjustLemma" method="get">
+									<button> Editar </button>
+									<input type="hidden" value="${typed_word}" name="word"/>
+									<input type="hidden" value="${vocable[3]}" name="entry" />
+								</form>
+							</td>
 					    </tr>
 					</c:forEach>
 				</tbody>
