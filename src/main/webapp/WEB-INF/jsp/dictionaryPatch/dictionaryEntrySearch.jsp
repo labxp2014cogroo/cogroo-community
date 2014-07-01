@@ -29,8 +29,13 @@
 		</c:when>	
 		<c:when test="${status == 0}">
 			<div>
-				<div style="float:left"><h3>Classifica��es da Palavra: ${typed_word} </h3> </div>
-				<div style="float:right"><button>Editar</button> </div>
+				<div style="float:left"><h3>Classificações da Palavra: ${typed_word} </h3> </div>
+				<div style="float:right">
+					<form method="post" action="/dictionaryPatch/searchLemma">
+						<input type="hidden" name="word" value="${typed_word}"></input>
+						<input id="go" type="submit" value=" Editar » "></input>
+					</form>
+				</div>
 			</div>
 			<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
 				<thead>
