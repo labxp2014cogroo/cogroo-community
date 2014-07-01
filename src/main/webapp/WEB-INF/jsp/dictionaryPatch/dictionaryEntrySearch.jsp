@@ -28,7 +28,10 @@
 			${mensagem_erro}
 		</c:when>	
 		<c:when test="${status == 0}">
-			<h3>Classifica��es da Palavra: ${typed_word}</h3>
+			<div>
+				<div style="float:left"><h3>Classifica��es da Palavra: ${typed_word} </h3> </div>
+				<div style="float:right"><button>Editar</button> </div>
+			</div>
 			<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_morf">
 				<thead>
 					<tr>
@@ -52,3 +55,7 @@
 		</c:when>
 	</c:choose>
 </div>
+
+<script>
+$('#text').focus();
+</script>
