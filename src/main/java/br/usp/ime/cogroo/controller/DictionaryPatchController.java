@@ -212,7 +212,7 @@ public class DictionaryPatchController {
 					ExceptionMessages.ERROR));
 			validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 		}
-		result.redirectTo(DictionaryPatchController.class).renameLemma();
+		result.redirectTo(DictionaryPatchController.class).dictionaryEntrySearch();
 	}
 
 	public String[][] vocablesAsStrings(List<Vocable> vocables) {

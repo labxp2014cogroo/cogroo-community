@@ -63,7 +63,7 @@ public class Vocable {
 		this();
 		this.word = word;
 		this.radical = radical;
-		this.category = category;
+		this.setCategory(category);
 	}
 
 	public String getWord() {
@@ -75,7 +75,7 @@ public class Vocable {
 	}
 
 	public String getCategory() {
-		return parser.getValue("CAT", category);
+		return category;
 	}
 
 	public void setCategory(String category) {
