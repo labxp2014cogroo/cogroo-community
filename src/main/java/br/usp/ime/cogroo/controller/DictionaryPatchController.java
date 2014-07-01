@@ -386,21 +386,16 @@ public class DictionaryPatchController {
 
 	@Post
 	@Path("/dictionaryPatch/correctedLemma")
-	public String correctedLemma(String word, String entry, String lemma) {
+	public void correctedLemma(String word, String entry, String lemma) {
 
-		System.out.println(entry);
 		String newEntry = lemma
 				+ entry.substring(entry.indexOf("/"), entry.length());
 
-		result.redirectTo(getClass()).renameLemma();
-
-		validator
-				.add(new ValidationMessage(
-						ExceptionMessages.NO_CATEGORY_SELECTED,
-						ExceptionMessages.ERROR));
+		validator.onErrorUsePageOf(getClass()).renameLemma();
 		
 		dictionaryPatchDAO.addEditionPatch(entry, newEntry, loggedUser.getUser());
-		return newEntry;
+		result.include("okMessage", "Palavra cadastrada com sucesso!");
+		result.redirectTo(getClass()).renameLemma();
 	}
 
 }
