@@ -8,10 +8,11 @@
 	<div class="yellow_box">
 		<h1>Editando a palavra: "${word}"</h1>
 		<div class="dashed_white">
-			<h3>Digite o lema correto da palavra:</h3>
+			<h3>Escreva ${lemma} corretamente:</h3>
 			</br>
-			<input type="text" name="word"/>
+			<input type="text" name="lemma"/>
 			<input style="clear:both;" type="submit" value=" OK &raquo; " id="go"/>
+			<input type="hidden" name="word" value="${word}"/>
 			<input type="hidden" name="entry" value="${entry}"/>
 		</div>
 	</div>

@@ -45,7 +45,7 @@ public class DictionaryPatchController {
 	private Validator validator;
 	private LoggedUser loggedUser;
 	private HttpServletRequest request;
-	
+
 	public DictionaryPatchController(Result result, Validator validator,
 			LoggedUser loggedUser, HttpServletRequest request,
 			DictionaryPatchDAO dictionaryPatchDAO) {
@@ -97,48 +97,6 @@ public class DictionaryPatchController {
 	@Get
 	@Path("/dictionaryEntrySearch")
 	public void dictionaryEntrySearch() {
-	}
-	
-	@Get
-	public void renameLemma() {
-	}
-	
-	@Post
-	public void searchLemma(String word) {
-		List<Vocable> vocablesList;
-		String status = "status";
-		String mensagemErro = "mensagem_erro";
-
-		try {
-			if (word == null || word.length() < 1) {
-				validator.add(new ValidationMessage(
-						ExceptionMessages.EMPTY_FIELD,
-						ExceptionMessages.EMPTY_FIELD));
-				validator.onErrorUsePageOf(getClass()).renameLemma();
-			} else {
-				vocablesList = SearchWordJspell.searchLemma(word);
-				result.include("typed_word", word);
-				if (vocablesList.isEmpty()) {
-					result.include(mensagemErro,
-							"Essa palavra não consta no dicionário");
-					result.include(status, 404);
-				} else {
-					//TODO: Implement a equivalent method for the line below for HashMap
-					
-					result.include("vocables", vocablesAsStrings(vocablesList));
-					result.include(status, 0);
-				}
-			}
-		} catch (IOException e) {
-			result.include(mensagemErro, "Serviço fora do ar2");
-			result.include(status, 501);
-		} catch (JSONException e) {
-			//validator.add(new ValidationMessage("Serviço fora do ar1",
-			//		ExceptionMessages.ERROR));
-			//validator.onErrorUsePageOf(getClass()).renameLemma();
-			e.printStackTrace();
-		}
-		result.redirectTo(getClass()).renameLemma();
 	}
 
 	@LoggedIn
@@ -242,7 +200,7 @@ public class DictionaryPatchController {
 					result.include(status, 404);
 				} else {
 					result.include("vocables", vocablesAsStrings(vocablesList));
-					//result.include("vocables", vocablesList);
+					// result.include("vocables", vocablesList);
 					result.include(status, 0);
 				}
 			}
@@ -254,8 +212,7 @@ public class DictionaryPatchController {
 					ExceptionMessages.ERROR));
 			validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 		}
-		result.redirectTo(DictionaryPatchController.class)
-				.renameLemma();
+		result.redirectTo(DictionaryPatchController.class).renameLemma();
 	}
 
 	public String[][] vocablesAsStrings(List<Vocable> vocables) {
@@ -298,7 +255,7 @@ public class DictionaryPatchController {
 		// Trata interjeições:
 		if (category.equals("in")) {
 			entry += "//";
-			insertPatch(entry);
+			dictionaryPatchDAO.addInsertionPatch(entry, loggedUser.getUser());
 			result.redirectTo(getClass()).dictionaryEntries();
 		} else {
 			entry += ",";
@@ -373,42 +330,77 @@ public class DictionaryPatchController {
 			}
 		}
 
-		insertPatch(entry);
+		dictionaryPatchDAO.addInsertionPatch(entry, loggedUser.getUser());
 
 		result.include("okMessage", "Palavra cadastrada com sucesso!");
 		result.redirectTo(getClass()).dictionaryEntries();
 	}
 
-	public void insertPatch(String entry) {
-		DictionaryPatch dictionarypatch = new DictionaryPatch();
-		dictionarypatch.setNewEntry(entry);
-		dictionarypatch.setUser(loggedUser.getUser());
-		dictionaryPatchDAO.add(dictionarypatch);
+	@Get
+	public void renameLemma() {
 	}
-	
+
+	@Post
+	public void searchLemma(String word) {
+		List<Vocable> vocablesList;
+		String status = "status";
+		String mensagemErro = "mensagem_erro";
+
+		try {
+			if (word == null || word.length() < 1) {
+				validator.add(new ValidationMessage(
+						ExceptionMessages.EMPTY_FIELD,
+						ExceptionMessages.EMPTY_FIELD));
+				validator.onErrorUsePageOf(getClass()).renameLemma();
+			} else {
+				vocablesList = SearchWordJspell.searchLemma(word);
+				result.include("typed_word", word);
+				if (vocablesList.isEmpty()) {
+					result.include(mensagemErro,
+							"Essa palavra não consta no dicionário");
+					result.include(status, 404);
+				} else {
+					result.include("vocables", vocablesAsStrings(vocablesList));
+					result.include(status, 0);
+				}
+			}
+		} catch (IOException e) {
+			result.include(mensagemErro, "Serviço fora do ar");
+			result.include(status, 501);
+		} catch (JSONException e) {
+			validator.add(new ValidationMessage("Serviço fora do ar",
+					ExceptionMessages.ERROR));
+			validator.onErrorUsePageOf(getClass()).renameLemma();
+		}
+		result.redirectTo(getClass()).renameLemma();
+	}
+
 	@Get
 	@Path("/dictionaryPatch/adjustLemma")
-	public void adjustLemma(String word, String entry, String lema) {
+	public void adjustLemma(String word, String entry, String lemma) {
 		System.out.println(entry);
 		result.include("word", word);
 		result.include("entry", entry);
+		result.include("lemma", lemma);
 	}
-	
+
 	@Post
 	@Path("/dictionaryPatch/correctedLemma")
-	public String correctedLemma(String word, String entry) {
-		
+	public String correctedLemma(String word, String entry, String lemma) {
+
 		System.out.println(entry);
-		String newEntry = word + entry.substring(entry.indexOf("/"), entry.length());
-		
+		String newEntry = lemma
+				+ entry.substring(entry.indexOf("/"), entry.length());
+
 		result.redirectTo(getClass()).renameLemma();
+
+		validator
+				.add(new ValidationMessage(
+						ExceptionMessages.NO_CATEGORY_SELECTED,
+						ExceptionMessages.ERROR));
 		
-		validator.add(new ValidationMessage(
-				ExceptionMessages.NO_CATEGORY_SELECTED,
-				ExceptionMessages.ERROR));
-		
+		dictionaryPatchDAO.addEditionPatch(entry, newEntry, loggedUser.getUser());
 		return newEntry;
 	}
-	
-	
+
 }
