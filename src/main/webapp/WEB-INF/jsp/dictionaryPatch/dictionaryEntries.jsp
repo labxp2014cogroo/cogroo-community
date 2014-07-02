@@ -22,6 +22,16 @@ function submitForm () {
 	$("#formAp").attr("action",'<c:url value="/patchDisapproval"/>');
 }
 
+function objLength(obj){
+	var i=0;
+	for (var x in obj){
+		if(obj.hasOwnProperty(x)){
+			i++;
+		}
+	} 
+	return i;
+}
+
 function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 	
 	if (!(bufferDetails[idPatch] === undefined || bufferDetails[idPatch] === null)){
@@ -53,7 +63,7 @@ function displayPatchDetails (nTr, idPatch, canApprove, patchState) {
 
 						var obs = false;
 
-						if (derivations.length > 0) {
+						if (objLength(derivations) > 0) {
 							for (var flag in derivations){
 								html += '<tr style="background-color:' + colors[k++ % colors.length] + '"><td align="center">';
 								html += flag + '</td><td>';
