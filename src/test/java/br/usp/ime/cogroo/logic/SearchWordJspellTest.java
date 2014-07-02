@@ -30,14 +30,17 @@ public class SearchWordJspellTest {
 	@Test
 	public void testSearchLemma() throws JSONException, IOException {
 		List<Vocable> expected = new LinkedList<Vocable>();
+		
 		Vocable casar = new Vocable("v", "casar", "casar");
+		casar.addProperty("T", "inf");
 		casar.addProperty("TR", "t");
-		casar.addProperty("T"," inf");
 		expected.add(casar);
+		
 		Vocable casa = new Vocable("nc", "casa", "casa");
 		casa.addProperty("G","f");
 		casa.addProperty("N","s");
 		expected.add(casa);
+		
 		Assert.assertEquals(expected, SearchWordJspell.searchLemma("casa"));
 	}
 	

@@ -237,7 +237,20 @@ public class DictionaryPatchController {
 					ExceptionMessages.NO_CATEGORY_SELECTED,
 					ExceptionMessages.ERROR));
 		}
-
+		
+		// Reconfere se a palavra existe
+		try {
+			if (!SearchWordJspell.existsInJspell(word)) {
+				validator.add(new ValidationMessage(
+						ExceptionMessages.EXISTING_WORD,
+						ExceptionMessages.ERROR));
+			}
+		} catch (IOException e) {
+			LOG.error("Servidor fora do ar");
+		} catch (JSONException e) {
+			LOG.error("Servidor fora do ar");
+		}
+		
 		// Trata maiúsculas e minúsculas:
 		if (category.equals("np")) {
 			word = word.substring(0, 1).toUpperCase()

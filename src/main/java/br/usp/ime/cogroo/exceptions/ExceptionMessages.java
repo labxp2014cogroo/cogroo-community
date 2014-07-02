@@ -38,5 +38,7 @@ public class ExceptionMessages {
 
 	public static final String NO_CATEGORY_SELECTED = "NO_CATEGORY_SELECTED";
 	
+	public static final String EXISTING_WORD = "EXISTING_WORD";
+	
 	public final static String BAD_SERVER = "BAD_SERVER";
 }

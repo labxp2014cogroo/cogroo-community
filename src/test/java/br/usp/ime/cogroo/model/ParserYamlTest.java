@@ -41,6 +41,7 @@ public class ParserYamlTest {
 		assertEquals("transitivo/intransitivo", p.getValue("TR", "_"));
 		assertEquals("primeira", p.getValue("P", "1"));
 		assertEquals("primeira/terceira", p.getValue("P", "1_3"));
+		assertEquals("infinitivo", p.getValue("T", "inf"));
 		assertEquals("re-", p.getValue("PFSEM", "outra"));
 	}
 
