@@ -240,7 +240,7 @@ public class DictionaryPatchController {
 		
 		// Reconfere se a palavra existe
 		try {
-			if (!SearchWordJspell.existsInJspell(word)) {
+			if (SearchWordJspell.existsInJspell(word)) {
 				validator.add(new ValidationMessage(
 						ExceptionMessages.EXISTING_WORD,
 						ExceptionMessages.ERROR));
@@ -391,7 +391,6 @@ public class DictionaryPatchController {
 	@Get
 	@Path("/dictionaryPatch/adjustLemma")
 	public void adjustLemma(String word, String entry, String lemma) {
-		System.out.println(entry);
 		result.include("word", word);
 		result.include("entry", entry);
 		result.include("lemma", lemma);
