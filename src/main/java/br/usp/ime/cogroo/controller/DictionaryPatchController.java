@@ -395,7 +395,7 @@ public class DictionaryPatchController {
 		
 		dictionaryPatchDAO.addEditionPatch(entry, newEntry, loggedUser.getUser());
 		result.include("okMessage", "Palavra cadastrada com sucesso!");
-		result.redirectTo(getClass()).renameLemma();
+		result.redirectTo(getClass()).dictionaryEntries();
 	}
 
 }
