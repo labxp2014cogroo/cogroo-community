@@ -361,6 +361,8 @@ public class DictionaryPatchController {
 
 	@Get
 	public void renameLemma() {
+		/*Redirecionando apenas enquanto a edição não fica pronta.*/
+		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
 
 	@Post

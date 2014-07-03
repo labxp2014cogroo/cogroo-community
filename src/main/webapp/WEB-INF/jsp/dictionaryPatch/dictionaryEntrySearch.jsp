@@ -37,10 +37,12 @@
 					<h3>Classificações da Palavra: ${typed_word}</h3>
 				</div>
 				<div style="float: right">
+				<%-- WIP  (escondendo o botão editar enquanto a edição não está completa)
 					<form method="post" action="/dictionaryPatch/searchLemma">
 						<input type="hidden" name="word" value="${typed_word}"></input> <input
 							id="go" type="submit" value=" Editar » "></input>
 					</form>
+					 --%>
 				</div>
 			</div>
 			<table cellpadding="0" cellspacing="0" border="0" class="display"

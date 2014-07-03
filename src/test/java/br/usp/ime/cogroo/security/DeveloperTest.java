@@ -8,7 +8,6 @@ import org.junit.experimental.categories.Category;
 
 import utils.LabXP2014;
 
-@Category(LabXP2014.class)
 public class DeveloperTest {
 
 	Developer developer = new Developer();
