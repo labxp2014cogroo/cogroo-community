@@ -7,6 +7,7 @@ import javax.persistence.PersistenceException;
 
 import br.com.caelum.vraptor.ioc.Component;
 import br.usp.ime.cogroo.model.DictionaryPatch;
+import br.usp.ime.cogroo.model.User;
 
 @Component
 public class DictionaryPatchDAO {
@@ -36,7 +37,22 @@ public class DictionaryPatchDAO {
 			throw e;
 		}
 	}
+	
+	public void addInsertionPatch(String entry, User user) {
+		DictionaryPatch dictionaryPatch = new DictionaryPatch();
+		dictionaryPatch.setNewEntry(entry);
+		dictionaryPatch.setUser(user);
+		add(dictionaryPatch);
+	}
 
+	public void addEditionPatch(String oldEntry, String newEntry, User user) {
+		DictionaryPatch dictionarypatch = new DictionaryPatch();
+		dictionarypatch.setNewEntry(newEntry);
+		dictionarypatch.setPreviousEntry(oldEntry);
+		dictionarypatch.setUser(user);
+		add(dictionarypatch);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<DictionaryPatch> listAll() {
 		return em.createQuery("from " + PATCH_ENTITY).getResultList();

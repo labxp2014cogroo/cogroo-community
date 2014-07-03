@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -18,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.usp.ime.cogroo.controller.RuleController;
+import br.usp.ime.cogroo.model.Vocable;
 
 public class WebServiceProxy {
 	private static WebServiceProxy singleton = null;
@@ -54,6 +56,11 @@ public class WebServiceProxy {
 	public JSONObject analysisRequest(String text) throws IOException, JSONException {
 		return this.getJSONFromWebService(this.webServiceProperties
 				.getProperty("analysis") + text);
+	}
+
+	public JSONObject retrieveRequest(String lemma) throws IOException, JSONException {
+		return this.getJSONFromWebService(this.webServiceProperties
+				.getProperty("retrieve") + lemma);
 	}
 
 	private JSONObject getJSONFromWebService(String suffix) throws IOException, JSONException {
@@ -112,4 +119,18 @@ public class WebServiceProxy {
 				.getProperty("load") + "id=" + repo);
 		return result.get("status").equals("OK");
 	}
+	
+	public static Vocable dictionaryEntryJsonToVocable(JSONObject json, String word) throws JSONException {
+		Vocable vocable = new Vocable(json.getString("CAT"), word, json.getString("rad"));
+		Iterator<String> jsonIterator = json.keys();
+		while (jsonIterator.hasNext()) {
+			String key = jsonIterator.next();
+			if (!(key.equals("CAT") || key.equals("rad") || key
+					.equals("PREAO90"))) {
+				vocable.addProperty(key, json.getString(key));
+			}
+		}
+		return vocable;
+	}
+	
 }
