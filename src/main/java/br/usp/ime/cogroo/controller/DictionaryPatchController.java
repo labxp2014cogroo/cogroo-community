@@ -179,20 +179,20 @@ public class DictionaryPatchController {
 	}
 
 	@Post
-	public void searchEntry(String text) {
+	public void searchEntry(String word) {
 		List<Vocable> vocablesList;
 		String status = "status";
 		String mensagemErro = "mensagem_erro";
 
 		try {
-			if (text == null || text.length() < 1) {
+			if (word == null || word.length() < 1 || !word.matches("^\\w+$")) {
 				validator.add(new ValidationMessage(
-						ExceptionMessages.EMPTY_FIELD,
-						ExceptionMessages.EMPTY_FIELD));
+						ExceptionMessages.INVALID_ENTRY,
+						ExceptionMessages.INVALID_ENTRY));
 				validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 			} else {
-				vocablesList = SearchWordJspell.searchExistingWord(text);
-				result.include("typed_word", text);
+				vocablesList = SearchWordJspell.searchExistingWord(word);
+				result.include("typed_word", word);
 
 				if (vocablesList.isEmpty()) {
 					result.include(mensagemErro,

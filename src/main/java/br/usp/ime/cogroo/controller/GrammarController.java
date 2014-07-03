@@ -95,7 +95,7 @@ public class GrammarController {
 
 		try {
 			List<String> unknownWords = SearchWordJspell
-					.searchUnknownWords(text);
+					.searchUnknownWords(text.replace("\n", " "));
 			result.include("unknownWordsList", unknownWords);
 		} catch (IOException e) {
 			Log.error("Falhou ao consultar as palavras existentes.", e);
