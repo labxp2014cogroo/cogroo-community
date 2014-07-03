@@ -131,9 +131,14 @@ public class LoginController {
 
 		result.include("gaEventUserLogged", true).include("provider", "cogroo");
 
-		String lastURL = loggedUser.getLastURLVisited();
+		String lastURL = loggedUser.getLastURLVisited(); 
+		
+		if (lastURL.contains("/syntaxTree/")) {
+		    lastURL = loggedUser.getLastLastURLVisited(); 
+		} 
+		
 		if (lastURL != null && lastURL.length() > 0) {
-			result.redirectTo(loggedUser.getLastURLVisited());
+			result.redirectTo(lastURL);
 		} else {
 			result.redirectTo(IndexController.class).index();
 		}
