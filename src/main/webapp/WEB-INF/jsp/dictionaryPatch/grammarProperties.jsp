@@ -25,7 +25,7 @@
 	</div>
 	
 	<div id="v" class="vocable_form">
-		<h3>Quanto � transitividade:</h3>
+		<h3>Quanto à transitividade:</h3>
 		<br>
 		<div class="dashed_white">
 			<input type="radio" name="transitivity" value="TR=t" />Transitivo<br>
@@ -36,20 +36,21 @@
 	</div>
 	
 	<div id="adv" class="vocable_form">
-		<h3>Quanto � circunst�ncia:</h3>
+		<h3>Quanto à circunstância:</h3>
 		<br>
 		<div class="dashed_white">
 			<input type="radio" name="type" value="SUBCAT=modo" />Modo<br>
 			<input type="radio" name="type" value="SUBCAT=tempo" />Tempo<br>
 			<input type="radio" name="type" value="SUBCAT=lugar" />Lugar<br>
 			<input type="radio" name="type" value="SUBCAT=quant" />Quantidade<br>
-			<input type="radio" name="type" value="SUBCAT=neg" />Nega��o<br>
+			<input type="radio" name="type" value="SUBCAT=neg" />Negação<br>
 		</div>
 	</div>
 	<br>
 	<input type="submit" value=" OK &raquo; " id="go" />
 	<input type="hidden" name="entry" value="${entry}" />
 	<input type="hidden" name="word" value="${word}" />
+	<input type="hidden" name="category" value="${category}" />
 	</div>
 </form>
 

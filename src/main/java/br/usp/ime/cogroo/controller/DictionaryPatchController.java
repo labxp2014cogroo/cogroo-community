@@ -284,7 +284,7 @@ public class DictionaryPatchController {
 
 	@Post
 	public void chooseProperties(String word, String entry, String gender,
-			String number, String transitivity, String type) {
+			String number, String transitivity, String type, String category) {
 
 		if (gender != null) {
 			entry = entry + gender;
@@ -305,7 +305,7 @@ public class DictionaryPatchController {
 		entry = entry + "/";
 
 		Map<String, String> derivations = DerivationsQuery
-				.queryDerivations(entry);
+				.queryDerivations(entry, category);
 
 		result.include("word", word);
 		result.include("entry", entry);

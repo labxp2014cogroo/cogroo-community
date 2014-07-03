@@ -15,18 +15,23 @@ import org.json.JSONObject;
 import br.usp.ime.cogroo.controller.RuleController;
 
 public class DerivationsQuery {
-	static final String FLAGS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	static final String ALL_FLAGS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	static final String VERB_FLAGS = "BCDEIKLMNOPRSWXYZcdinouv";
+	static final String ADJECTIVE_FLAGS = "AEFGHIORSabcdfhijmnpstuvxz";
+	static final String NOUN_FLAGS = "AEFGIORSTVabdefghijpqrstuvwxyz";
+	static final String ADVERB_FLAGS = "h";
+	
 	private static final Logger LOG = Logger.getLogger(RuleController.class);
 
 	private DerivationsQuery() {
 		return;
 	}
 
-	public static Map<String, String> queryDerivations(String text) {
+	public static Map<String, String> queryDerivations(String entry, String category) {
 		Map<String, String> derivationsHash = null;
 		try {
 			JSONObject jsonResult = WebServiceProxy.getInstance()
-					.tryRequest(text + FLAGS).getJSONObject("derivadas");
+					.tryRequest(entry + ALL_FLAGS).getJSONObject("derivadas");
 			derivationsHash = getRelevantDerivations(jsonResult);
 		} catch (IOException e) {
 			Log.error("Não foi possivel completar o pedido", e);

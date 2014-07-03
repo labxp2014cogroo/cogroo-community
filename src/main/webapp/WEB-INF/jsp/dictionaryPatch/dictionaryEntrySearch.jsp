@@ -12,7 +12,7 @@
 		<br>
 		<form action="<c:url value="/dictionaryPatch/searchEntry"/>"
 			method="post">
-			<input type="text" name="text" id="text" /> <input type="submit"
+			<input type="text" name="word" id="text" /> <input type="submit"
 				value=" OK &raquo; " id="go" />
 		</form>
 	</div>

@@ -18,29 +18,29 @@ public class DerivationQueryTest {
 	public void testQueryDerivations() {
 
 		Map<String, String> derivationsHash = DerivationsQuery
-				.queryDerivations("abismal/#an/");
+				.queryDerivations("abismal/#an/", "adj");
 		assertEquals(derivationsHash.get("d"), "abismalidades");
 		assertEquals(derivationsHash.get("F"), "hiperabismal");
 		assertEquals(derivationsHash.get("G"), "abismalices");
 		assertEquals(derivationsHash.get("A"), "antiabismal");
-		assertEquals(derivationsHash.get("L"), "abismal-lhas");
+		assertEquals(derivationsHash.get("L"), null);
 		assertEquals(derivationsHash.get("O"), "pós-abismal");
 
-		derivationsHash = DerivationsQuery.queryDerivations("correr/#vn/");
+		derivationsHash = DerivationsQuery.queryDerivations("correr/#vn/", "v");
 
 		assertEquals(derivationsHash.get("c"), "correção");
 		assertEquals(derivationsHash.get("B"), "corridamente");
 		assertEquals(derivationsHash.get("L"), "correr-se");
 		assertEquals(derivationsHash.get("M"), "corrimentos");
 		assertEquals(derivationsHash.get("N"), "corridíssimo");
-		assertEquals(derivationsHash.get("V"), "vice-correr");
+		assertEquals(derivationsHash.get("V"), null);
 
 	}
 
 	@Test
 	public void testRelevantDerivations() {
 		Map<String, String> relevantDerivations = DerivationsQuery
-				.queryDerivations("abismal");
+				.queryDerivations("abismal", "adj");
 
 		for (String key : relevantDerivations.keySet()) {
 			assertEquals(key.length(), 1);
