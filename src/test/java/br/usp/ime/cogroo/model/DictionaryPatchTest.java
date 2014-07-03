@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
-import utils.LabXP2014;
 import br.usp.ime.cogroo.model.errorreport.Comment;
 import br.usp.ime.cogroo.model.errorreport.HistoryEntry;
 import br.usp.ime.cogroo.model.errorreport.State;

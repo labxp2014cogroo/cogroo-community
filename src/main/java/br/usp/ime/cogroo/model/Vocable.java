@@ -51,10 +51,10 @@ public class Vocable {
 		if (this.properties.size() != v.properties.size()) {
 			return false;
 		}
-		
+
 		List<String> self = new ArrayList<String>(this.getProperties());
 		List<String> other = new ArrayList<String>(v.getProperties());
-		
+
 		Collections.sort(self);
 		Collections.sort(other);
 		return self.equals(other);

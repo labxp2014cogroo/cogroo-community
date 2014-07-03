@@ -20,15 +20,14 @@ public class DerivationsQuery {
 	static final String ADJECTIVE_FLAGS = "AEFGHIORSabcdfhijmnpstuvxz";
 	static final String NOUN_FLAGS = "AEFGIORSTVabdefghijpqrstuvwxyz";
 	static final String ADVERB_FLAGS = "h";
-	
+
 	private static final Logger LOG = Logger.getLogger(RuleController.class);
 
 	private DerivationsQuery() {
 		return;
 	}
-	
-	private static String selectFlags(String category)
-	{
+
+	private static String selectFlags(String category) {
 		if (category.equals("v"))
 			return VERB_FLAGS;
 		if (category.equals("adj"))
@@ -40,11 +39,13 @@ public class DerivationsQuery {
 		return ALL_FLAGS;
 	}
 
-	public static Map<String, String> queryDerivations(String entry, String category) {
+	public static Map<String, String> queryDerivations(String entry,
+			String category) {
 		Map<String, String> derivationsHash = null;
 		try {
 			JSONObject jsonResult = WebServiceProxy.getInstance()
-					.tryRequest(entry + selectFlags(category)).getJSONObject("derivadas");
+					.tryRequest(entry + selectFlags(category))
+					.getJSONObject("derivadas");
 			derivationsHash = getRelevantDerivations(jsonResult);
 		} catch (IOException e) {
 			Log.error("Não foi possivel completar o pedido", e);

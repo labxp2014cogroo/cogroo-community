@@ -6,9 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import utils.LabXP2014;
 
 public class ParserYamlTest {
 

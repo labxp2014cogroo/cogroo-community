@@ -37,7 +37,7 @@ public class DictionaryPatchDAO {
 			throw e;
 		}
 	}
-	
+
 	public void addInsertionPatch(String entry, User user) {
 		DictionaryPatch dictionaryPatch = new DictionaryPatch();
 		dictionaryPatch.setNewEntry(entry);
@@ -52,7 +52,7 @@ public class DictionaryPatchDAO {
 		dictionarypatch.setUser(user);
 		add(dictionarypatch);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<DictionaryPatch> listAll() {
 		return em.createQuery("from " + PATCH_ENTITY).getResultList();

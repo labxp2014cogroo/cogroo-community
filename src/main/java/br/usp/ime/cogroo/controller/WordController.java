@@ -1,4 +1,5 @@
 package br.usp.ime.cogroo.controller;
+
 import javax.servlet.http.HttpServletRequest;
 
 import br.com.caelum.vraptor.Resource;

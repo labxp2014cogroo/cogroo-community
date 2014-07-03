@@ -134,9 +134,9 @@ public class DictionaryPatchController {
 		dictionaryPatch.setState(State.RESOLVED);
 
 		sendMail(dictionaryPatch, true);
-		
+
 		String newEntry = dictionaryPatch.getNewEntry().substring(0,
-		        dictionaryPatch.getNewEntry().lastIndexOf("/") + 1);
+				dictionaryPatch.getNewEntry().lastIndexOf("/") + 1);
 		if (flags != null) {
 			for (String flag : flags) {
 				newEntry += flag;
@@ -167,10 +167,9 @@ public class DictionaryPatchController {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 
 		dictionaryPatch.setState(State.REJECTED);
-		
-		
+
 		sendMail(dictionaryPatch, false);
-		
+
 		result.redirectTo(getClass()).dictionaryEntries();
 	}
 
@@ -219,7 +218,8 @@ public class DictionaryPatchController {
 					ExceptionMessages.ERROR));
 			validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 		}
-		result.redirectTo(DictionaryPatchController.class).dictionaryEntrySearch();
+		result.redirectTo(DictionaryPatchController.class)
+				.dictionaryEntrySearch();
 	}
 
 	public String[][] vocablesAsStrings(List<Vocable> vocables) {
@@ -244,7 +244,7 @@ public class DictionaryPatchController {
 					ExceptionMessages.NO_CATEGORY_SELECTED,
 					ExceptionMessages.ERROR));
 		}
-		
+
 		// Reconfere se a palavra existe
 		try {
 			if (SearchWordJspell.existsInJspell(word)) {
@@ -257,7 +257,7 @@ public class DictionaryPatchController {
 		} catch (JSONException e) {
 			LOG.error("Servidor fora do ar");
 		}
-		
+
 		// Trata maiúsculas e minúsculas:
 		if (category.equals("np")) {
 			word = word.substring(0, 1).toUpperCase()
@@ -311,8 +311,8 @@ public class DictionaryPatchController {
 
 		entry = entry + "/";
 
-		Map<String, String> derivations = DerivationsQuery
-				.queryDerivations(entry, category);
+		Map<String, String> derivations = DerivationsQuery.queryDerivations(
+				entry, category);
 
 		result.include("word", word);
 		result.include("entry", entry);
@@ -358,7 +358,7 @@ public class DictionaryPatchController {
 
 	@Get
 	public void renameLemma() {
-		/*Redirecionando apenas enquanto a edição não fica pronta.*/
+		/* Redirecionando apenas enquanto a edição não fica pronta. */
 		result.redirectTo(getClass()).dictionaryEntrySearch();
 	}
 
@@ -413,49 +413,50 @@ public class DictionaryPatchController {
 				+ entry.substring(entry.indexOf("/"), entry.length());
 
 		validator.onErrorUsePageOf(getClass()).renameLemma();
-		
-		dictionaryPatchDAO.addEditionPatch(entry, newEntry, loggedUser.getUser());
+
+		dictionaryPatchDAO.addEditionPatch(entry, newEntry,
+				loggedUser.getUser());
 		result.include("okMessage", "Palavra cadastrada com sucesso!");
 		result.redirectTo(getClass()).dictionaryEntries();
 	}
-	
-	public void sendMail(DictionaryPatch dic, boolean approved) {
-	    
-	    if (LOG.isDebugEnabled()) {
-	        LOG.debug("Preparing to send mail");
-	    }
-	  
-	    StringBuilder body = new StringBuilder();
-	    body.append("Olá, " + dic.getUser().getName() + "!<br><br>");
-	    
-	    String subject; 
-	    String status;
-	    String message; 
-	    if (approved) {
-	        subject = "Aprovação";
-	        status = "aprovada";
-	        message = "e já se encontra no dicionário utilizado pelo CoGrOO<br><br>";
-	    }
-	    else {
-	        subject = "Desaprovação";
-	        status = "rejeitada";
-	        message = "acompanhe os motivos no site.<br><br>"; 
-	    }
-	    
-	    String word = dic.getNewEntry().substring(0,
-                dic.getNewEntry().indexOf("/"));
-	    
-	    body.append("De acordo com sua solicitação no portal CoGrOO Comunidade, informamos que a sua inserção da palavra " + word + " foi " + status + ".<br>");
-	    body.append(message);
-	    body.append("Muito obrigado por nos ajudar a manter o CoGrOO sempre atualizado.<br>");
-	    body.append("Continue colaborando.");
-	    
-	    System.out.println(body);
 
-	    if (LOG.isDebugEnabled()) {
-	        LOG.debug("Will send mail now");
-	    }
-	    notificator.sendEmail(body.toString(), subject, dic.getUser());
+	public void sendMail(DictionaryPatch dic, boolean approved) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Preparing to send mail");
+		}
+
+		StringBuilder body = new StringBuilder();
+		body.append("Olá, " + dic.getUser().getName() + "!<br><br>");
+
+		String subject;
+		String status;
+		String message;
+		if (approved) {
+			subject = "Aprovação";
+			status = "aprovada";
+			message = "e já se encontra no dicionário utilizado pelo CoGrOO<br><br>";
+		} else {
+			subject = "Desaprovação";
+			status = "rejeitada";
+			message = "acompanhe os motivos no site.<br><br>";
+		}
+
+		String word = dic.getNewEntry().substring(0,
+				dic.getNewEntry().indexOf("/"));
+
+		body.append("De acordo com sua solicitação no portal CoGrOO Comunidade, informamos que a sua inserção da palavra "
+				+ word + " foi " + status + ".<br>");
+		body.append(message);
+		body.append("Muito obrigado por nos ajudar a manter o CoGrOO sempre atualizado.<br>");
+		body.append("Continue colaborando.");
+
+		System.out.println(body);
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Will send mail now");
+		}
+		notificator.sendEmail(body.toString(), subject, dic.getUser());
 	}
 
 }

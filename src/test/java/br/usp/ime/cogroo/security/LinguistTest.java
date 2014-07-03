@@ -4,9 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import utils.LabXP2014;
 
 public class LinguistTest {
 

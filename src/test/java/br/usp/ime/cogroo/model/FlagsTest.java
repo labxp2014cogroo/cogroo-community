@@ -5,9 +5,6 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import utils.LabXP2014;
 
 public class FlagsTest {
 

@@ -14,7 +14,7 @@ public class LoggedUser implements Serializable {
 	private User user = null;
 	private final ApplicationData appData;
 	private String lastURLVisited;
-	private String lastLastURLVisited; 
+	private String lastLastURLVisited;
 
 	public LoggedUser(ApplicationData appData) {
 		this.appData = appData;
@@ -58,12 +58,12 @@ public class LoggedUser implements Serializable {
 		return lastURLVisited;
 	}
 
-    public String getLastLastURLVisited() {
-        return lastLastURLVisited;
-    }
+	public String getLastLastURLVisited() {
+		return lastLastURLVisited;
+	}
 
-    public void setLastLastURLVisited(String lastLastURLVisited) {
-        this.lastLastURLVisited = lastLastURLVisited;
-    }
+	public void setLastLastURLVisited(String lastLastURLVisited) {
+		this.lastLastURLVisited = lastLastURLVisited;
+	}
 
 }

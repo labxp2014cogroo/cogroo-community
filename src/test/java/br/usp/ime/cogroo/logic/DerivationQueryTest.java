@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import utils.LabXP2014;
 
 public class DerivationQueryTest {
 

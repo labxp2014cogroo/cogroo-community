@@ -10,7 +10,6 @@ import java.util.Properties;
 import java.util.Scanner;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -53,17 +52,20 @@ public class WebServiceProxy {
 				.getProperty("try") + URLEncoder.encode(text, "ISO-8859-1"));
 	}
 
-	public JSONObject analysisRequest(String text) throws IOException, JSONException {
+	public JSONObject analysisRequest(String text) throws IOException,
+			JSONException {
 		return this.getJSONFromWebService(this.webServiceProperties
 				.getProperty("analysis") + text);
 	}
 
-	public JSONObject retrieveRequest(String lemma) throws IOException, JSONException {
+	public JSONObject retrieveRequest(String lemma) throws IOException,
+			JSONException {
 		return this.getJSONFromWebService(this.webServiceProperties
 				.getProperty("retrieve") + lemma);
 	}
 
-	private JSONObject getJSONFromWebService(String suffix) throws IOException, JSONException {
+	private JSONObject getJSONFromWebService(String suffix) throws IOException,
+			JSONException {
 		String requestURL = this.baseURL + suffix;
 		HttpClient client = new DefaultHttpClient();
 		HttpGet request = new HttpGet(requestURL);
@@ -119,9 +121,11 @@ public class WebServiceProxy {
 				.getProperty("load") + "id=" + repo);
 		return result.get("status").equals("OK");
 	}
-	
-	public static Vocable dictionaryEntryJsonToVocable(JSONObject json, String word) throws JSONException {
-		Vocable vocable = new Vocable(json.getString("CAT"), word, json.getString("rad"));
+
+	public static Vocable dictionaryEntryJsonToVocable(JSONObject json,
+			String word) throws JSONException {
+		Vocable vocable = new Vocable(json.getString("CAT"), word,
+				json.getString("rad"));
 		Iterator<String> jsonIterator = json.keys();
 		while (jsonIterator.hasNext()) {
 			String key = jsonIterator.next();
@@ -132,5 +136,5 @@ public class WebServiceProxy {
 		}
 		return vocable;
 	}
-	
+
 }

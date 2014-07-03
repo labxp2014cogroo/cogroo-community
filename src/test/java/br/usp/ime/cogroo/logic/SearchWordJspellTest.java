@@ -2,7 +2,6 @@ package br.usp.ime.cogroo.logic;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 
 import junit.framework.Assert;
 
@@ -33,30 +32,32 @@ public class SearchWordJspellTest {
 		casar.setEntry("casar/#vt/XYPLSMv/");
 		casar.addProperty("T", "inf");
 		casar.addProperty("TR", "t");
-		
+
 		Vocable casar2 = SearchWordJspell.searchLemma("casar").get(0);
-		
+
 		Assert.assertEquals(casar.getWord(), casar2.getWord());
 		Assert.assertEquals(casar.getCategory(), casar2.getCategory());
 		Assert.assertEquals(casar.getEntry(), casar2.getEntry());
 		Assert.assertEquals(casar.getRadical(), casar2.getRadical());
-		Assert.assertEquals(casar.getPropertiesAsString(), casar2.getPropertiesAsString());
-		
+		Assert.assertEquals(casar.getPropertiesAsString(),
+				casar2.getPropertiesAsString());
+
 		Vocable casa = new Vocable("nc", "casa", "casa");
 		casa.setEntry("casa/#nf/p/");
-		casa.addProperty("G","f");
-		casa.addProperty("N","s");
-		
+		casa.addProperty("G", "f");
+		casa.addProperty("N", "s");
+
 		Vocable casa2 = SearchWordJspell.searchLemma("casa").get(1);
-		
+
 		Assert.assertEquals(casa.getWord(), casa2.getWord());
 		Assert.assertEquals(casa.getCategory(), casa2.getCategory());
 		Assert.assertEquals(casa.getEntry(), casa2.getEntry());
 		Assert.assertEquals(casa.getRadical(), casa2.getRadical());
-		Assert.assertEquals(casa.getPropertiesAsString(), casa2.getPropertiesAsString());
-		
+		Assert.assertEquals(casa.getPropertiesAsString(),
+				casa2.getPropertiesAsString());
+
 	}
-	
+
 	@Test
 	public void searchUnknownWords() throws IOException, JSONException {
 		LinkedList<String> expected = new LinkedList<String>();

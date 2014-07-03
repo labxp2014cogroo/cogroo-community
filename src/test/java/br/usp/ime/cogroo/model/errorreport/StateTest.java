@@ -3,9 +3,6 @@ package br.usp.ime.cogroo.model.errorreport;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import utils.LabXP2014;
 
 public class StateTest {
 

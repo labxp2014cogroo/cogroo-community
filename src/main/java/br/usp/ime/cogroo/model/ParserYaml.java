@@ -37,7 +37,7 @@ public class ParserYaml {
 		}
 		;
 	}
-	
+
 	private void generateFirstLevel(Scanner scan,
 			Map<String, Pair<String, HashMap<String, String>>> hash) {
 		String line;

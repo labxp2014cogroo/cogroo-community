@@ -15,7 +15,6 @@ import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
-import br.com.caelum.vraptor.view.Results;
 import br.usp.ime.cogroo.dao.CogrooFacade;
 import br.usp.ime.cogroo.logic.SearchWordJspell;
 import br.usp.ime.cogroo.logic.TextSanitizer;
