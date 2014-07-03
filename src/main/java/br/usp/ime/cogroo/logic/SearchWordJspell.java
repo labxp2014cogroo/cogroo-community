@@ -16,8 +16,8 @@ import br.usp.ime.cogroo.model.Vocable;
 
 public class SearchWordJspell {
 
-	public static List<Vocable> searchWord(String word) throws IOException,
-			JSONException {
+	private static List<Vocable> searchWord(String word, boolean filterGuesses)
+			throws IOException, JSONException {
 		List<Vocable> vocables = new LinkedList<Vocable>();
 		JSONArray analisis = WebServiceProxy.getInstance()
 				.analysisRequest(word).getJSONArray("analise");
@@ -25,22 +25,40 @@ public class SearchWordJspell {
 			JSONObject json = analisis.getJSONObject(i);
 			Vocable vocable = WebServiceProxy.dictionaryEntryJsonToVocable(
 					json, word);
-			vocables.add(vocable);
+			if (!filterGuesses || !vocable.isGuess())
+				vocables.add(vocable);
 		}
 		return vocables;
 	}
 
-	
-	public static List<Vocable> searchLemma(String word)
+	public static List<Vocable> searchExistingWord(String word)
 			throws IOException, JSONException {
+		return searchWord(word, true);
+	}
+
+	public static List<Vocable> searchWord(String word) throws IOException,
+			JSONException {
+		return searchWord(word, false);
+	}
+
+	public static List<Vocable> searchLemma(String word) throws IOException,
+			JSONException {
 		WebServiceProxy webServiceProxy = WebServiceProxy.getInstance();
 		JSONArray analysis = webServiceProxy.analysisRequest(word)
 				.getJSONArray("analise");
-		HashMap<String, Vocable> vocables = SearchWordJspell.getLemmasFromAnalysis(analysis);
+		Vocable v = WebServiceProxy.dictionaryEntryJsonToVocable(
+				analysis.getJSONObject(0), word);
+		if (v.isGuess()) {
+			return new LinkedList<Vocable>();
+		}
+		HashMap<String, Vocable> vocables = SearchWordJspell
+				.getLemmasFromAnalysis(analysis);
 		return new LinkedList<Vocable>(vocables.values());
 	}
 
-	private static HashMap<String, Vocable> getLemmasFromAnalysis(JSONArray analysis) throws JSONException, FileNotFoundException, IOException{
+	private static HashMap<String, Vocable> getLemmasFromAnalysis(
+			JSONArray analysis) throws JSONException, FileNotFoundException,
+			IOException {
 		HashMap<String, Vocable> vocables = new HashMap<String, Vocable>();
 		WebServiceProxy webServiceProxy = WebServiceProxy.getInstance();
 		// Iterates over each radical (lemma)
@@ -54,24 +72,30 @@ public class SearchWordJspell {
 				String dictionaryCategory = dictionariesIterator.next();
 				JSONArray entries = retrieveResult
 						.getJSONArray(dictionaryCategory);
-				SearchWordJspell.fillHashMapVocablesWithEntries(vocables, entries, lemma);
+				SearchWordJspell.fillHashMapVocablesWithEntries(vocables,
+						entries, lemma);
 			}
 		}
 		return vocables;
 	}
-	
-	private static void fillHashMapVocablesWithEntries(HashMap<String, Vocable> vocables, JSONArray entries, String lemma) throws FileNotFoundException, IOException, JSONException{
+
+	private static void fillHashMapVocablesWithEntries(
+			HashMap<String, Vocable> vocables, JSONArray entries, String lemma)
+			throws FileNotFoundException, IOException, JSONException {
 		WebServiceProxy webServiceProxy = WebServiceProxy.getInstance();
 		// Iterates over each entry
 		for (int j = 0; j < entries.length(); j++) {
 			String entry = entries.getString(j);
 			JSONObject lemmaResult = webServiceProxy.tryRequest(entry);
-			Vocable v = WebServiceProxy.dictionaryEntryJsonToVocable(lemmaResult.getJSONArray("analise").getJSONObject(0), lemma);
+			Vocable v = WebServiceProxy
+					.dictionaryEntryJsonToVocable(
+							lemmaResult.getJSONArray("analise")
+									.getJSONObject(0), lemma);
 			v.setEntry(entry);
 			vocables.put(entry, v);
 		}
 	}
-	
+
 	public static List<String> searchUnknownWords(String text)
 			throws IOException, JSONException {
 
@@ -91,7 +115,7 @@ public class SearchWordJspell {
 
 	public static boolean existsInJspell(String word) throws IOException,
 			JSONException {
-		return (!SearchWordJspell.searchWord(word).isEmpty());
+		return (!SearchWordJspell.searchExistingWord(word).isEmpty());
 	}
 
 }

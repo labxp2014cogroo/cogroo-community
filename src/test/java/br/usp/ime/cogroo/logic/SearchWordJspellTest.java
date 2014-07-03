@@ -48,8 +48,6 @@ public class SearchWordJspellTest {
 		casa.addProperty("N","s");
 		
 		Vocable casa2 = SearchWordJspell.searchLemma("casa").get(1);
-		System.out.println(casa.getWord());
-		System.out.println(casa2.getWord());
 		
 		Assert.assertEquals(casa.getWord(), casa2.getWord());
 		Assert.assertEquals(casa.getCategory(), casa2.getCategory());

@@ -191,7 +191,7 @@ public class DictionaryPatchController {
 						ExceptionMessages.EMPTY_FIELD));
 				validator.onErrorUsePageOf(getClass()).dictionaryEntrySearch();
 			} else {
-				vocablesList = SearchWordJspell.searchWord(text);
+				vocablesList = SearchWordJspell.searchExistingWord(text);
 				result.include("typed_word", text);
 
 				if (vocablesList.isEmpty()) {

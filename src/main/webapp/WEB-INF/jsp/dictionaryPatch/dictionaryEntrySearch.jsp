@@ -21,7 +21,7 @@
 	<c:choose>
 		<c:when test="${status == 404}">
 			${mensagem_erro}.
-			NÃ£o encontramos a palavra ${typed_word}.
+			Não encontramos a palavra ${typed_word}.
 			<br />
 			Deseja sugeri-la?<br />
 			<a href="/newEntry/loggedUser?word=${typed_word}"> <input

@@ -23,6 +23,7 @@ public class Vocable {
 	private ParserYaml parser;
 	private String entry = "";
 	private static final Joiner COMMA_JOINER = Joiner.on(", ");
+	private boolean isGuess = false;
 
 	public Vocable() {
 		try {
@@ -94,6 +95,8 @@ public class Vocable {
 		if (parser.getValue(key, value) != null) {
 			this.properties.add(parser.getValue(key, value));
 		}
+		if (key.equals("unknown"))
+			isGuess = true;
 	}
 
 	public String getRadical() {
@@ -110,6 +113,10 @@ public class Vocable {
 
 	public void setEntry(String entry) {
 		this.entry = entry;
+	}
+
+	public boolean isGuess() {
+		return this.isGuess;
 	}
 
 }
