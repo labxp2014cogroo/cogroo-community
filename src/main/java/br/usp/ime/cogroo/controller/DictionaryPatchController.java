@@ -3,7 +3,6 @@ package br.usp.ime.cogroo.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,12 +31,10 @@ import br.usp.ime.cogroo.logic.WebServiceProxy;
 import br.usp.ime.cogroo.model.DictionaryPatch;
 import br.usp.ime.cogroo.model.Flags;
 import br.usp.ime.cogroo.model.LoggedUser;
-import br.usp.ime.cogroo.model.User;
 import br.usp.ime.cogroo.model.Vocable;
 import br.usp.ime.cogroo.model.errorreport.State;
 import br.usp.ime.cogroo.notifiers.Notificator;
 import br.usp.ime.cogroo.security.annotations.LoggedIn;
-import br.usp.ime.cogroo.util.CriptoUtils;
 
 @Resource
 public class DictionaryPatchController {

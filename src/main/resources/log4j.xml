@@ -17,10 +17,11 @@
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{dd MMM yyyy HH:mm:ss,SSS} %5p [%-20c{1}] %m%n" />
 		</layout>
-	</appender> 
-	
+	</appender>
+
 	<appender name="SENT" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="${catalina.home}/logs/cogroo-comunidade-sentences.log" />
+		<param name="file"
+			value="${catalina.home}/logs/cogroo-comunidade-sentences.log" />
 		<param name="MaxFileSize" value="10MB" />
 
 		<!-- Keep one backup file -->
@@ -28,17 +29,17 @@
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{dd MMM yyyy HH:mm:ss,SSS} %m%n" />
 		</layout>
-	</appender> 
+	</appender>
 
 	<!-- (all|debug|info|warn|error|fatal|off|null) -->
-	<category name="br.usp.ime.cogroo"  additivity="false">
+	<category name="br.usp.ime.cogroo" additivity="false">
 		<priority value="warn" />
 		<appender-ref ref="stdout" />
 		<appender-ref ref="R" />
 	</category>
-	
+
 	<!-- (all|debug|info|warn|error|fatal|off|null) -->
-	<category name="sentences"  additivity="false">
+	<category name="sentences" additivity="false">
 		<priority value="off" />
 		<appender-ref ref="stdout" />
 		<appender-ref ref="SENT" />
@@ -48,14 +49,14 @@
 		<priority value="warn" />
 		<appender-ref ref="stdout" />
 		<appender-ref ref="R" />
-	</root>	
+	</root>
 
-<!--	<appender name="Chainsaw" class="org.apache.log4j.net.SocketAppender">-->
-<!--		<param name="RemoteHost" value="localhost" />-->
-<!--		<param name="Port" value="4445" />-->
-<!--		<layout class="org.apache.log4j.xml.XMLLayout">-->
-<!--			<param name="LocationInfo" value="false" />-->
-<!--		</layout>-->
-<!--	</appender>-->
+	<!-- <appender name="Chainsaw" class="org.apache.log4j.net.SocketAppender"> -->
+	<!-- <param name="RemoteHost" value="localhost" /> -->
+	<!-- <param name="Port" value="4445" /> -->
+	<!-- <layout class="org.apache.log4j.xml.XMLLayout"> -->
+	<!-- <param name="LocationInfo" value="false" /> -->
+	<!-- </layout> -->
+	<!-- </appender> -->
 
 </log4j:configuration>

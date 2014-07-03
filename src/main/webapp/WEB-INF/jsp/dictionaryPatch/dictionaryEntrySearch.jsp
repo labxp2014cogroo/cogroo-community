@@ -21,7 +21,7 @@
 	<c:choose>
 		<c:when test="${status == 404}">
 			${mensagem_erro}.
-			Não encontramos a palavra ${typed_word}.
+			NÃ£o encontramos a palavra ${typed_word}.
 			<br />
 			Deseja sugeri-la?<br />
 			<a href="/newEntry/loggedUser?word=${typed_word}"> <input
@@ -34,13 +34,13 @@
 		<c:when test="${status == 0}">
 			<div>
 				<div style="float: left">
-					<h3>Classificações da Palavra: ${typed_word}</h3>
+					<h3>ClassificaÃ§Ãµes da Palavra: ${typed_word}</h3>
 				</div>
 				<div style="float: right">
-				<%-- WIP  (escondendo o botão editar enquanto a edição não está completa)
+				<%-- WIP  (escondendo o botÃ£o editar enquanto a ediÃ§Ã£o nÃ£o estÃ¡ completa)
 					<form method="post" action="/dictionaryPatch/searchLemma">
 						<input type="hidden" name="word" value="${typed_word}"></input> <input
-							id="go" type="submit" value=" Editar » "></input>
+							id="go" type="submit" value=" Editar ? "></input>
 					</form>
 					 --%>
 				</div>
@@ -49,10 +49,10 @@
 				id="table_morf">
 				<thead>
 					<tr>
-						<th>Nº</th>
+						<th>NÂº</th>
 						<th>Classe gramatical</th>
 						<th>Raiz</th>
-						<th>Flexão</th>
+						<th>FlexÃ£o</th>
 					</tr>
 				</thead>
 				<tbody>

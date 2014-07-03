@@ -17,15 +17,15 @@
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{dd MMM yyyy HH:mm:ss,SSS} %5p [%-20c{1}] %m%n" />
 		</layout>
-	</appender> 
+	</appender>
 
-<!--	<appender name="Chainsaw" class="org.apache.log4j.net.SocketAppender">-->
-<!--		<param name="RemoteHost" value="localhost" />-->
-<!--		<param name="Port" value="4445" />-->
-<!--		<layout class="org.apache.log4j.xml.XMLLayout">-->
-<!--			<param name="LocationInfo" value="false" />-->
-<!--		</layout>-->
-<!--	</appender>-->
+	<!-- <appender name="Chainsaw" class="org.apache.log4j.net.SocketAppender"> -->
+	<!-- <param name="RemoteHost" value="localhost" /> -->
+	<!-- <param name="Port" value="4445" /> -->
+	<!-- <layout class="org.apache.log4j.xml.XMLLayout"> -->
+	<!-- <param name="LocationInfo" value="false" /> -->
+	<!-- </layout> -->
+	<!-- </appender> -->
 
 	<!-- (all|debug|info|warn|error|fatal|off|null) -->
 	<category name="br.usp.ime.cogroo">

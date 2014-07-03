@@ -18,7 +18,7 @@
 	</scm>
 
 	<dependencies>
-	    <dependency>
+		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
 			<version>1.3.1</version>
@@ -34,9 +34,9 @@
 			<version>2.0-beta3</version>
 		</dependency>
 		<dependency>
-    		<groupId>com.google.gdata</groupId>
-    		<artifactId>core</artifactId>
-    		<version>1.47.1</version>
+			<groupId>com.google.gdata</groupId>
+			<artifactId>core</artifactId>
+			<version>1.47.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gdata</groupId>
@@ -211,7 +211,7 @@
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
 			<version>1.1</version>
-			<!--	        <scope>test</scope>-->
+			<!-- <scope>test</scope> -->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -219,9 +219,9 @@
 			<version>1.3.2</version>
 		</dependency>
 		<dependency>
-		    <groupId>commons-lang</groupId>
-		    <artifactId>commons-lang</artifactId>
-		    <version>2.6</version>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -239,14 +239,14 @@
 			<version>1.4.3</version>
 		</dependency>
 		<dependency>
-		  <groupId>rome</groupId>
-		  <artifactId>rome</artifactId>
-		  <version>1.0</version>
+			<groupId>rome</groupId>
+			<artifactId>rome</artifactId>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.antlr</groupId>
-		    <artifactId>stringtemplate</artifactId>
-		    <version>3.2.1</version>
+			<groupId>org.antlr</groupId>
+			<artifactId>stringtemplate</artifactId>
+			<version>3.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.scannotation</groupId>
@@ -258,15 +258,15 @@
 			<artifactId>spring-core</artifactId>
 			<version>3.0.5.RELEASE</version>
 		</dependency>
-      <dependency>
-           <groupId>org.twitter4j</groupId>
-           <artifactId>twitter4j-core</artifactId>
-           <version>[4.0,)</version>
-       </dependency>
-       <dependency>
-        <groupId>com.rosaloves</groupId>
-        <artifactId>bitlyj</artifactId>
-        <version>2.0.0</version>
+		<dependency>
+			<groupId>org.twitter4j</groupId>
+			<artifactId>twitter4j-core</artifactId>
+			<version>[4.0,)</version>
+		</dependency>
+		<dependency>
+			<groupId>com.rosaloves</groupId>
+			<artifactId>bitlyj</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 
 		<dependency>
@@ -276,10 +276,10 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.subethamail</groupId>
-		    <artifactId>subethasmtp-wiser</artifactId>
-		    <version>1.2</version>
-		    <scope>test</scope>
+			<groupId>org.subethamail</groupId>
+			<artifactId>subethasmtp-wiser</artifactId>
+			<version>1.2</version>
+			<scope>test</scope>
 		</dependency>
 
 
@@ -355,12 +355,12 @@
 		</repository>
 	</repositories>
 	<build>
-	    <filters>
+		<filters>
 			<filter>${basedir}/target/filter.properties</filter>
 			<filter>../comunidade.properties</filter>
-	    </filters>
+		</filters>
 
-        <outputDirectory>${basedir}/src/main/webapp/WEB-INF/classes</outputDirectory>
+		<outputDirectory>${basedir}/src/main/webapp/WEB-INF/classes</outputDirectory>
 
 		<finalName>comunidade</finalName>
 		<resources>
@@ -386,18 +386,12 @@
 			</resource>
 		</resources>
 		<!-- add Eclipse WTP support -->
-		<!--
-			s <pluginManagement> <plugins> <plugin>
-			<artifactId>maven-eclipse-plugin</artifactId> <configuration>
-			<wtpversion>2.0</wtpversion>
-			<wtpapplicationxml>true</wtpapplicationxml>
-			<wtpmanifest>true</wtpmanifest>
-			<downloadSources>true</downloadSources>
-			<downloadJavadocs>true</downloadJavadocs> <projectNameTemplate>
-			[artifactId]-[version] </projectNameTemplate> <manifest>
-			${basedir}/src/main/resources/META-INF/MANIFEST.MF </manifest>
-			</configuration> </plugin> </plugins> </pluginManagement>
-		-->
+		<!-- s <pluginManagement> <plugins> <plugin> <artifactId>maven-eclipse-plugin</artifactId> 
+			<configuration> <wtpversion>2.0</wtpversion> <wtpapplicationxml>true</wtpapplicationxml> 
+			<wtpmanifest>true</wtpmanifest> <downloadSources>true</downloadSources> <downloadJavadocs>true</downloadJavadocs> 
+			<projectNameTemplate> [artifactId]-[version] </projectNameTemplate> <manifest> 
+			${basedir}/src/main/resources/META-INF/MANIFEST.MF </manifest> </configuration> 
+			</plugin> </plugins> </pluginManagement> -->
 		<plugins>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -413,10 +407,10 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
- 					<excludes>
+					<excludes>
 						<exclude>**/systest/**</exclude>
- 						<exclude>**/integration/**</exclude>
- 					</excludes>
+						<exclude>**/integration/**</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 
@@ -443,45 +437,42 @@
 				</configuration>
 			</plugin>
 			<plugin>
-             <groupId>org.codehaus.mojo</groupId>
-             <artifactId>tomcat-maven-plugin</artifactId>
-              	<configuration>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<configuration>
 
-					  <!--
-					  password and user: command line -
-					  -Dtomcat.password=apassword -Dtomcat.username=ausername
-					  <url>http://doncovim:8080/manager</url>
-					   -->
-              	</configuration>
-             </plugin>
+					<!-- password and user: command line - -Dtomcat.password=apassword -Dtomcat.username=ausername 
+						<url>http://doncovim:8080/manager</url> -->
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-			    	<phase>generate-resources</phase>
-			    	<goals>
-			      		<goal>run</goal>
-			    	</goals>
-			    	<configuration>
-				      <tasks>
-				        <mkdir dir="${project.build.directory}"/>
-				        <tstamp>
-				          <format property="last.builds"
-				            	pattern="yyyy.MM.dd G 'at' HH:mm:ss z"/>
-				        </tstamp>
-				        <echo file="${basedir}/target/filter.properties" message="build.time=${last.builds}"/>
-				      </tasks>
-			    </configuration>
-			  </execution>
-			</executions>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<mkdir dir="${project.build.directory}" />
+								<tstamp>
+									<format property="last.builds" pattern="yyyy.MM.dd G 'at' HH:mm:ss z" />
+								</tstamp>
+								<echo file="${basedir}/target/filter.properties" message="build.time=${last.builds}" />
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

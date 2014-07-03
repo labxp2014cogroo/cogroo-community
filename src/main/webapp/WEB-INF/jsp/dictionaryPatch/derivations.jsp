@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <form action="<c:url value="/dictionaryPatch/chooseFlags"/>" method="post">
 	<div class="white_box">
-		<h2>Selecione quais deriva��es da palavra "${word }" se aplicam:</h2>
+		<h2>Selecione quais derivações da palavra "${word }" se aplicam:</h2>
 		<br>
 		<div class="dashed_white">
 			
