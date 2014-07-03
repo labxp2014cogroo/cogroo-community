@@ -16,7 +16,6 @@ import br.usp.ime.cogroo.model.errorreport.Comment;
 import br.usp.ime.cogroo.model.errorreport.HistoryEntry;
 import br.usp.ime.cogroo.model.errorreport.State;
 
-@Category(LabXP2014.class)
 public class DictionaryPatchTest {
 
 	private final double DELTA = 1e-8;
