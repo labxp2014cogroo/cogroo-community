@@ -26,12 +26,25 @@ public class DerivationsQuery {
 	private DerivationsQuery() {
 		return;
 	}
+	
+	private static String selectFlags(String category)
+	{
+		if (category.equals("v"))
+			return VERB_FLAGS;
+		if (category.equals("adj"))
+			return ADJECTIVE_FLAGS;
+		if (category.equals("nc") || category.equals("np"))
+			return NOUN_FLAGS;
+		if (category.equals("adv"))
+			return ADVERB_FLAGS;
+		return ALL_FLAGS;
+	}
 
 	public static Map<String, String> queryDerivations(String entry, String category) {
 		Map<String, String> derivationsHash = null;
 		try {
 			JSONObject jsonResult = WebServiceProxy.getInstance()
-					.tryRequest(entry + ALL_FLAGS).getJSONObject("derivadas");
+					.tryRequest(entry + selectFlags(category)).getJSONObject("derivadas");
 			derivationsHash = getRelevantDerivations(jsonResult);
 		} catch (IOException e) {
 			Log.error("Não foi possivel completar o pedido", e);
