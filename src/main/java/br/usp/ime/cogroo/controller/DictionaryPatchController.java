@@ -3,6 +3,7 @@ package br.usp.ime.cogroo.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,9 +32,12 @@ import br.usp.ime.cogroo.logic.WebServiceProxy;
 import br.usp.ime.cogroo.model.DictionaryPatch;
 import br.usp.ime.cogroo.model.Flags;
 import br.usp.ime.cogroo.model.LoggedUser;
+import br.usp.ime.cogroo.model.User;
 import br.usp.ime.cogroo.model.Vocable;
 import br.usp.ime.cogroo.model.errorreport.State;
+import br.usp.ime.cogroo.notifiers.Notificator;
 import br.usp.ime.cogroo.security.annotations.LoggedIn;
+import br.usp.ime.cogroo.util.CriptoUtils;
 
 @Resource
 public class DictionaryPatchController {
@@ -45,15 +49,17 @@ public class DictionaryPatchController {
 	private Validator validator;
 	private LoggedUser loggedUser;
 	private HttpServletRequest request;
+	private Notificator notificator;
 
 	public DictionaryPatchController(Result result, Validator validator,
 			LoggedUser loggedUser, HttpServletRequest request,
-			DictionaryPatchDAO dictionaryPatchDAO) {
+			DictionaryPatchDAO dictionaryPatchDAO, Notificator notificator) {
 		this.result = result;
 		this.validator = validator;
 		this.loggedUser = loggedUser;
 		this.request = request;
 		this.dictionaryPatchDAO = dictionaryPatchDAO;
+		this.notificator = notificator;
 	}
 
 	@Get
@@ -130,9 +136,10 @@ public class DictionaryPatchController {
 
 		dictionaryPatch.setState(State.RESOLVED);
 
+		sendMail(dictionaryPatch, true);
+		
 		String newEntry = dictionaryPatch.getNewEntry().substring(0,
-				dictionaryPatch.getNewEntry().lastIndexOf("/") + 1);
-
+		        dictionaryPatch.getNewEntry().lastIndexOf("/") + 1);
 		if (flags != null) {
 			for (String flag : flags) {
 				newEntry += flag;
@@ -163,7 +170,10 @@ public class DictionaryPatchController {
 		DictionaryPatch dictionaryPatch = dictionaryPatchDAO.retrieve(idPatch);
 
 		dictionaryPatch.setState(State.REJECTED);
-
+		
+		
+		sendMail(dictionaryPatch, false);
+		
 		result.redirectTo(getClass()).dictionaryEntries();
 	}
 
@@ -408,6 +418,45 @@ public class DictionaryPatchController {
 		dictionaryPatchDAO.addEditionPatch(entry, newEntry, loggedUser.getUser());
 		result.include("okMessage", "Palavra cadastrada com sucesso!");
 		result.redirectTo(getClass()).dictionaryEntries();
+	}
+	
+	public void sendMail(DictionaryPatch dic, boolean approved) {
+	    
+	    if (LOG.isDebugEnabled()) {
+	        LOG.debug("Preparing to send mail");
+	    }
+	  
+	    StringBuilder body = new StringBuilder();
+	    body.append("Olá, " + dic.getUser().getName() + "!<br><br>");
+	    
+	    String subject; 
+	    String status;
+	    String message; 
+	    if (approved) {
+	        subject = "Aprovação";
+	        status = "aprovada";
+	        message = "e já se encontra no dicionário utilizado pelo CoGrOO<br><br>";
+	    }
+	    else {
+	        subject = "Desaprovação";
+	        status = "rejeitada";
+	        message = "acompanhe os motivos no site.<br><br>"; 
+	    }
+	    
+	    String word = dic.getNewEntry().substring(0,
+                dic.getNewEntry().indexOf("/"));
+	    
+	    body.append("De acordo com sua solicitação no portal CoGrOO Comunidade, informamos que a sua inserção da palavra " + word + " foi " + status + ".<br>");
+	    body.append(message);
+	    body.append("Muito obrigado por nos ajudar a manter o CoGrOO sempre atualizado.<br>");
+	    body.append("Continue colaborando.");
+	    
+	    System.out.println(body);
+
+	    if (LOG.isDebugEnabled()) {
+	        LOG.debug("Will send mail now");
+	    }
+	    notificator.sendEmail(body.toString(), subject, dic.getUser());
 	}
 
 }
